@@ -9,9 +9,21 @@ if (defined('SIMPLIFIED')) {
     get($code, 'do');
   }
   catch(Exception $e) {
+    $fmt = function ($x) {
+      return str_replace('d @', 'Debugger @',
+        str_replace('.php', '',
+          str_replace(__DIR__ . '/', '', $x)
+        )
+      );
+    };
     echo '<pre>';
-    echo "Error: " . $e->getMessage();
-    debug_print_backtrace();
+    if ($e->getMessage() !== 'Debug') {
+      echo $fmt($e->getMessage() . "\n\n ... @ " .
+        $e->getFile() . ':' . $e->getLine());
+    }
+    foreach($e->getTrace() as $trace) {
+      echo $fmt("\n $trace[function] @ $trace[file]:$trace[line]");
+    }
     echo '</pre>';
   }
   exit;

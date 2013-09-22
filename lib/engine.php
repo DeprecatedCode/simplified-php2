@@ -1,6 +1,31 @@
 <?php
 
 /**
+ * Debug
+ */
+function d($obj) {
+  echo '<pre>';
+  ob_start();
+  var_dump($obj);
+  $debug = ob_get_clean();
+  $debug = str_replace('["', '"',
+    str_replace('"]=>', '": ',
+      str_replace('(stdClass)', '',
+        preg_replace('/\n?\s*?\&?(object|string).*?(#\d+\s)?\(\d+\)\s+/m', '',
+          preg_replace('/\n?.+?(int|float)\(([0-9.\-e]+)\)/', '\2',
+            preg_replace('/\n?\s+?array\(\d+\)\s+/ms', 'array ',
+              preg_replace('/\[\d+\]\=\>/', '', $debug)
+            )
+          )
+        )
+      )
+    )
+  );
+  echo $debug;
+  throw new Exception ('Debug');
+}
+
+/**
  * Construct new Object
  */
 function _o(&$parent) {
@@ -101,7 +126,8 @@ function get(&$scope, $key, $instance = null) {
    * Handle Scalars
    */
   if (!is_object($scope)) {
-    return get(proto($scope), $key, $instance);
+    $proto = proto($scope);
+    return get($proto, $key, $instance);
   }
   
   /**
