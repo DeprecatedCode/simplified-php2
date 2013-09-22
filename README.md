@@ -3,7 +3,7 @@ SimplifiedPHP
 
 ## Internals
 
-SimplifiedPHP compiles a source map of all files, using the following functions.
+SimplifiedPHP compiles a source map of all files, using the following functions. The `$S` variable is the scope at runtime.
 
 ### String
 
