@@ -20,7 +20,6 @@ n($S, $value, $line, $column)
 ```php
 i($S, $name, $line, $column)
 ```
-```
 
 ### Operator
 
