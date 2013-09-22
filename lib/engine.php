@@ -28,9 +28,13 @@ function d($obj) {
 /**
  * Construct new Object
  */
-function _o(&$parent) {
+function n(&$parent, $line=null, $column=null) {
   $scope = new stdClass;
   $scope->{'#type'} = 'object';
+  if (!is_null($line) && !is_null($column)) {
+    $scope->{'#line'} = $line;
+    $scope->{'#column'} = $column;
+  }
   $scope->{'#parent'} = &$parent;
   return $scope;
 }
@@ -38,8 +42,8 @@ function _o(&$parent) {
 /**
  * Construct new Array
  */
-function _a(&$parent) {
-  $scope = obj($parent);
+function a(&$parent, $line=null, $column=null) {
+  $scope = n($parent, $line, $column);
   $scope->{'#type'} = 'array';
   $scope->{'#value'} = array();
   return $scope;
@@ -48,10 +52,62 @@ function _a(&$parent) {
 /**
  * Construct new File
  */
-function _f(&$parent) {
-  $scope = obj($parent);
+function f(&$parent, $line=null, $column=null) {
+  $scope = n($parent, $line, $column);
   $scope->{'#type'} = 'file';
   return $scope;
+}
+
+/**
+ * Value
+ */
+function v(&$scope, $value, $line=null, $column=null) {
+  try {
+    $fn = proto($scope)->{'#value'};
+    $fn($scope, $value);
+  }
+  catch (Exception $e) {
+    throw new Exception($e->getMessage() . " at $line:$column", 0, $e);
+  }
+}
+
+/**
+ * Identifier
+ */
+function i(&$scope, $name, $line=null, $column=null) {
+  try {
+    $fn = proto($scope)->{'#identifier'};
+    $fn($scope, $value);
+  }
+  catch (Exception $e) {
+    throw new Exception($e->getMessage() . " at $line:$column", 0, $e);
+  }
+}
+
+/**
+ * Operator
+ */
+function o(&$scope, $name, $line=null, $column=null) {
+  try {
+    $fn = proto($scope)->{'#operator'};
+    $fn($scope, $value);
+  }
+  catch (Exception $e) {
+    throw new Exception($e->getMessage() . " at $line:$column", 0, $e);
+  }
+}
+
+/**
+ * Break
+ */
+function b(&$scope, $name, $line=null, $column=null) {
+  try {
+    $fn = proto($scope)->{'#break'};
+    $fn($scope, $value);
+  }
+  catch (Exception $e) {
+    throw new Exception($e->getMessage() . " at $line:$column", 0, $e);
+  }
 }
 
 /**
@@ -176,5 +232,5 @@ function get(&$scope, $key, $instance = null) {
  * Set Property
  */
 function set(&$scope, $key, $value) {
-  throw new Exception ("Setting not yet supported");
+  throw new Exception("Setting not yet supported");
 }

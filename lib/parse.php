@@ -10,12 +10,11 @@ function parse($code) {
     $root->request->method = $_SERVER['REQUEST_METHOD'];
     $root->request->time = time(true);
   }
-  $S = _o($root);
   
   $file = dirname(__DIR__) . '/cache/' . substr(md5($code), 0, 8) . '.php';
   if (true || !file_exists($file)) {
     ob_start();
-    echo '<?php';
+    echo '<?php $S = n($root);';
     $buffer = array('return $S;');
     
     /**
@@ -154,7 +153,6 @@ function parse($code) {
      * Finalize cached file
      */
     echo ' ' . implode(' ', array_reverse($buffer));
-    echo '<code>' . htmlspecialchars(ob_get_clean());die;
     file_put_contents($file, ob_get_clean());
   }
   
@@ -164,11 +162,11 @@ function parse($code) {
 function block($code, $line, $column) {
   switch($code) {
     case '{':
-      echo 'OBJECT';
-      return;
+      echo ' $L = function ($P) { $S = n($P);';
+      return " }; v(\$S, \$L(\$S),$line,$column);";
     case '[';
-      echo 'ARRAY';
-      return;
+      echo ' $L = function ($P) { $S = a($P);';
+      return " }; v(\$S, \$L(\$S),$line,$column);";
   }
 }
 
@@ -178,10 +176,10 @@ function process($current, $code, $line, $column) {
     case '/*':
       return;
     case '"':
-      echo " s(\$S, \"$code\", $line, $column);";
+      echo " v(\$S,\"$code\",$line,$column);";
       return;
     case "'":
-      echo " s(\$S, '$code', $line, $column);";
+      echo " v(\$S,'$code',$line,$column);";
       return;
     default:
       expr($current, $code, $line, $column);
@@ -190,15 +188,15 @@ function process($current, $code, $line, $column) {
 
 function expr(&$current, $expr, $line, $column) {
     static $regex = array(
-        '[+-]?(\d+(\.\d+)?([eE][+-]?\d+)?)'  => 'n',
+        '[+-]?(\d+(\.\d+)?([eE][+-]?\d+)?)'  => 'v',
         '[a-zA-Z0-9_]+'         => 'i',
         '\.\.?|[^\sa-zA-Z0-9_]' => 'o',
         '\n+'                   => 'b',
-        '\s+'                   => 'w'
+        '\s+'                   => 's'
     );
     while(strlen($expr) > 0) {
         foreach($regex as $re => $type) {
-            $match = preg_match(";^$re;", $expr, $groups);
+            $match = preg_match("/^($re)/", $expr, $groups);
             if($match) {
                 $str = $groups[0];
                 $len = strlen($str);
@@ -207,8 +205,15 @@ function expr(&$current, $expr, $line, $column) {
                 /**
                  * Output
                  */
-                $value = ($type == 'b' || $type == 's') ? 0 : "'$str'";
-                if ($type !== 'w') {
+                switch($type) {
+                  case 'i':
+                  case 'o':
+                    $value = "'$str'";
+                    break;
+                  case 'b':
+                    $value = 0;
+                }
+                if ($type !== 's') {
                   echo " $type(\$S,$value,$line,$column);";
                 }
 

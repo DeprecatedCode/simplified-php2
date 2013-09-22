@@ -6,7 +6,7 @@ type::$object->do = function ($object) {d($object);
     return $object;
   }
   
-  $result = _o($object);
+  $result = n($object);
   
   foreach($object->{'#definition'} as $def) {
     $key = isset($def['key']) ? $def['key'] : null;
