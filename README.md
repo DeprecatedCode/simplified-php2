@@ -3,6 +3,8 @@ SimplifiedPHP
 
 ## Internals
 
+SimplifiedPHP compiles a source map of all files, using the following functions.
+
 ### String
 
 ```php
