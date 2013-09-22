@@ -5,16 +5,10 @@ SimplifiedPHP
 
 SimplifiedPHP compiles a source map of all files, using the following functions. The `$S` variable is the scope at runtime.
 
-### String
+### Value
 
 ```php
-s($S, $value, $line, $column);
-```
-
-### Number
-
-```php
-n($S, $value, $line, $column);
+v($S, $value, $line, $column);
 ```
 
 ### Identifier
