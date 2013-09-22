@@ -23,7 +23,7 @@ a($P, $line, $column);
 f($P, $line, $column);
 ```
 
-### Value (String or Number)
+### Value
 
 ```php
 v($S, $value, $line, $column);
