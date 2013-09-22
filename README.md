@@ -8,19 +8,19 @@ SimplifiedPHP compiles a source map of all files, using the following functions.
 ### New Object
 
 ```php
-n($P);
+n($P, $line, $column);
 ```
 
 ### New Array
 
 ```php
-a($P);
+a($P, $line, $column);
 ```
 
 ### New File
 
 ```php
-f($P);
+f($P, $line, $column);
 ```
 
 ### Value
