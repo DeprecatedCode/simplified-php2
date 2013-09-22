@@ -3,7 +3,25 @@ SimplifiedPHP
 
 ## Internals
 
-SimplifiedPHP compiles a source map of all files, using the following functions. The `$S` variable is the scope at runtime.
+SimplifiedPHP compiles a source map of all files, using the following functions. The `$S` variable is the scope at runtime, and `$P` refers to parent scope.
+
+### New Object
+
+```php
+n($P);
+```
+
+### New Array
+
+```php
+a($P);
+```
+
+### New File
+
+```php
+f($P);
+```
 
 ### Value
 
