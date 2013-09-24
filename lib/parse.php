@@ -15,7 +15,7 @@ function parse($code) {
   if (true || !file_exists($file)) {
     ob_start();
     echo '<?php $S = n($root);';
-    $buffer = array('return $S;');
+    $buffer = array('b($S, 0); return $S;');
     
     /**
      * Parse code
@@ -163,10 +163,10 @@ function block($code, $line, $column) {
   switch($code) {
     case '{':
       echo ' $L = function ($P) { $S = n($P);';
-      return " }; v(\$S, \$L(\$S),$line,$column);";
+      return " b(\$S, 0); return \$S; }; v(\$S, \$L(\$S),$line,$column);";
     case '[';
       echo ' $L = function ($P) { $S = a($P);';
-      return " }; v(\$S, \$L(\$S),$line,$column);";
+      return " b(\$S, 0); return \$S; }; v(\$S, \$L(\$S),$line,$column);";
   }
 }
 

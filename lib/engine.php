@@ -21,7 +21,7 @@ function d($obj) {
       )
     )
   );
-  echo $debug;
+  echo htmlspecialchars($debug);
   throw new Exception ('Debug');
 }
 
@@ -63,8 +63,13 @@ function f(&$parent, $line=null, $column=null) {
  */
 function v(&$scope, $value, $line=null, $column=null) {
   try {
-    $fn = proto($scope)->{'#value'};
-    $fn($scope, $value);
+    $fn = proto($scope)->{'#register'};
+    $item = new stdClass;
+    $item->type = 'value';
+    $item->value = $value;
+    $item->line = $line;
+    $item->column = $column;
+    $fn($scope, $item);
   }
   catch (Exception $e) {
     throw new Exception($e->getMessage() . " at $line:$column", 0, $e);
@@ -76,8 +81,13 @@ function v(&$scope, $value, $line=null, $column=null) {
  */
 function i(&$scope, $name, $line=null, $column=null) {
   try {
-    $fn = proto($scope)->{'#identifier'};
-    $fn($scope, $value);
+    $fn = proto($scope)->{'#register'};
+    $item = new stdClass;
+    $item->type = 'identifier';
+    $item->value = $name;
+    $item->line = $line;
+    $item->column = $column;
+    $fn($scope, $item);
   }
   catch (Exception $e) {
     throw new Exception($e->getMessage() . " at $line:$column", 0, $e);
@@ -89,8 +99,13 @@ function i(&$scope, $name, $line=null, $column=null) {
  */
 function o(&$scope, $name, $line=null, $column=null) {
   try {
-    $fn = proto($scope)->{'#operator'};
-    $fn($scope, $value);
+    $fn = proto($scope)->{'#register'};
+    $item = new stdClass;
+    $item->type = 'operator';
+    $item->value = $name;
+    $item->line = $line;
+    $item->column = $column;
+    $fn($scope, $item);
   }
   catch (Exception $e) {
     throw new Exception($e->getMessage() . " at $line:$column", 0, $e);
@@ -100,14 +115,77 @@ function o(&$scope, $name, $line=null, $column=null) {
 /**
  * Break
  */
-function b(&$scope, $name, $line=null, $column=null) {
+function b(&$scope, $void, $line=null, $column=null) {
   try {
-    $fn = proto($scope)->{'#break'};
-    $fn($scope, $value);
+    $fn = proto($scope)->{'#register'};
+    $item = new stdClass;
+    $item->type = 'break';
+    $item->value = $void;
+    $item->line = $line;
+    $item->column = $column;
+    $fn($scope, $item);
   }
   catch (Exception $e) {
-    throw new Exception($e->getMessage() . " at $line:$column", 0, $e);
+    $from = $e->getFile() . ':' . $e->getLine();
+    throw new Exception($e->getMessage() . " at $line:$column (from $from)", 0, $e);
   }
+}
+
+/**
+ * Object and Array State
+ */
+function state($scope, $set = null) {
+  if (!isset($scope->{'#state'}) || !is_null($set)) {
+    $scope->{'#state'} = $set ? $set : '#init';
+  }
+  return $scope->{'#state'};
+}
+
+/**
+ * Register Item
+ */
+function register($object, $item) {
+  if (!reg_count($object)) {
+    reg_clear($object);
+  }
+  $object->{'#register'}[] = $item;
+}
+
+/**
+ * Register Item Count
+ */
+function reg_count($object) {
+  if(!isset($object->{'#register'}) || !is_array($object->{'#register'})) {
+    return 0;
+  }
+  return count($object->{'#register'});
+}
+
+/**
+ * Clear Register
+ */
+function reg_clear($object) {
+  $object->{'#register'} = array();
+}
+
+/**
+ * Object and Array Source
+ */
+function source($object, $item) {
+  if (!isset($object->{'#source'}) || !is_array($object->{'#source'})) {
+    $object->{'#source'} = array();
+  }
+  $object->{'#source'}[] = $item;
+}
+
+/**
+ * Create key-value pair
+ */
+function keyval($key, $val) {
+  $item = new stdClass;
+  $item->key = $key;
+  $item->val = $val;
+  return $item;
 }
 
 /**

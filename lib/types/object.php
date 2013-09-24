@@ -1,30 +1,65 @@
 <?php
 
-type::$object->do = function ($object) {d($object);
-  
-  if (!isset($object->{'#definition'})) {
-    return $object;
+type::$object->{'do'} = function ($object) {
+  d($object);
+};
+
+type::$object->{'#register'} = function ($object, $item) {
+  switch(state($object)) {
+    case '#init':
+      
+      /**
+       * Handle code execution on newline
+       */
+      if ($item->type === 'break') {
+        if(reg_count($object)) {
+          source($object, $object->{'#register'});
+          reg_clear($object);
+          $object->{'#key'} = array();
+        }
+        return;
+      }
+      
+      /**
+       * Handle key-value assignment with colon
+       */
+      if ($item->type === 'operator' && $item->value === ':') {
+
+        if (reg_count($object) === 0) {
+          throw new Exception('Operator : not allowed in object without corresponding key');
+        }
+
+        $object->{'#key'} = $object->{'#register'};
+        reg_clear($object);
+        return state($object, '#value');
+      }
+      break;
+
+    case '#value':
+      /**
+       * Operator: comma or break
+       * Append #key, #register to #source and reset #key and #register
+       */
+      if (($item->type === 'operator' && $item->value === ',') || 
+          ($item->type === 'break')) {
+
+        if (reg_count($object) === 0) {
+          throw new Exception('Operator : not allowed in object without corresponding value');
+        }
+
+        $entry = keyval($object->{'#key'}, $object->{'#register'});
+        source($object, $entry);
+        reg_clear($object);
+        $object->{'#key'} = array();
+        return state($object, '#init');
+      }
+      
+      /**
+       * Operator, colon
+       */
+      else if ($item->type === 'operator' && $item->value === ':') {
+        throw new Exception('Operator : not allowed in object without corresponding key');
+      }
   }
-  
-  $result = n($object);
-  
-  foreach($object->{'#definition'} as $def) {
-    $key = isset($def['key']) ? $def['key'] : null;
-    
-    if ($key instanceof Closure) {
-      $key = $key();
-    }
-    
-    $value = isset($def['value']) ? $def['value'] : null;
-    
-    if ($value instanceof Closure) {
-      $value = $value();
-    }
-    
-    if (!is_null($key)) {
-      $result->$key = $value;
-    }
-  }
-  
-  return $result;
+  register($object, $item);
 };
