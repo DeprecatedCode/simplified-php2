@@ -1,9 +1,95 @@
 <?php
 
-type::$object->{'do'} = function ($object) {
-  d($object);
+/**
+ * Print an object
+ */
+type::$object->to_json = function ($object) {
+  $arr = new stdClass;
+  foreach($object as $key => $value) {
+    if ($key[0] !== '#') {
+      $arr->$key = $value;
+    }
+  }
+  return json_encode($arr);
 };
 
+/**
+ * Apply an array, grab keys
+ */
+type::$object->{'#apply array'} = function ($left, $right) {
+  certify($right);
+  $fn = proto($right)->{'#each'};
+  $arr = array();
+  $fn($right, function ($key) use (&$arr, $left) {
+    
+    $arr[] = get($left, $key);
+  });
+  $result = a($left);
+  $result->{'#value'} = $arr;
+  return $result;
+};
+
+/**
+ * Evaluate an object
+ */
+type::$object->{'#run'} = type::$object->{'#trigger $'} = function ($object) {
+  foreach($object->{'#source'} as $source) {
+    
+    /**
+     * Standalone statements
+     */
+    if (is_array($source)) {
+      run($source, $object);
+    }
+    
+    /**
+     * Key-value pairs
+     */
+    else if (is_object($source)) {
+      
+      /**
+       * Single-identifier keys
+       */
+      if (count($source->key) === 1 && $source->key[0]->type === 'identifier') {
+        $key = $source->key[0]->value;
+      }
+      
+      /**
+       * Complex keys
+       */
+      else {
+        $key = run($source->key, $object);
+      }
+      
+      if (!is_string($key) && !is_int($key) && !is_float($key)) {
+        throw new Exception("Object key must be a string or number");
+      }
+      
+      /**
+       * Values
+       */
+      $value = run($source->value, $object);
+      
+      /**
+       * Result
+       */
+      $object->{$key} = $value;
+    }
+    
+    /**
+     * Error
+     */
+    else {
+      throw new Exception("Invalid object source");
+    }
+  }
+  
+  return $object;
+};
+
+/**
+ * Build an object from source map
+ */
 type::$object->{'#register'} = function ($object, $item) {
   switch(state($object)) {
     case '#init':

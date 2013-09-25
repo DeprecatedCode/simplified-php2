@@ -6,7 +6,7 @@
 if (defined('SIMPLIFIED')) {
   try {
     $code = parse(ob_get_clean());
-    get($code, 'do');
+    run($code);
   }
   catch(Exception $e) {
     $fmt = function ($x) {
@@ -41,6 +41,8 @@ set_error_handler(function($num, $str, $file, $line) {
  */
 require_once(__DIR__ . '/lib/engine.php');
 require_once(__DIR__ . '/lib/parse.php');
+require_once(__DIR__ . '/lib/run.php');
+require_once(__DIR__ . '/lib/source.php');
 
 /**
  * Capture SimplifiedPHP Code
