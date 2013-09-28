@@ -14,7 +14,7 @@ br.print
 # Test 1-2
 
 var2: {"first": "Hello ", "second": "World 2"}
-var2.first.print var2["second"].print
+var2.first.print, var2["second"].print
 
 # Space
 
