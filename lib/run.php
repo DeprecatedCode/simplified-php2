@@ -57,6 +57,18 @@ function operate($op, $right, $context=null) {
   }
   
   /**
+   * Check for identifiers
+   */
+  if (isset($right->{'#type'}) && $right->{'#type'} === 'identifier') {
+    if ($operator === '.') {
+      $right = $right->value;
+    }
+    else {
+      $right = get($context, $right->value);
+    }
+  }
+  
+  /**
    * Do operation
    */
   $fn = $proto->$name;
@@ -106,7 +118,7 @@ function run($scope, $context=null) {
          * Apply values
          */
         else {
-          switch ($source->type) {
+          switch ($source->{'#type'}) {
             case 'value':
               $register = apply($register, $source->value);
               break;

@@ -46,7 +46,7 @@ function proto(&$scope) {
   if ($type === 'proto') {
     throw new Exception("Cannot access prototype of prototype");
   }
-  return type::$$type;
+  return isset(type::$$type) ? type::$$type : type::$object;
 }
 
 /**
@@ -125,12 +125,20 @@ function get(&$scope, $key, $instance = null) {
    * Handle Objects
    */
   while(true) {
-    $proto = $scope->{'#type'} !== 'proto' ? proto($scope) : null;
+    $proto = !isset($scope->{'#type'}) || $scope->{'#type'} !== 'proto' ? proto($scope) : null;
+    
+    /**
+     * Hash properties
+     */
+    if (!is_null($proto) && isset($proto->{$key})) {
+      $value = $proto->{$key};
+      break;
+    }
 
     /**
      * Handle magic #get override in proto
      */
-    if (!is_null($proto) && isset($proto->{'#get'})) {
+    else if (!is_null($proto) && isset($proto->{'#get'})) {
       $value = $proto->{'#get'};
       break;
     }

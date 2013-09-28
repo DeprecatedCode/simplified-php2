@@ -33,6 +33,10 @@ type::$object->{'#apply array'} = function ($left, $right) {
  * Evaluate an object
  */
 type::$object->{'#run'} = type::$object->{'#trigger $'} = function ($object) {
+  if(!isset($object->{'#source'})) {
+    return $object;
+  }
+  
   foreach($object->{'#source'} as $source) {
     
     /**
@@ -50,7 +54,7 @@ type::$object->{'#run'} = type::$object->{'#trigger $'} = function ($object) {
       /**
        * Single-identifier keys
        */
-      if (count($source->key) === 1 && $source->key[0]->type === 'identifier') {
+      if (count($source->key) === 1 && $source->key[0]->{'#type'} === 'identifier') {
         $key = $source->key[0]->value;
       }
       
@@ -97,7 +101,8 @@ type::$object->{'#register'} = function ($object, $item) {
       /**
        * Handle code execution on newline
        */
-      if ($item->type === 'break') {
+      if (($item->{'#type'} === 'operator' && $item->value === ',') || 
+          ($item->{'#type'} === 'break')) {
         if(reg_count($object)) {
           source($object, $object->{'#register'});
           reg_clear($object);
@@ -109,7 +114,7 @@ type::$object->{'#register'} = function ($object, $item) {
       /**
        * Handle key-value assignment with colon
        */
-      if ($item->type === 'operator' && $item->value === ':') {
+      if ($item->{'#type'} === 'operator' && $item->value === ':') {
 
         if (reg_count($object) === 0) {
           throw new Exception('Operator : not allowed in object without corresponding key');
@@ -126,8 +131,8 @@ type::$object->{'#register'} = function ($object, $item) {
        * Operator: comma or break
        * Append #key, #register to #source and reset #key and #register
        */
-      if (($item->type === 'operator' && $item->value === ',') || 
-          ($item->type === 'break')) {
+      if (($item->{'#type'} === 'operator' && $item->value === ',') || 
+          ($item->{'#type'} === 'break')) {
 
         if (reg_count($object) === 0) {
           throw new Exception('Operator : not allowed in object without corresponding value');
@@ -143,7 +148,7 @@ type::$object->{'#register'} = function ($object, $item) {
       /**
        * Operator, colon
        */
-      else if ($item->type === 'operator' && $item->value === ':') {
+      else if ($item->{'#type'} === 'operator' && $item->value === ':') {
         throw new Exception('Operator : not allowed in object without corresponding key');
       }
   }

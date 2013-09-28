@@ -188,11 +188,11 @@ function process($current, $code, $line, $column) {
 
 function expr(&$current, $expr, $line, $column) {
     static $regex = array(
-        '[+-]?(\d+(\.\d+)?([eE][+-]?\d+)?)'  => 'v',
-        '[a-zA-Z0-9_]+'             => 'i',
-        '\.\.|\=\=|[^\sa-zA-Z0-9_]' => 'o',
-        '\n+'                       => 'b',
-        '\s+'                       => 's'
+        '[+-]?(\d+(\.\d+)?([eE][+-]?\d+)?)' => 'v',
+        '[a-zA-Z0-9_]+'                     => 'i',
+        '\.\.|\=\=|[^\sa-zA-Z0-9_]'         => 'o',
+        '\n+'                               => 'b',
+        '\s+'                               => 's'
     );
     while(strlen($expr) > 0) {
         foreach($regex as $re => $type) {
@@ -212,6 +212,9 @@ function expr(&$current, $expr, $line, $column) {
                     break;
                   case 'b':
                     $value = 0;
+                    break;
+                  default:
+                    $value = $str;
                 }
                 if ($type !== 's') {
                   echo " $type(\$S,$value,$line,$column);";

@@ -65,14 +65,15 @@ function v(&$scope, $value, $line=null, $column=null) {
   try {
     $fn = proto($scope)->{'#register'};
     $item = new stdClass;
-    $item->type = 'value';
+    $item->{'#type'} = 'value';
     $item->value = $value;
     $item->line = $line;
     $item->column = $column;
     $fn($scope, $item);
   }
   catch (Exception $e) {
-    throw new Exception($e->getMessage() . " at $line:$column", 0, $e);
+    $from = $e->getFile() . ':' . $e->getLine();
+    throw new Exception($e->getMessage() . " at $line:$column (from $from)", 0, $e);
   }
 }
 
@@ -83,7 +84,7 @@ function i(&$scope, $name, $line=null, $column=null) {
   try {
     $fn = proto($scope)->{'#register'};
     $item = new stdClass;
-    $item->type = 'identifier';
+    $item->{'#type'} = 'identifier';
     $item->value = $name;
     $item->line = $line;
     $item->column = $column;
@@ -101,7 +102,7 @@ function o(&$scope, $name, $line=null, $column=null) {
   try {
     $fn = proto($scope)->{'#register'};
     $item = new stdClass;
-    $item->type = 'operator';
+    $item->{'#type'} = 'operator';
     $item->value = $name;
     $item->line = $line;
     $item->column = $column;
@@ -119,7 +120,7 @@ function b(&$scope, $void, $line=null, $column=null) {
   try {
     $fn = proto($scope)->{'#register'};
     $item = new stdClass;
-    $item->type = 'break';
+    $item->{'#type'} = 'break';
     $item->value = $void;
     $item->line = $line;
     $item->column = $column;
