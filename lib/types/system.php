@@ -40,6 +40,13 @@ type::$system->request = function ($context) {
 };
 
 /**
+ * System Timer
+ */
+type::$system->timer = function () {
+  return number_format(1000 * microtime(true) - 1000 * sys::$timer, 1);
+};
+
+/**
  * Finally
  */
 type::$system->finally = function($context) {
@@ -53,7 +60,13 @@ type::$system->finally = function($context) {
  */
 class sys {
   public static $finally = array();
+  public static $timer = null;
 }
+
+/**
+ * Start timer
+ */
+sys::$timer = microtime(true);
 
 /**
  * Process Finally

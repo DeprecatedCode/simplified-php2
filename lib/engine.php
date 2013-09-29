@@ -108,7 +108,7 @@ function get(&$scope, $key, $instance = null) {
     }
   }
   
-  if (is_null($instance)) {
+  if (is_null($instance) && (!isset($scope->{'#proto'}) || $scope->{'#proto'} !== 'null')) {
     $instance = $scope;
   }
   
@@ -150,7 +150,7 @@ function get(&$scope, $key, $instance = null) {
     /**
      * Check regular object properties
      */
-    else if (isset($scope->$key)) {
+    else if (property_exists($scope, $key)) {
       $value = $scope->$key;
       break;
     }

@@ -3,32 +3,47 @@
 /**
  * Evaluate an array
  */
-type::$array->{'#run'} = function ($object) {
-  if(!isset($object->{'#source'})) {
-    return $object;
+type::$array->{'#run'} = function ($array) {
+  if(!isset($array->{'#source'})) {
+    return $array;
   }
-  $object->{'#value'} = array();
-  foreach($object->{'#source'} as $source) {
-    $object->{'#value'}[] = run($source);
+  $array->{'#value'} = array();
+  foreach($array->{'#source'} as $source) {
+    $array->{'#value'}[] = run($source);
   }
-  return $object;
+  return $array;
 };
 
 /**
  * Iterate over an array
  */
-type::$array->{'#each'} = function ($object, $fn) {
-  foreach($object->{'#value'} as $item) {
-    $fn($item);
+type::$array->{'#each'} = function ($array, $fn) {
+  certify($array);
+  $a = a($array);
+  foreach($array->{'#value'} as $item) {
+    $a->{'#value'}[] = $fn($item);
   }
+  return $a;
+};
+
+/**
+ * Apply object to array
+ */
+type::$array->{'#apply object'} = function ($array, $object) {
+  $fn = type::$array->{'#each'};
+  $a = $fn($array, function ($item) use ($array, $object) {
+    $object->it = $item;
+    return run($object);
+  });
+  return $a;
 };
 
 /**
  * Get array property
  */
-type::$array->{'#get'} = function ($object, $key) {
-  $a = a($object);
-  foreach($object->{'#value'} as $item) {
+type::$array->{'#get'} = function ($array, $key) {
+  $a = a($array);
+  foreach($array->{'#value'} as $item) {
     $a->{'#value'}[] = get($item, $key);
   }
   return $a;
@@ -37,7 +52,7 @@ type::$array->{'#get'} = function ($object, $key) {
 /**
  * Build an array from source map
  */
-type::$array->{'#register'} = function ($object, $item) {
+type::$array->{'#register'} = function ($array, $item) {
 
   /**
    * Operator: comma or Break
@@ -45,9 +60,11 @@ type::$array->{'#register'} = function ($object, $item) {
    */
   if ($item->{'#type'} === 'break' ||
       ($item->{'#type'} === 'operator' && $item->value === ',')) {
-    source($object, $object->{'#register'});
-    reg_clear($object);
-    return state($object, '#value');
+    if (isset($array->{'#register'}) && count($array->{'#register'})) {
+      source($array, $array->{'#register'});
+      reg_clear($array);
+    }
+    return state($array, '#value');
   }
   
   /**
@@ -60,5 +77,5 @@ type::$array->{'#register'} = function ($object, $item) {
   /**
    * Keep going
    */
-  register($object, $item);
+  register($array, $item);
 };

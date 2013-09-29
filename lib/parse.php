@@ -10,7 +10,7 @@ function parse($code, $P = null) {
   /**
    * Write cache file
    */
-  if (true || !file_exists($file)) {
+  if (!file_exists($file)) {
     ob_start();
     echo '<?php $S = n($P);';
     $buffer = array('b($S, 0); return $S;');
