@@ -81,6 +81,11 @@ function operate($op, $right, $context=null) {
 function apply($left, $right) {
   
   /**
+   * Ensure left is executed
+   */
+  certify($left);
+  
+  /**
    * Special case for groups
    */
   if (is_object($right) && isset($right->{'#type'}) && $right->{'#type'} === 'group') {

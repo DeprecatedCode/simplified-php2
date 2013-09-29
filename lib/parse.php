@@ -45,6 +45,8 @@ function parse($code, $P = null) {
 
     $ql = $current->line = $line = 1;
     $qc = $current->column = $column = 0;
+    
+    $code .= "\n";
 
     $length = strlen($code);
     $queue = '';

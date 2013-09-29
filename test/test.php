@@ -9,6 +9,11 @@
       padding: 0 0.75em;
       color: #333;
     }
+    
+    h3, h4, h5 {
+      margin-top: 2em;
+    }
+    
     .input, .output {
       font-size: 12px;
       background: #eee;
@@ -78,7 +83,7 @@
 @finally {'
 
   </div>
-  <p>Test completed in ' (@timer) 'ms</p>
+  <h4>Test completed in ' (@timer) 'ms</h4>
 </body>
 </html>
 '.print}

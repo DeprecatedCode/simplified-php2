@@ -88,7 +88,7 @@ function typestr(&$scope) {
  * Get Property
  */
 function get(&$scope, $key, $instance = null) {
-  
+
   /**
    * Handle different property types
    */

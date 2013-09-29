@@ -9,9 +9,16 @@ type::$array->{'#run'} = function ($array) {
   }
   $array->{'#value'} = array();
   foreach($array->{'#source'} as $source) {
-    $array->{'#value'}[] = run($source);
+    $array->{'#value'}[] = run($source, isset($array->{'#parent'}) ? $array->{'#parent'} : null);
   }
   return $array;
+};
+
+/**
+ * Array to JSON
+ */
+type::$array->to_json = function ($array) {
+  return json_encode($array->{'#value'});
 };
 
 /**
@@ -45,6 +52,21 @@ type::$array->{'#get'} = function ($array, $key) {
   $a = a($array);
   foreach($array->{'#value'} as $item) {
     $a->{'#value'}[] = get($item, $key);
+  }
+  return $a;
+};
+
+/**
+ * Iterate over an array
+ */
+type::$array->{'#apply array'} = function ($array, $keys) {
+  certify($keys);
+  $a = a($array);
+  foreach($keys->{'#value'} as $key) {
+    if (!array_key_exists($key, $array->{'#value'})) {
+      throw new Exception("Key $key not found in array");
+    }
+    $a->{'#value'}[] = $array->{'#value'}[$key];
   }
   return $a;
 };
