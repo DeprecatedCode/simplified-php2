@@ -60,7 +60,7 @@ function operate($op, $right, $context=null) {
    * Check for identifiers
    */
   if (isset($right->{'#type'}) && $right->{'#type'} === 'identifier') {
-    if ($operator === '.') {
+    if ($operator === '.' || $operator === '@') {
       $right = $right->value;
     }
     else {
@@ -79,11 +79,30 @@ function operate($op, $right, $context=null) {
  * Apply - The big bad boy of SimplifiedPHP
  */
 function apply($left, $right) {
+  
+  /**
+   * Special case for groups
+   */
+  if (is_object($right) && isset($right->{'#type'}) && $right->{'#type'} === 'group') {
+    $right = run($right);
+  }
+
   $rtype = typestr($right);
+  
+  if ($rtype === 'null') {
+    return $left;
+  }
+  
   $proto = proto($left);
   $specific = "#apply $rtype";
   $generic = "#apply *";
-  if (isset($proto->$specific)) {
+  if (isset($left->$specific)) {
+    $fn = $left->$specific;
+  }
+  else if (isset($left->$generic)) {
+    $fn = $left->$generic;
+  }
+  else if (isset($proto->$specific)) {
     $fn = $proto->$specific;
   }
   else if (isset($proto->$generic)) {
@@ -92,6 +111,7 @@ function apply($left, $right) {
   else {
     throw new Exception(typestr($left) . " does not allow application of type $rtype");
   }
+  
   return $fn($left, $right);
 }
 
@@ -99,6 +119,7 @@ function apply($left, $right) {
  * Run code
  */
 function run($scope, $context=null) {
+
   /**
    * This is a stack to process
    */
@@ -130,6 +151,8 @@ function run($scope, $context=null) {
               break;
             case 'break':
               throw new Exception("Invalid break found in source");
+            default:
+              throw new Exception("Invalid source type: " . $source->{'#type'});
           }
         }
       }

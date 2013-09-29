@@ -1,20 +1,18 @@
 <?php
 
-function parse($code) {
-  static $root;
-  if (!isset($root)) {
-    $root = new stdClass;
-    $root->request = new stdClass;
-    $root->request->args = (object) $_GET;
-    $root->request->form = (object) $_POST;
-    $root->request->method = $_SERVER['REQUEST_METHOD'];
-    $root->request->time = time(true);
-  }
-  
+/**
+ * Parse Code String
+ */
+function parse($code, $P = null) {
+
   $file = dirname(__DIR__) . '/cache/' . substr(md5($code), 0, 8) . '.php';
+
+  /**
+   * Write cache file
+   */
   if (true || !file_exists($file)) {
     ob_start();
-    echo '<?php $S = n($root);';
+    echo '<?php $S = n($P);';
     $buffer = array('b($S, 0); return $S;');
     
     /**
@@ -167,6 +165,9 @@ function block($code, $line, $column) {
     case '[';
       echo ' $L = function ($P) { $S = a($P);';
       return " b(\$S, 0); return \$S; }; v(\$S, \$L(\$S),$line,$column);";
+    case '(';
+      echo ' $L = function ($P) { $S = g($P);';
+      return " return \$S; }; v(\$S, \$L(\$S),$line,$column);";
   }
 }
 

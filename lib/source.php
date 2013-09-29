@@ -40,21 +40,21 @@ function n(&$parent, $line=null, $column=null) {
 }
 
 /**
+ * Construct new Group
+ */
+function g(&$parent, $line=null, $column=null) {
+  $scope = n($parent, $line, $column);
+  $scope->{'#type'} = 'group';
+  return $scope;
+}
+
+/**
  * Construct new Array
  */
 function a(&$parent, $line=null, $column=null) {
   $scope = n($parent, $line, $column);
   $scope->{'#type'} = 'array';
   $scope->{'#value'} = array();
-  return $scope;
-}
-
-/**
- * Construct new File
- */
-function f(&$parent, $line=null, $column=null) {
-  $scope = n($parent, $line, $column);
-  $scope->{'#type'} = 'file';
   return $scope;
 }
 

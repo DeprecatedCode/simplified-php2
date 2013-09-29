@@ -6,15 +6,19 @@
 class type {
   public static $array;
   public static $boolean;
+  public static $command;
   public static $file;
   public static $float;
+  public static $group;
   public static $integer;
   public static $null;
   public static $object;
   public static $string;
+  public static $system;
   
   public static $types = ['string', 'integer', 'float', 'boolean', 'null',
-                          'object', 'array', 'file'];
+                          'object', 'array', 'file', 'system', 'command',
+                          'group'];
 }
 
 /**
@@ -177,6 +181,7 @@ function get(&$scope, $key, $instance = null) {
      */
     throw new Exception("Property $key not found on " . typestr($instance));
   }
+
   if ($value instanceof Closure) {
     return $value($instance, $key);
   }

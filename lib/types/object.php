@@ -1,6 +1,16 @@
 <?php
 
 /**
+ * Create an object
+ */
+function obj($type = 'object', $parent = null) {
+  $obj = new stdClass;
+  $obj->{'#type'} = $type;
+  $obj->{'#parent'} = $parent;
+  return $obj;
+}
+
+/**
  * Print an object
  */
 type::$object->to_json = function ($object) {

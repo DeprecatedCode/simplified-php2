@@ -38,6 +38,7 @@ type::$array->{'#get'} = function ($object, $key) {
  * Build an array from source map
  */
 type::$array->{'#register'} = function ($object, $item) {
+
   /**
    * Operator: comma or Break
    * Append #register to #source and reset #register
