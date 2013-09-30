@@ -4,8 +4,8 @@
 # Colors
 
 bright: '#ffffff'
-normal: '#f0f2f8'
-dark:   '#e0e2e8'
+normal: '#f9fbfd'
+dark:   '#e9ebed'
 
 '<!doctype html>
 <html>
