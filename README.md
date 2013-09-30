@@ -17,10 +17,10 @@ n($P, $line, $column);
 a($P, $line, $column);
 ```
 
-### New File
+### New Group
 
 ```php
-f($P, $line, $column);
+g($P, $line, $column);
 ```
 
 ### Value

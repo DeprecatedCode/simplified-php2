@@ -4,7 +4,7 @@
   <title>SimplifiedPHP Test: ' title '</title>
   <style>
     body {
-      font-family: Oxygen, Tahoma, Arial, sans-serif;
+      font-family: "Open Sans", Tahoma, Arial, sans-serif;
       font-size: 13px;
       padding: 0 0.75em;
       color: #333;
@@ -21,8 +21,12 @@
       padding: 12px;
     }
     
+    pre {
+      overflow-x: auto;
+    }
+    
     body pre code {
-      font-size: 12px;
+      font-size: 10px;
       background: transparent;
       padding: 0;
       font-family: "Oxygen Mono", monospace;
@@ -52,7 +56,7 @@
       border-color: #8cf;
     }
   </style>
-  <link href="http://fonts.googleapis.com/css?family=Oxygen+Mono|Oxygen:400,700" rel="stylesheet" type="text/css" />
+  <link href="http://fonts.googleapis.com/css?family=Oxygen+Mono|Open+Sans:400,700" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css" />
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
   <script>window.hljs.initHighlightingOnLoad();</script>
@@ -63,11 +67,17 @@
 
 [
 
-  {path: "1-variables", title: "Variables"}
+  {path: "1-variables",   title: "Variables"}
 
-  {path: "2-deferred", title: "Deferred"}
+  {path: "2-deferred",    title: "Deferred"}
 
   {path: "3-conditional", title: "Conditional"}
+
+  {path: "4-groups",      title: "Groups"}
+
+  {path: "5-objects",     title: "Objects"}
+
+  {path: "6-arrays",      title: "Arrays"}
 
 ]{'<a class="btn" href="' (it.path) '.php">' (it.title) '</a> '.print}
 

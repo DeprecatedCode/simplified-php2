@@ -59,13 +59,31 @@ function operate($op, $right, $context=null) {
   /**
    * Check for identifiers
    */
-  if (isset($right->{'#type'}) && $right->{'#type'} === 'identifier') {
-    if ($operator === '.' || $operator === '@') {
-      $right = $right->value;
+  if (isset($right->{'#type'})) {
+    switch($right->{'#type'}) {
+      case 'value':
+        $right = $right->value;
+        break;
+      case 'identifier':
+        if ($operator === '.' || $operator === '@') {
+          $right = $right->value;
+        }
+        else {
+          $right = get($context, $right->value);
+        }
+        break;
+      case 'break':
+        throw new Exception("Invalid break found in source");
+      default:
+        throw new Exception("Invalid source type: " . $source->{'#type'});
     }
-    else {
-      $right = get($context, $right->value);
-    }
+  }
+  
+  /**
+   * Special case for groups
+   */
+  if (is_object($right) && isset($right->{'#type'}) && $right->{'#type'} === 'group') {
+    $right = run($right);
   }
   
   /**
@@ -79,11 +97,6 @@ function operate($op, $right, $context=null) {
  * Apply - The big bad boy of SimplifiedPHP
  */
 function apply($left, $right) {
-  
-  /**
-   * Ensure left is executed
-   */
-  certify($left);
   
   /**
    * Special case for groups

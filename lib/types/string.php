@@ -9,6 +9,8 @@ type::$string->html = function ($string) {
 };
 
 type::$string->{'#operator +'} =
+type::$string->{'#apply array'} =
+type::$string->{'#apply object'} =
 type::$string->{'#apply string'} =
 type::$string->{'#apply integer'} =
 type::$string->{'#apply float'} = function ($left, $right) {

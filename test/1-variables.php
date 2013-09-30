@@ -1,3 +1,6 @@
+# Summary: A colon defines a key-value pair within an object.
+# These keys can later be accessed with .name or ["string"].
+
 title: "Variables", @import "test.php"
 
 # Line Break

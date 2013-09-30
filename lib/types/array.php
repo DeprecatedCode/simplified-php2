@@ -17,8 +17,8 @@ type::$array->{'#run'} = function ($array) {
 /**
  * Array to JSON
  */
-type::$array->to_json = function ($array) {
-  return json_encode($array->{'#value'});
+type::$array->to_json = function ($array, $level=0) {
+  return json($array->{'#value'}, $level);
 };
 
 /**
@@ -60,6 +60,7 @@ type::$array->{'#get'} = function ($array, $key) {
  * Iterate over an array
  */
 type::$array->{'#apply array'} = function ($array, $keys) {
+  certify($array);
   certify($keys);
   $a = a($array);
   foreach($keys->{'#value'} as $key) {

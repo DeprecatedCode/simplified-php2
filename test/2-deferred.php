@@ -1,3 +1,6 @@
+# Summary: Execution of objects and arrays is always deferred
+# until the value is needed by another part of your program.
+
 title: "Deferred", @import "test.php"
 
 # Line Break

@@ -11,31 +11,67 @@ function obj($type = 'object', $parent = null) {
 }
 
 /**
- * Print an object
+ * JSON encode
  */
-type::$object->to_json = function ($object) {
-  $arr = new stdClass;
-  foreach($object as $key => $value) {
-    if ($key[0] !== '#') {
-      $arr->$key = $value;
+function json($scope, $level=0) {
+  if (is_array($scope)) {
+    $output = array();
+    if (isset($scope['#type']) && $scope['#type'] === 'object') {
+      foreach($scope as $key => $item) {
+        if ($key[0] !== '#') {
+          $output[$key] = is_object($item) || is_array($item) ? json($item, $level + 1) : $item;
+        }
+      }
+    }
+    else {
+      foreach($scope as $item) {
+        $output[] = is_object($item) || is_array($item) ? json($item, $level + 1) : $item;
+      }
+    }
+    $scope = $output;
+  }
+
+  else {
+    $proto = proto($scope);
+    if (isset($proto->to_json)) {
+      $fn = $proto->to_json;
+      $scope = $fn($scope, $level + 1);
     }
   }
-  return json_encode($arr);
+
+  if ($level === 0) {
+    return json_encode($scope, JSON_PRETTY_PRINT);
+  }
+
+  return $scope;
+}
+
+/**
+ * Print an object
+ */
+type::$object->print = function ($object) {
+  echo get($object, 'to_json');
 };
 
 /**
- * Apply an array, grab keys
+ * Object to JSON
  */
-type::$object->{'#apply array'} = function ($left, $right) {
-  certify($right);
-  $fn = proto($right)->{'#each'};
-  $arr = array();
-  $fn($right, function ($key) use (&$arr, $left) {
-    
-    $arr[] = get($left, $key);
+type::$object->to_json = function ($object, $level=0) {
+  $arr = (array) $object;
+  return json($arr, $level);
+};
+
+/**
+ * Apply object to array
+ */
+type::$object->{'#apply array'} = function ($object, $array) {
+  certify($array);
+  $fn = type::$array->{'#each'};
+  $result = $object;
+  $fn($array, function ($item) use ($array, $object, &$result) {
+    $object->it = $item;
+    $result = run($object);
   });
-  $result = a($left);
-  $result->{'#value'} = $arr;
   return $result;
 };
 
@@ -47,19 +83,28 @@ type::$object->{'#run'} = type::$object->{'#trigger $'} = function ($object) {
     return $object;
   }
   
+  $return = false;
+  $result = null;
+  
   foreach($object->{'#source'} as $source) {
     
     /**
      * Standalone statements
      */
     if (is_array($source)) {
-      run($source, $object);
+      $result = run($source, $object);
+      $return = true;
     }
     
     /**
      * Key-value pairs
      */
     else if (is_object($source)) {
+      
+      /**
+       * Do not return $result
+       */
+      $return = false;
       
       /**
        * Single-identifier keys
@@ -96,6 +141,13 @@ type::$object->{'#run'} = type::$object->{'#trigger $'} = function ($object) {
     else {
       throw new Exception("Invalid object source");
     }
+  }
+  
+  /**
+   * If the object ends in a statement, return $result
+   */
+  if ($return) {
+    return $result;
   }
   
   return $object;

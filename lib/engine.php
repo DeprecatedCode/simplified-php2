@@ -15,10 +15,10 @@ class type {
   public static $object;
   public static $string;
   public static $system;
-  
-  public static $types = ['string', 'integer', 'float', 'boolean', 'null',
-                          'object', 'array', 'file', 'system', 'command',
-                          'group'];
+
+  public static $types = ['array', 'boolean', 'command', 'file', 'float',
+                          'group', 'integer', 'null', 'object', 'string',
+                          'system'];
 }
 
 /**
@@ -143,7 +143,8 @@ function get(&$scope, $key, $instance = null) {
      * Handle magic #get override in proto
      */
     else if (!is_null($proto) && isset($proto->{'#get'})) {
-      $value = $proto->{'#get'};
+      $fn = $proto->{'#get'};
+      $value = $fn($instance, $key);
       break;
     }
     
@@ -183,7 +184,7 @@ function get(&$scope, $key, $instance = null) {
   }
 
   if ($value instanceof Closure) {
-    return $value($instance, $key);
+    return $value($instance);
   }
   return $value;
 }
