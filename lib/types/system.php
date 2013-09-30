@@ -26,6 +26,10 @@ type::$system->request = function ($context) {
     $request->host = $_SERVER['HTTP_HOST'];
     $request->path = $_SERVER['REQUEST_URI'];
     $request->query = $_SERVER['QUERY_STRING'];
+    $name = explode('?', $request->path);
+    $name = array_shift($name);
+    $name = explode('/', $name);
+    $request->basename = array_pop($name);
 
     $request->remote_addr = $_SERVER['REMOTE_ADDR'];
     $request->remote_port = $_SERVER['REMOTE_PORT'];

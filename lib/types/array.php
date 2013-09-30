@@ -27,8 +27,9 @@ type::$array->to_json = function ($array, $level=0) {
 type::$array->{'#each'} = function ($array, $fn) {
   certify($array);
   $a = a($array);
+  $key = 0;
   foreach($array->{'#value'} as $item) {
-    $a->{'#value'}[] = $fn($item);
+    $a->{'#value'}[] = $fn($item, $key++);
   }
   return $a;
 };
@@ -38,8 +39,9 @@ type::$array->{'#each'} = function ($array, $fn) {
  */
 type::$array->{'#apply object'} = function ($array, $object) {
   $fn = type::$array->{'#each'};
-  $a = $fn($array, function ($item) use ($array, $object) {
+  $a = $fn($array, function ($item, $key) use ($array, $object) {
     $object->it = $item;
+    $object->key = $key;
     return run($object);
   });
   return $a;

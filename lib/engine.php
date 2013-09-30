@@ -35,6 +35,26 @@ foreach(type::$types as $type) {
   type::$$type->{'#operator .'} = function ($left, $right, $context) {
     return get($left, $right);
   };
+  
+  /**
+   * Standard || operator
+   */
+  type::$$type->{'#operator ||'} = function ($left, $right, $context) {
+    if ($left) {
+      return $left;
+    }
+    return $right;
+  };
+  
+  /**
+   * Standard && operator
+   */
+  type::$$type->{'#operator &&'} = function ($left, $right, $context) {
+    if (!$left) {
+      return $left;
+    }
+    return $right;
+  };
     
   /**
    * Include lib/types/$type.php
@@ -194,4 +214,46 @@ function get(&$scope, $key, $instance = null) {
  */
 function set(&$scope, $key, $value) {
   throw new Exception("Setting not yet supported");
+}
+
+/**
+ * JSON encode
+ */
+function json($scope, $level=0) {
+  $object = false;
+  if (is_array($scope)) {
+    $output = array();
+    if (isset($scope['#type']) && $scope['#type'] === 'object') {
+      $object = true;
+      foreach($scope as $key => $item) {
+        if ($key[0] !== '#') {
+          $output[$key] = is_object($item) || is_array($item) ? json($item, $level + 1) : $item;
+        }
+      }
+    }
+    else {
+      foreach($scope as $item) {
+        $output[] = is_object($item) || is_array($item) ? json($item, $level + 1) : $item;
+      }
+    }
+    $scope = $output;
+  }
+
+  else {
+    $proto = proto($scope);
+    if (isset($proto->to_json)) {
+      $fn = $proto->to_json;
+      $scope = $fn($scope, $level + 1);
+    }
+  }
+  
+  if ($object) {
+    $scope = (object) $scope;
+  }
+
+  if ($level === 0) {
+    return json_encode($scope, JSON_PRETTY_PRINT);
+  }
+
+  return $scope;
 }

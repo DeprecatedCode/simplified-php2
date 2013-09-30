@@ -11,42 +11,6 @@ function obj($type = 'object', $parent = null) {
 }
 
 /**
- * JSON encode
- */
-function json($scope, $level=0) {
-  if (is_array($scope)) {
-    $output = array();
-    if (isset($scope['#type']) && $scope['#type'] === 'object') {
-      foreach($scope as $key => $item) {
-        if ($key[0] !== '#') {
-          $output[$key] = is_object($item) || is_array($item) ? json($item, $level + 1) : $item;
-        }
-      }
-    }
-    else {
-      foreach($scope as $item) {
-        $output[] = is_object($item) || is_array($item) ? json($item, $level + 1) : $item;
-      }
-    }
-    $scope = $output;
-  }
-
-  else {
-    $proto = proto($scope);
-    if (isset($proto->to_json)) {
-      $fn = $proto->to_json;
-      $scope = $fn($scope, $level + 1);
-    }
-  }
-
-  if ($level === 0) {
-    return json_encode($scope, JSON_PRETTY_PRINT);
-  }
-
-  return $scope;
-}
-
-/**
  * Print an object
  */
 type::$object->print = function ($object) {
@@ -62,14 +26,22 @@ type::$object->to_json = function ($object, $level=0) {
 };
 
 /**
+ * Apply string to object
+ */
+type::$object->{'#apply string'} = function ($object, $string) {
+  return get($object, $string);
+};
+
+/**
  * Apply array to object
  */
 type::$object->{'#apply array'} = function ($object, $array) {
   certify($array);
   $fn = type::$array->{'#each'};
   $result = $object;
-  $fn($array, function ($item) use ($array, $object, &$result) {
+  $fn($array, function ($item, $key) use ($array, $object, &$result) {
     $object->it = $item;
+    $object->key = $key;
     $result = run($object);
   });
   return $result;
@@ -85,6 +57,8 @@ type::$object->{'#run'} = type::$object->{'#trigger $'} = function ($object) {
   
   $return = false;
   $result = null;
+  
+  $object->{'#prefix'} = null;
   
   foreach($object->{'#source'} as $source) {
     
@@ -107,17 +81,46 @@ type::$object->{'#run'} = type::$object->{'#trigger $'} = function ($object) {
       $return = false;
       
       /**
+       * Check for prefix
+       */
+      $keySource = $source->key;
+      foreach($keySource as $key => $item) {
+        if ($item->{'#type'} === 'operator' && $item->value === '?') {
+          $object->{'#prefix'} = array_splice($keySource, 0, $key);
+          array_shift($keySource);
+          break;
+        }
+      }
+      
+      /**
+       * If prefix, return first matching expression
+       */
+      if (!is_null($object->{'#prefix'})) {
+        $condition = array_merge($object->{'#prefix'}, $keySource);
+        $test = run($condition, $object);
+        if ($test) {
+          $result = run($source->value, $object);
+          return $result;
+        }
+        
+        /**
+         * Check next condition
+         */
+        continue;
+      }
+      
+      /**
        * Single-identifier keys
        */
-      if (count($source->key) === 1 && $source->key[0]->{'#type'} === 'identifier') {
-        $key = $source->key[0]->value;
+      if (count($keySource) === 1 && $keySource[0]->{'#type'} === 'identifier') {
+        $key = $keySource[0]->value;
       }
       
       /**
        * Complex keys
        */
       else {
-        $key = run($source->key, $object);
+        $key = run($keySource, $object);
       }
       
       if (!is_string($key) && !is_int($key) && !is_float($key)) {
@@ -141,6 +144,13 @@ type::$object->{'#run'} = type::$object->{'#trigger $'} = function ($object) {
     else {
       throw new Exception("Invalid object source");
     }
+  }
+  
+  /**
+   * If there was a condition, and all conditions failed, return null
+   */
+  if (!is_null($object->{'#prefix'})) {
+    return null;
   }
   
   /**

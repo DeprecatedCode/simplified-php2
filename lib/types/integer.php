@@ -1,9 +1,16 @@
 <?php
 
+/**
+ * Print Number
+ */
 type::$integer->print =
 type::$float->print = function ($float) {
   echo $float;
 };
+
+/**
+ * Mathematical Operators
+ */
 
 type::$integer->{'#operator +'} =
 type::$float->{'#operator +'} = function ($left, $right) {
@@ -33,7 +40,38 @@ type::$float->{'#operator ^'} = function ($left, $right) {
   return pow($left, $right);
 };
 
+/**
+ * Number String concatenation
+ */
 type::$integer->{'#apply string'} =
 type::$float->{'#apply string'} = function ($left, $right) {
   return "$left$right";
+};
+
+/**
+ * Comparators
+ */
+type::$integer->{'#operator <'} =
+type::$float->{'#operator <'} = function ($left, $right) {
+  return $left < $right;
+};
+
+type::$integer->{'#operator <='} =
+type::$float->{'#operator <='} = function ($left, $right) {
+  return $left <= $right;
+};
+
+type::$integer->{'#operator ='} =
+type::$float->{'#operator ='} = function ($left, $right) {
+  return $left == $right;
+};
+
+type::$integer->{'#operator >='} =
+type::$float->{'#operator >='} = function ($left, $right) {
+  return $left >= $right;
+};
+
+type::$integer->{'#operator >'} =
+type::$float->{'#operator >'} = function ($left, $right) {
+  return $left > $right;
 };

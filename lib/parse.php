@@ -193,7 +193,7 @@ function expr(&$current, $expr, $line, $column) {
     static $regex = array(
         '[+-]?(\d+(\.\d+)?([eE][+-]?\d+)?)' => 'v',
         '[a-zA-Z0-9_]+'                     => 'i',
-        '\.\.|\=\=|[^\sa-zA-Z0-9_]'         => 'o',
+        '[^\sa-zA-Z0-9_]{1,2}'              => 'o',
         '\n+'                               => 'b',
         '\s+'                               => 's'
     );

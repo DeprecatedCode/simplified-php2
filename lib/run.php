@@ -75,7 +75,7 @@ function operate($op, $right, $context=null) {
       case 'break':
         throw new Exception("Invalid break found in source");
       default:
-        throw new Exception("Invalid source type: " . $source->{'#type'});
+        throw new Exception("Invalid source type: " . $right->{'#type'});
     }
   }
   

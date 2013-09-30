@@ -42,8 +42,8 @@ dark:   '#e9ebed'
     }
     
     .btn {
-      padding: 0.25em 0.5em;
-      margin: 1em 0.5em 1em 0;
+      padding: 0.25em 0.75em;
+      margin: 1em -1px 1em 0;
       background: 'normal';
       border: 1px solid 'dark';
       text-decoration: none;
@@ -54,6 +54,7 @@ dark:   '#e9ebed'
       background: 'bright';
       box-shadow: inset 0 0 0 2px #8cf;
       border-color: #8cf;
+      position: relative;
     }
     
     .btn:active {
@@ -62,7 +63,10 @@ dark:   '#e9ebed'
     
     .btn.active {
       background: #8cf;
-      border-color: #8cf;
+      border-color: #6ad;
+      color: #001;
+      position: relative;
+      z-index: 1;
     }
   </style>
   <link href="http://fonts.googleapis.com/css?family=Oxygen+Mono|Open+Sans:400,700" rel="stylesheet" type="text/css" />
@@ -88,7 +92,11 @@ dark:   '#e9ebed'
 
   {path: "6-arrays",      title: "Arrays"}
 
-]{'<a class="btn" href="' (it.path) '.php">' (it.title) '</a> '.print}
+  {path: "7-strings",     title: "Strings"}
+
+  {path: "8-numbers",     title: "Numbers"}
+
+]{'<a class="btn '{it.path '.php' = ? (@request.basename): 'active'}'" href="' (it.path) '.php">' (it.title) '</a>'.print}
 
 '
   <h3>SimplifiedPHP Code:</h3>
