@@ -24,7 +24,7 @@ dark:   '#e9ebed'
     }
     
     .input, .output {
-      font-size: 12px;
+      font-size: 13px;
       background: 'normal';
       border: 1px solid 'dark';
       padding: 12px;
@@ -35,7 +35,7 @@ dark:   '#e9ebed'
     }
     
     body pre code {
-      font-size: 10px;
+      font-size: 13px;
       background: transparent;
       padding: 0;
       font-family: "Oxygen Mono", monospace;
