@@ -1,3 +1,12 @@
+# SimplifiedPHP Test Page Runner
+# Author: Nate Ferrero
+
+# Colors
+
+bright: '#ffffff'
+normal: '#f0f2f8'
+dark:   '#e0e2e8'
+
 '<!doctype html>
 <html>
 <head>
@@ -16,8 +25,8 @@
     
     .input, .output {
       font-size: 12px;
-      background: #eee;
-      border: 1px solid #ddd;
+      background: 'normal';
+      border: 1px solid 'dark';
       padding: 12px;
     }
     
@@ -35,20 +44,20 @@
     .btn {
       padding: 0.25em 0.5em;
       margin: 1em 0.5em 1em 0;
-      background: #eee;
-      border: 1px solid #ddd;
+      background: 'normal';
+      border: 1px solid 'dark';
       text-decoration: none;
       color: inherit;
     }
     
     .btn:hover {
-      background: #fff;
+      background: 'bright';
       box-shadow: inset 0 0 0 2px #8cf;
       border-color: #8cf;
     }
     
     .btn:active {
-      background: #ddd;
+      background: 'dark';
     }
     
     .btn.active {
