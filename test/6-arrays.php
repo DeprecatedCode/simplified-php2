@@ -13,7 +13,7 @@ br: '<br /><br />'
 
 # Or one at a time
 
-["Another", "simple", "array"]{it "... " .print}, br.print
+["Another", "simple", "array"]{it.upper "... "}.print, br.print
 
 # Render as JSON
 

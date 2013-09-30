@@ -62,7 +62,7 @@ type::$object->to_json = function ($object, $level=0) {
 };
 
 /**
- * Apply object to array
+ * Apply array to object
  */
 type::$object->{'#apply array'} = function ($object, $array) {
   certify($array);

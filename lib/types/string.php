@@ -19,3 +19,11 @@ type::$string->{'#apply float'} = function ($left, $right) {
   }
   return $left . $right;
 };
+
+type::$string->upper = function ($string) {
+  return strtoupper($string);
+};
+
+type::$string->lower = function ($string) {
+  return strtolower($string);
+};
