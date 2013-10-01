@@ -105,15 +105,35 @@ function apply($left, $right) {
     $right = run($right);
   }
 
-  $rtype = typestr($right);
-  
-  if ($rtype === 'null') {
-    return $left;
+  $try = true;
+  while(true) {
+    $rtype = typestr($right);
+
+    /**
+     * If null, return other
+     */
+    if (is_null($left)) {
+      return $right;
+    }
+    else if (is_null($right)) {
+      if (typestr($left) === 'object') {
+        return run($left);
+      }
+      return $left;
+    }
+    
+    $proto = proto($left);
+    $specific = "#apply $rtype";
+    $generic = "#apply *";
+
+    if ($try && $rtype === 'object' && !isset($left->$specific) && !isset($proto->$specific)) {
+      $right = run($right);
+      $try = false;
+      continue;
+    }
+    break;
   }
-  
-  $proto = proto($left);
-  $specific = "#apply $rtype";
-  $generic = "#apply *";
+
   if (isset($left->$specific)) {
     $fn = $left->$specific;
   }

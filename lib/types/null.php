@@ -1,13 +1,6 @@
 <?php
 
 /**
- * Null allows any object to be itself
- */
-type::$null->{'#apply *'} = function ($left, $right) {
-  return $right;
-};
-
-/**
  * @ allows access to system objects
  */
 type::$null->{'#operator @'} = function ($left, $right, $context) {

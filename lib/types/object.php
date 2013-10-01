@@ -160,7 +160,16 @@ type::$object->{'#run'} = type::$object->{'#trigger $'} = function ($object) {
     return $result;
   }
   
-  return $object;
+  /**
+   * Don't return the original object when running
+   */
+  $x = n($object->{'#parent'});
+  foreach($object as $key => $value) {
+    if ($key[0] !== '#') {
+      $x->$key = $value;
+    }
+  }
+  return $x;
 };
 
 /**

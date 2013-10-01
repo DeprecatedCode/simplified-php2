@@ -22,6 +22,13 @@ type::$array->to_json = function ($array, $level=0) {
 };
 
 /**
+ * Array length
+ */
+type::$array->length = function ($array) {
+  return count($array->{'#value'});
+};
+
+/**
  * Iterate over an array
  */
 type::$array->{'#each'} = function ($array, $fn) {

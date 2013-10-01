@@ -7,6 +7,20 @@ title: "Arrays", @import "test.php"
 
 br: '<br /><br />'
 
+# Array length
+
+items: {arr.length " item" {arr.length ? > 1 :"s"}}
+
+arr: [4, 3, 2, 1], "First there are " items "." br.print
+
+arr: [1], "And now there is " items "." br.print
+
+freeze: items()
+
+arr: [3, 2, 1]
+
+"Before, there used to be " freeze ", but now there are " items "." br.print
+
 # You can operate on the entire array at once
 
 ["A ", "simple ", "array", br].print
