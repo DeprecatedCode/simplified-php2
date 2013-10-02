@@ -16,5 +16,4 @@
 
   {path: "8-numbers",     title: "Numbers"}
 
-]{'<a class="btn '{it.path '.php' = ? (@request.basename): 'active'}'"
-    href="' (it.path) '.php">' (it.title) '</a>'.print}
+]

@@ -5,7 +5,23 @@
  */
 type::$system->import = function ($context) {
   return cmd('@import', $context, array('string' => function ($command, $string) use ($context) {
+    if ($string == '') {
+      throw new Exception("Cannot import empty string");
+    }
+    
+    /**
+     * Future imports are relative to the file the @import is defined in
+     * regardless of the current file being executed
+     */
+    try {
+      $dir = get($context, '#directory');
+      if ($string[0] !== '/') {
+        $string = $dir . $string;
+      }
+    }
+    catch(Exception $e) {}
     $code = parse(file_get_contents($string), $context);
+    $code->{'#directory'} = dirname(realpath($string)) . '/';
     return run($code);
   }));
 };

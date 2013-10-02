@@ -1,89 +1,19 @@
 # SimplifiedPHP Test Page Runner
 # Author: Nate Ferrero
 
-# Colors
+title: title " Test"
+nav: "test"
 
-bright: '#ffffff'
-normal: '#f9fbfd'
-dark:   '#e9ebed'
+@import "../web/template.php"
 
-'<!doctype html>
-<html>
-<head>
-  <title>SimplifiedPHP Test: ' title '</title>
-  <style>
-    body {
-      font-family: "Open Sans", Tahoma, Arial, sans-serif;
-      font-size: 13px;
-      padding: 0 0.75em;
-      color: #333;
-    }
-    
-    h3, h4, h5 {
-      margin-top: 2em;
-    }
-    
-    .input, .output {
-      font-size: 13px;
-      background: 'normal';
-      border: 1px solid 'dark';
-      padding: 12px;
-    }
-    
-    pre {
-      overflow-x: auto;
-    }
-    
-    body pre code {
-      font-size: 13px;
-      background: transparent;
-      padding: 0;
-      font-family: "Oxygen Mono", monospace;
-    }
-    
-    .btn {
-      padding: 0.25em 0.75em;
-      margin: 1em -1px 1em 0;
-      background: 'normal';
-      border: 1px solid 'dark';
-      text-decoration: none;
-      color: inherit;
-    }
-    
-    .btn:hover {
-      background: 'bright';
-      box-shadow: inset 0 0 0 2px #8cf;
-      border-color: #8cf;
-      position: relative;
-    }
-    
-    .btn:active {
-      background: 'dark';
-    }
-    
-    .btn.active {
-      background: #8cf;
-      border-color: #6ad;
-      color: #001;
-      position: relative;
-      z-index: 1;
-    }
-  </style>
-  <link href="http://fonts.googleapis.com/css?family=Oxygen+Mono|Open+Sans:400,700" rel="stylesheet" type="text/css" />
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css" />
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
-  <script>window.hljs.initHighlightingOnLoad();</script>
-</head>
-<body>
-  <a href="https://github.com/NateFerrero/simplified-php"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
-  <h1>SimplifiedPHP Test: ' title '</h1>
-'.print
+sections: @import "test-sections.php"
 
-@import "nav-buttons.php"
+sections {'<a class="btn '{it.path '.php' = ? (@request.basename): 'active'}'"
+              href="' (it.path) '.php">' (it.title) '</a>'.print}
 
 '
   <h3>SimplifiedPHP Code:</h3>
-  <pre class="input"><code class="php">' (@request.file.read.html) '</pre></code>
+  <pre><code class="php">' (@request.file.read.html) '</pre></code>
   
   <h3>Result:</h3>
   <div class="output">
@@ -94,6 +24,4 @@ dark:   '#e9ebed'
 
   </div>
   <h4>Test completed in ' (@timer) 'ms</h4>
-</body>
-</html>
 '.print}

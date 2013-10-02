@@ -38,3 +38,9 @@ type::$string->upper = function ($string) {
 type::$string->lower = function ($string) {
   return strtolower($string);
 };
+
+type::$string->contains = function ($string) {
+  return cmd('string.contains', $string, array('string' => function ($command, $search) use ($string) {
+    return strpos($string, $search) !== false;
+  }));
+};
