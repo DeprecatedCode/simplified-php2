@@ -10,3 +10,13 @@ type::$null->{'#operator @'} = function ($left, $right, $context) {
   $fn = type::$system->$right;
   return $fn($context);
 };
+
+/**
+ * & includes a variable in current context
+ */
+type::$null->{'#operator &'} = function ($left, $right, $context) {
+  if (!is_object($context)) {
+    throw new Exception("No valid context");
+  }
+  $context->$right = get($context, $right);
+};

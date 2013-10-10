@@ -23,12 +23,16 @@ dark:   '#e9ebed'
       margin-top: 2em;
     }
     
-    pre, .output {
+    pre.code, .output {
       font-size: 13px;
       background: 'normal';
       border: 1px solid 'dark';
       padding: 12px;
       overflow-x: auto;
+    }
+    
+    .output pre {
+      margin: 0;
     }
     
     body pre code {
@@ -71,6 +75,14 @@ dark:   '#e9ebed'
       color: #001;
       position: relative;
       z-index: 1;
+    }
+    
+    .warning {
+      border: 1px solid #c66;
+      background: #fdd url(/simplified-php/web/warning.png) no-repeat;
+      background-position: 1em;
+      color: #a44;
+      padding: 2.5em 2em 2.4em 8em;
     }
   </style>
   <link href="http://fonts.googleapis.com/css?family=Oxygen+Mono|Open+Sans:400,700" rel="stylesheet" type="text/css" />

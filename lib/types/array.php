@@ -29,6 +29,15 @@ type::$array->length = function ($array) {
 };
 
 /**
+ * Array join
+ */
+type::$array->join = function ($array) {
+  return cmd('join', $array, array('string' => function ($command, $string) use ($array) {
+    return implode($string, $array->{'#value'});
+  }));
+};
+
+/**
  * Iterate over an array
  */
 type::$array->{'#each'} = function ($array, $fn) {
@@ -36,7 +45,18 @@ type::$array->{'#each'} = function ($array, $fn) {
   $a = a($array);
   $key = 0;
   foreach($array->{'#value'} as $item) {
-    $a->{'#value'}[] = $fn($item, $key++);
+    try {
+      $a->{'#value'}[] = $fn($item, $key++);
+    }
+    catch (BreakCommand $break) {
+      break;
+    }
+    catch (ContinueCommand $continue) {
+      continue;
+    }
+    catch(Exception $e) {
+      d($e);
+    }
   }
   return $a;
 };
@@ -73,6 +93,9 @@ type::$array->{'#apply array'} = function ($array, $keys) {
   certify($keys);
   $a = a($array);
   foreach($keys->{'#value'} as $key) {
+    if ($key < 0) {
+      $key = $key + count($array->{'#value'});
+    }
     if (!array_key_exists($key, $array->{'#value'})) {
       throw new Exception("Key $key not found in array");
     }

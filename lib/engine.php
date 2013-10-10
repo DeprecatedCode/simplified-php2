@@ -22,6 +22,11 @@ class type {
 }
 
 /**
+ * Internal Exception
+ */
+class InternalException extends Exception {}
+
+/**
  * Include type definitions
  */
 foreach(type::$types as $type) {

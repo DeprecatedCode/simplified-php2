@@ -15,12 +15,16 @@ a: 7
 
 # Using conditions with iteration
 
-desires: ["cookie", "burger", "milkshake"]
+desires: ["snail", "cookie", "rusty nail", "burger", "milkshake", "vulture"]
 
-desires{
-  "I " {?key > 0: "also"} " want a " it " " {
-    it = ? "cookie": "and a glass of milk"
-           "burger": "with mustard"
-        "milkshake": "to bring all the boys to the yard"
+desires {
+  ? it.contains "nail": @continue
+
+  "I " {?key > 0: "also"} " want a " it {
+    it = ? "cookie": " and a glass of milk"
+           "burger": " with mustard"
+        "milkshake": " to bring all the boys to the yard"
   } ". ".print
+
+  ? it.contains "shake": @break
 }

@@ -13,7 +13,7 @@ sections {'<a class="btn '{it.path '.php' = ? (@request.basename): 'active'}'"
 
 '
   <h3>SimplifiedPHP Code:</h3>
-  <pre><code class="php">' (@request.file.read.html) '</pre></code>
+  <pre class="code"><code class="php">' (@request.file.read.html) '</pre></code>
   
   <h3>Result:</h3>
   <div class="output">

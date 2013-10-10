@@ -65,7 +65,10 @@ function operate($op, $right, $context=null) {
         $right = $right->value;
         break;
       case 'identifier':
-        if ($operator === '.' || $operator === '@') {
+        /**
+         * Special cases, this should be cleaned up
+         */
+        if ($operator === '.' || $operator === '@' || $operator === '&') {
           $right = $right->value;
         }
         else {
@@ -195,6 +198,9 @@ function run($scope, $context=null) {
         }
       }
       catch(Exception $e) {
+        if ($e instanceof InternalException) {
+          throw $e;
+        }
         $l = $source->line;
         $c = $source->column;
         $m = $e->getMessage();

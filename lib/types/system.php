@@ -76,6 +76,30 @@ type::$system->finally = function($context) {
 };
 
 /**
+ * Continue
+ */
+type::$system->continue = function($context) {
+  throw new ContinueCommand("@continue");
+};
+
+/**
+ * Continue Exception
+ */
+class ContinueCommand extends InternalException {}
+
+/**
+ * Break
+ */
+type::$system->break = function($context) {
+  throw new BreakCommand("@break");
+};
+
+/**
+ * Break Exception
+ */
+class BreakCommand extends InternalException {}
+
+/**
  * System Class
  */
 class sys {
