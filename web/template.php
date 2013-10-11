@@ -5,7 +5,8 @@
 
 bright: '#ffffff'
 normal: '#f9fbfd'
-dark:   '#e9ebed'
+dark:   '#ddd'
+highlight: '#6ad'
 
 '<!doctype html>
 <html>
@@ -19,16 +20,27 @@ dark:   '#e9ebed'
       color: #333;
     }
     
-    h3, h4, h5 {
-      margin-top: 2em;
+    h3 {
+      margin: 1em 0 0.25em;
+      font-size: 11px;
     }
     
     pre.code, .output {
+      margin-top: 0;
       font-size: 13px;
       background: 'normal';
       border: 1px solid 'dark';
       padding: 12px;
       overflow-x: auto;
+      margin-left: 5px;
+    }
+    
+    pre.code {
+      box-shadow: -5px 0 0 #a0a;
+    }
+    
+    .output {
+      box-shadow: -5px 0 0 0 #0a0;
     }
     
     .output pre {
@@ -44,11 +56,13 @@ dark:   '#e9ebed'
     
     .btn {
       padding: 0.25em 0.75em;
-      margin: 1em -1px 1em 0;
+      margin: 1em -1px 0 0;
       background: 'normal';
       border: 1px solid 'dark';
+      border-bottom: none;
       text-decoration: none;
       color: inherit;
+      box-shadow: 0 2px 0 0 'highlight';
     }
     
     .btn.large {
@@ -60,8 +74,6 @@ dark:   '#e9ebed'
     
     .btn:hover {
       background: 'bright';
-      box-shadow: inset 0 0 0 2px #8cf;
-      border-color: #8cf;
       position: relative;
     }
     
@@ -70,8 +82,9 @@ dark:   '#e9ebed'
     }
     
     .btn.active {
-      background: #8cf;
-      border-color: #6ad;
+      box-shadow: 0 4px 0 -2px 'bright', inset 0 1px 0 1px 'highlight', 0 0 0 2px 'highlight';
+      background: #fff;
+      border-color: 'highlight';
       color: #001;
       position: relative;
       z-index: 1;

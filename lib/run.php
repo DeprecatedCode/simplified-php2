@@ -5,7 +5,8 @@
  */
 function certify($scope) {
   if (is_object($scope) && isset($scope->{'#type'}) &&
-      $scope->{'#type'} !== 'proto' && !isset($scope->{'#runcount'})) {
+      $scope->{'#type'} !== 'proto' &&
+      (!isset($scope->{'#done'}) || !$scope->{'#done'})) {
     run($scope);
   }
 }
@@ -68,7 +69,8 @@ function operate($op, $right, $context=null) {
         /**
          * Special cases, this should be cleaned up
          */
-        if ($operator === '.' || $operator === '@' || $operator === '&') {
+        if ($operator === '.' || $operator === '@' || $operator === '&' ||
+          $operator === '::' || $operator === '++') {
           $right = $right->value;
         }
         else {
@@ -129,7 +131,8 @@ function apply($left, $right) {
     $specific = "#apply $rtype";
     $generic = "#apply *";
 
-    if ($try && $rtype === 'object' && !isset($left->$specific) && !isset($proto->$specific)) {
+    if ($try && $rtype === 'object' && !isset($left->$generic) && !isset($proto->$generic)
+      && !isset($left->$specific) && !isset($proto->$specific)) {
       $right = run($right);
       $try = false;
       continue;
@@ -182,6 +185,12 @@ function run($scope, $context=null) {
         else {
           switch ($source->{'#type'}) {
             case 'value':
+              if (is_object($register) && isset($register->{'#done'})) {
+                $register->{'#done'} = false;
+              }
+              if (is_object($source->value) && isset($source->value->{'#done'})) {
+                $source->value->{'#done'} = false;
+              }
               $register = apply($register, $source->value);
               break;
             case 'identifier':
@@ -221,6 +230,7 @@ function run($scope, $context=null) {
      */
     $scope->{'#runcount'} = (isset($scope->{'#runcount'}) ?
       $scope->{'#runcount'} : 0) + 1;
+    $scope->{'#done'} = true;
     return get($scope, '#run');
   }
   

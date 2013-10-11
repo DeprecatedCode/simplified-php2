@@ -31,6 +31,10 @@ type::$string->{'#operator ~'} = function ($left, $right) {
   return strtolower($left) === strtolower($right);
 };
 
+type::$string->trim = function ($string) {
+  return trim($string);
+};
+
 type::$string->upper = function ($string) {
   return strtoupper($string);
 };
@@ -42,5 +46,13 @@ type::$string->lower = function ($string) {
 type::$string->contains = function ($string) {
   return cmd('string.contains', $string, array('string' => function ($command, $search) use ($string) {
     return strpos($string, $search) !== false;
+  }));
+};
+
+type::$string->split = function ($string, $context=null) {
+  return cmd('string.split', $string, array('string' => function ($command, $by) use ($string, $context) {
+    $arr = a($context);
+    $arr->{'#value'} = explode($by, $string);
+    return $arr;
   }));
 };

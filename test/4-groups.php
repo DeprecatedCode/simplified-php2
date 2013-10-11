@@ -13,7 +13,9 @@ a: "A: " + 3 + 5
 
 b: "B: " + (3 + 5)
 
-a br b br .print
+a br b .print
+
+_flush_()
 
 # There is a difference between the following c and d:
 

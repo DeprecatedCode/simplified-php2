@@ -218,7 +218,23 @@ function get(&$scope, $key, $instance = null) {
  * Set Property
  */
 function set(&$scope, $key, $value) {
-  throw new Exception("Setting not yet supported");
+  /**
+   * First check in parents
+   */
+  $parent = $scope;
+  while(isset($parent->{'#parent'})) {
+    $parent = $parent->{'#parent'};
+    if (property_exists($parent, $key)) {
+      $parent->$key = $value;
+      return $value;
+    }
+  }
+  
+  /**
+   * Otherwise, set new variable
+   */
+  $scope->$key = $value;
+  return $value;
 }
 
 /**

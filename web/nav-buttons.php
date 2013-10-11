@@ -6,4 +6,4 @@
 ]{'<a class="btn large '{nav = ? (it.nav): 'active'}'"
       href="'(it.path)'">'(it.title)'</a>'.print}
 
-'<br/>'.print
+'<br/><br/>'.print

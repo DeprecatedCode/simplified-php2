@@ -11,6 +11,15 @@ function obj($type = 'object', $parent = null) {
 }
 
 /**
+ * Set object property
+ */
+type::$object->{'#operator ::'} = function ($object, $key) {
+  return cmd('::', $object, array('*' => function ($command, $value) use ($object, $key) {
+    $object->$key = $value;
+  }));
+};
+
+/**
  * Print an object
  */
 type::$object->print = function ($object) {
@@ -59,6 +68,7 @@ type::$object->{'#run'} = type::$object->{'#trigger $'} = function ($object) {
   $result = null;
   
   $object->{'#prefix'} = null;
+  $matched = false;
   
   foreach($object->{'#source'} as $source) {
     
@@ -76,11 +86,6 @@ type::$object->{'#run'} = type::$object->{'#trigger $'} = function ($object) {
     else if (is_object($source)) {
       
       /**
-       * Do not return $result
-       */
-      $return = false;
-      
-      /**
        * Check for prefix
        */
       $keySource = $source->key;
@@ -88,6 +93,7 @@ type::$object->{'#run'} = type::$object->{'#trigger $'} = function ($object) {
         if ($item->{'#type'} === 'operator' && $item->value === '?') {
           $object->{'#prefix'} = array_splice($keySource, 0, $key);
           array_shift($keySource);
+          $matched = false;
           break;
         }
       }
@@ -96,11 +102,14 @@ type::$object->{'#run'} = type::$object->{'#trigger $'} = function ($object) {
        * If prefix, return first matching expression
        */
       if (!is_null($object->{'#prefix'})) {
-        $condition = array_merge($object->{'#prefix'}, $keySource);
-        $test = run($condition, $object);
-        if ($test) {
-          $result = run($source->value, $object);
-          return $result;
+        if (!$matched) {
+          $condition = array_merge($object->{'#prefix'}, $keySource);
+          $test = run($condition, $object);
+          if ($test) {
+            $result = run($source->value, $object);
+            $return = true;
+            $matched = true;
+          }
         }
         
         /**
@@ -136,6 +145,11 @@ type::$object->{'#run'} = type::$object->{'#trigger $'} = function ($object) {
        * Result
        */
       $object->{$key} = $value;
+      
+      /**
+       * Do not return $result
+       */
+      $return = false;
     }
     
     /**
@@ -149,7 +163,7 @@ type::$object->{'#run'} = type::$object->{'#trigger $'} = function ($object) {
   /**
    * If there was a condition, and all conditions failed, return null
    */
-  if (!is_null($object->{'#prefix'})) {
+  if (!$matched && !is_null($object->{'#prefix'})) {
     return null;
   }
   

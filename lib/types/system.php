@@ -27,6 +27,13 @@ type::$system->import = function ($context) {
 };
 
 /**
+ * System Parent
+ */
+type::$system->parent = function ($context) {
+  return is_object($context) && isset($context->{'#parent'}) ? $context->{'#parent'} : null;
+};
+
+/**
  * System Request
  */
 type::$system->request = function ($context) {

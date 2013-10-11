@@ -6,8 +6,10 @@
 function cmd($name, $scope, $definitions) {
   $cmd = obj('command', $scope);
   $cmd->{'#name'} = $name;
-  foreach($definitions as $type => $fn) {
-    $cmd->{"#apply $type"} = $fn;
+  foreach ($definitions as $types => $fn) {
+    foreach (explode('|', $types) as $type) {
+      $cmd->{"#apply $type"} = $fn;
+    }
   }
   return $cmd;
 }
