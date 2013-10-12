@@ -54,9 +54,6 @@ type::$array->{'#each'} = function ($array, $fn) {
     catch (ContinueCommand $continue) {
       continue;
     }
-    catch(Exception $e) {
-      d($e);
-    }
   }
   return $a;
 };

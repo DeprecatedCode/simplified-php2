@@ -13,12 +13,13 @@ class type {
   public static $integer;
   public static $null;
   public static $object;
+  public static $regex;
   public static $string;
   public static $system;
 
   public static $types = ['array', 'boolean', 'command', 'file', 'float',
-                          'group', 'integer', 'null', 'object', 'string',
-                          'system'];
+                          'group', 'integer', 'null', 'object', 'regex',
+                          'string', 'system'];
 }
 
 /**
@@ -188,7 +189,7 @@ function get(&$scope, $key, $instance = null) {
       $parent = $scope;
       while(isset($parent->{'#parent'})) {
         $parent = $parent->{'#parent'};
-        if (isset($parent->$key)) {
+        if (property_exists($parent, $key)) {
           $value = $parent->$key;
           break 2;
         }

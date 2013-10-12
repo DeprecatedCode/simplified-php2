@@ -83,6 +83,13 @@ type::$system->finally = function($context) {
 };
 
 /**
+ * Null
+ */
+type::$system->null = function($context) {
+  return null;
+};
+
+/**
  * Continue
  */
 type::$system->continue = function($context) {

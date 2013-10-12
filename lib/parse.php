@@ -75,10 +75,9 @@ function parse($code, $P = null) {
             );
 
             if($chars === $current->stop) {
-                if($queue !== '') {
-                    process($current, $queue, $ql, $qc);
-                    $queue = '';
-                }
+                process($current, $queue, $ql, $qc);
+                $queue = '';
+
                 if(count($stack) === 0) {
                   break;
                 }

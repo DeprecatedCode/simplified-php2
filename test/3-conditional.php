@@ -7,7 +7,19 @@ title: "Conditional", @import "test.php"
 
 a: 7
 
-"Variable a is " {a ? < 4: "less than", = 4: "equal to", > 4: "greater than"}" 4!" .print
+"Variable a is " {a ? < 4: "less than", = 4: "equal to", > 4: "greater than"} " 4!" .print
+
+_flush_()
+
+# Using a catch all condition *:
+
+name: @null
+
+"Dear " {? name: name, *: "visitor"} ", welcome to SimplifiedPHP. " .print
+
+name: "Dr. Horrible"
+
+"I'll just call you " {? name: name, *: "visitor"} " &mdash; if that's alright with you." .print
 
 _flush_()
 

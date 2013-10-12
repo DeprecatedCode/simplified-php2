@@ -22,6 +22,13 @@ type::$null->{'#operator &'} = function ($null, $right, $context) {
 };
 
 /**
+ * ~ converts a string into a regex object
+ */
+type::$null->{'#operator ~'} = function ($null, $right, $context) {
+  return regex($right, $context);
+};
+
+/**
  * ++ increment variable operator
  */
 type::$null->{'#operator ++'} = function ($null, $key, $context) {

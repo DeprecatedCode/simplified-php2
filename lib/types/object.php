@@ -20,6 +20,21 @@ type::$object->{'#operator ::'} = function ($object, $key) {
 };
 
 /**
+ * Iterate over an object's keys and values
+ */
+type::$object->{'#each'} = function ($object, $fn) {
+  certify($object);
+  $a = a($object);
+  foreach($object as $key => $value) {
+    if (strlen($key) && $key[0] === '#') {
+      continue;
+    }
+    $a->{'#value'}[] = $fn($key, $value);
+  }
+  return $a;
+};
+
+/**
  * Print an object
  */
 type::$object->print = function ($object) {
@@ -86,50 +101,72 @@ type::$object->{'#run'} = type::$object->{'#trigger $'} = function ($object) {
     else if (is_object($source)) {
       
       /**
-       * Check for prefix
+       * Simple keys (like #catch-all)
        */
-      $keySource = $source->key;
-      foreach($keySource as $key => $item) {
-        if ($item->{'#type'} === 'operator' && $item->value === '?') {
-          $object->{'#prefix'} = array_splice($keySource, 0, $key);
-          array_shift($keySource);
-          $matched = false;
-          break;
-        }
-      }
-      
-      /**
-       * If prefix, return first matching expression
-       */
-      if (!is_null($object->{'#prefix'})) {
-        if (!$matched) {
-          $condition = array_merge($object->{'#prefix'}, $keySource);
-          $test = run($condition, $object);
-          if ($test) {
+      if (is_string($source->key)) {
+        $key = $source->key;
+        
+        if ($key === '#catch-all' && !is_null($object->{'#prefix'})) {
+          if (!$matched) {
             $result = run($source->value, $object);
             $return = true;
             $matched = true;
           }
+          continue;
         }
-        
-        /**
-         * Check next condition
-         */
-        continue;
-      }
-      
-      /**
-       * Single-identifier keys
-       */
-      if (count($keySource) === 1 && $keySource[0]->{'#type'} === 'identifier') {
-        $key = $keySource[0]->value;
       }
       
       /**
        * Complex keys
        */
       else {
-        $key = run($keySource, $object);
+        
+        /**
+         * Check for prefix
+         */
+        $keySource = $source->key;
+        foreach($keySource as $key => $item) {
+          if ($item->{'#type'} === 'operator' && $item->value === '?') {
+            $object->{'#prefix'} = array_splice($keySource, 0, $key);
+            array_shift($keySource);
+            $matched = false;
+            break;
+          }
+        }
+        
+        /**
+         * If prefix, return first matching expression
+         */
+        if (!is_null($object->{'#prefix'})) {
+          if (!$matched) {
+            $condition = array_merge($object->{'#prefix'}, $keySource);
+            $test = run($condition, $object);
+            if ($test) {
+              $result = run($source->value, $object);
+              $return = true;
+              $matched = true;
+            }
+          }
+          
+          /**
+           * Check next condition
+           */
+          continue;
+        }
+        
+        /**
+         * Single-identifier keys
+         */
+        if (count($keySource) === 1 && $keySource[0]->{'#type'} === 'identifier') {
+          $key = $keySource[0]->value;
+        }
+        
+        /**
+         * Complex keys
+         */
+        else {
+          $key = run($keySource, $object);
+        }
       }
       
       if (!is_string($key) && !is_int($key) && !is_float($key)) {
@@ -216,6 +253,20 @@ type::$object->{'#register'} = function ($object, $item) {
         }
 
         $object->{'#key'} = $object->{'#register'};
+        reg_clear($object);
+        return state($object, '#value');
+      }
+      
+      /**
+       * Handle catch-all assignment with star colon
+       */
+      if ($item->{'#type'} === 'operator' && $item->value === '*:') {
+
+        if (reg_count($object) !== 0) {
+          throw new Exception('Operator *: must not immediately follow a statement');
+        }
+
+        $object->{'#key'} = '#catch-all';
         reg_clear($object);
         return state($object, '#value');
       }

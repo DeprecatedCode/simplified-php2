@@ -47,14 +47,23 @@ function operation($left, $operator) {
 function operate($op, $right, $context=null) {
   $operator = $op->{'#operator'};
   $left = $op->{'#left'};
-  $proto = proto($left);
+  $name = "#operator $operator";
   
   /**
-   * Check that operation is defined
+   * Operation is defined on object $left
    */
-  $name = "#operator $operator";
-  if (!isset($proto->$name)) {
-    throw new Exception("Operator $operator not defined for type " . typestr($left));
+  if (isset($left->$name)) {
+    $actor = $left;
+  }
+  else {
+    $actor = proto($left);
+    
+    /**
+     * Check that operation is defined
+     */
+    if (!isset($actor->$name)) {
+      throw new Exception("Operator $operator not defined for type " . typestr($left));
+    }
   }
   
   /**
@@ -94,7 +103,7 @@ function operate($op, $right, $context=null) {
   /**
    * Do operation
    */
-  $fn = $proto->$name;
+  $fn = $actor->$name;
   return $fn($left, $right, $context);
 }
 
@@ -153,7 +162,8 @@ function apply($left, $right) {
     $fn = $proto->$generic;
   }
   else {
-    throw new Exception(typestr($left) . " does not allow application of type $rtype");
+    $name = is_object($left) && isset($left->{'#name'}) ? " " . $left->{'#name'} : '';
+    throw new Exception(typestr($left) . $name . " does not allow application of type $rtype");
   }
   
   return $fn($left, $right);
