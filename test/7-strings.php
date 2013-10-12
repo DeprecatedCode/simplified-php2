@@ -3,8 +3,6 @@
 
 title: "Strings", @import "test.php"
 
-br: "<br/><br/>"
-
 # String length
 
 sentence: "What do you call it when you feed a stick of dynamite to a steer? Abominable!"
@@ -36,3 +34,19 @@ _flush_()
 # Object replacement
 
 sentence.replace {"stick": "bundle", "dynamite": "hay", "Abom": "Straw"} .print
+
+_flush_()
+
+# Escaping Strings
+
+w: '\\  \' \"  \' "  \'\' ""  \'\'\' \"""  /'
+
+x: "\\  \' \"  ' \"  '' \"\"  \''' \"\"\"  /"
+
+y:  '''\\  \' \"  ' "  '' ""  \''' """  /'''
+
+z:  """\\  \' \"  ' "  '' ""  ''' \"""  /"""
+
+'<pre>' ([w, x, y, z].join '<br/>') '</pre><br/>'.print
+
+'Length of each string: '.print, [w, x, y, z]{it.length}.join ', ' '.'.print

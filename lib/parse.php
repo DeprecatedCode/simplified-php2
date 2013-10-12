@@ -36,6 +36,8 @@ function parse($code, $P = null) {
       '{' => 1
     );
     
+    $esc = '\\';
+    
     $current = new stdClass;
     $current->nest = true;
     $current->token = '{';
@@ -50,6 +52,7 @@ function parse($code, $P = null) {
 
     $length = strlen($code);
     $queue = '';
+    $escape = false;
 
     /**
      * Main Parse Loop
@@ -63,6 +66,30 @@ function parse($code, $P = null) {
             $line++;
         } else {
             $column++;
+        }
+        
+        /**
+         * Handle Escape Characters
+         */
+        if ($code[$pos] == $esc) {
+          if ($escape) {
+            $queue .= $esc;
+            $escape = false;
+          }
+          else {
+            $escape = true;
+          }
+          
+          continue;
+        }
+        
+        /**
+         * Handle Escape Sequence
+         */
+        if ($escape) {
+          $queue .= $code[$pos];
+          $escape = false;
+          continue;
         }
 
         /**
@@ -177,10 +204,11 @@ function process($current, $code, $line, $column) {
     case '#':
     case '/*':
       return;
-    case '"':
-      echo " v(\$S,\"$code\",$line,$column);";
-      return;
     case "'":
+    case '"':
+    case "'''":
+    case '"""':
+      $code = str_replace("'", "\\'", str_replace('\\', '\\\\', $code));
       echo " v(\$S,'$code',$line,$column);";
       return;
     default:
