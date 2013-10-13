@@ -27,10 +27,25 @@ type::$system->import = function ($context) {
 };
 
 /**
+ * System Trace
+ */
+type::$system->trace = function ($context) {
+  echo get($context, 'to_json');
+  die;
+};
+
+/**
  * System Parent
  */
 type::$system->parent = function ($context) {
   return is_object($context) && isset($context->{'#parent'}) ? $context->{'#parent'} : null;
+};
+
+/**
+ * System Self
+ */
+type::$system->self = function ($context) {
+  return $context;
 };
 
 /**

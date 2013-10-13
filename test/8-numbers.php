@@ -20,3 +20,17 @@ e: -100 * 2 + 100 * -10 / 10.0
 # Let's make a new object and take just the variables we need, and print it out as JSON:
 
 ['<pre>', {&a, &b, &c, &d, &e}.to_json, '</pre>'].print
+
+_flush_()
+
+# Incrementing a number: 3 alternatives
+
+show: {' &raquo; ' x .print}
+
+x: 5,             x.print
+
+x: x + 5,         show()
+
+++x 5,            show()
+
+@self::x (x + 5), show()
