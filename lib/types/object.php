@@ -57,6 +57,19 @@ type::$object->{'#apply string'} = function ($object, $string) {
 };
 
 /**
+ * Apply object to object
+ */
+type::$object->{'#apply object'} = function ($left, $right) {
+  $object = n($left);
+  $object->{'#source'} = $left->{'#source'};
+  $fn = type::$object->{'#each'};
+  $fn($right, function ($key, $value) use ($object) {
+    $object->$key = $value;
+  });
+  return $object;
+};
+
+/**
  * Apply array to object
  */
 type::$object->{'#apply array'} = function ($object, $array) {
