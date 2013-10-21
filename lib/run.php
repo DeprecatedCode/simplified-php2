@@ -79,7 +79,7 @@ function operate($op, $right, $context=null) {
          * Special cases, this should be cleaned up
          */
         if ($operator === '.' || $operator === '@' || $operator === '&' ||
-          $operator === '::' || $operator === '++') {
+          $operator === '::' || $operator === '++' || $operator === '??') {
           $right = $right->value;
         }
         else {
@@ -162,6 +162,13 @@ function apply($left, $right) {
     $fn = $proto->$generic;
   }
   else {
+
+    $rproto = proto($right);
+    if ($rproto && isset($rproto->{'#applied'})) {
+      $fn = $rproto->{'#applied'};
+      return $fn($left, $right);
+    }
+    
     $name = is_object($left) && isset($left->{'#name'}) ? " " . $left->{'#name'} : '';
     throw new Exception(typestr($left) . $name . " does not allow application of type $rtype");
   }

@@ -8,12 +8,29 @@ type::$string->length = function ($string) {
   return strlen($string);
 };
 
+type::$string->lines = function ($string, $context=null) {
+  $arr = a($context);
+  $arr->{'#value'} = preg_split('/\R/', $string);
+  return $arr;
+};
+
+type::$string->md5 = function ($string) {
+  return md5($string);
+};
+
+type::$string->esc = function ($string) {
+  return addslashes($string);
+};
+
 type::$string->html = function ($string) {
   return htmlspecialchars($string);
 };
 
+type::$string->htmlnl = function ($string) {
+  return nl2br(htmlspecialchars($string));
+};
+
 type::$string->{'#operator +'} =
-type::$string->{'#apply array'} =
 type::$string->{'#apply object'} =
 type::$string->{'#apply string'} =
 type::$string->{'#apply integer'} =
@@ -61,6 +78,14 @@ type::$string->contains = function ($string, $context=null) {
   return cmd('string.contains', $context, array(
     'string' => function ($command, $search) use ($string) {
       return strpos($string, $search) !== false;
+    }
+  ));
+};
+
+type::$string->repeat = function ($string, $context=null) {
+  return cmd('string.repeat', $context, array(
+    'integer' => function ($command, $quantity) use ($string) {
+      return str_repeat($string, $quantity);
     }
   ));
 };

@@ -22,6 +22,14 @@ type::$array->to_json = function ($array, $level=0) {
 };
 
 /**
+ * Check if array key exists
+ */
+type::$array->{'#operator ??'} = function ($array, $key) {
+  return array_key_exists($key, $array->{'#value'});
+};
+
+
+/**
  * Array length
  */
 type::$array->length = function ($array) {
@@ -35,6 +43,33 @@ type::$array->join = function ($array) {
   return cmd('join', $array, array('string' => function ($command, $string) use ($array) {
     return implode($string, $array->{'#value'});
   }));
+};
+
+/**
+ * Apply an array to something that does not accept array application
+ */
+type::$array->{'#applied'} = function ($scope, $array) {
+  $fn = type::$array->{'#each'};
+  return $fn($array, function ($item, $key) use ($scope) {
+    return apply($scope, $item);
+  });
+};
+
+/**
+ * Apply something generic to an array
+ */
+type::$array->{'#apply *'} = function ($array, $scope) {
+  $fn = type::$array->{'#each'};
+  return $fn($array, function ($item, $key) use ($scope) {
+    return apply($scope, $item);
+  });
+};
+
+/**
+ * Apply an integer to get that offset
+ */
+type::$array->{'#apply integer'} = function ($array, $integer) {
+  return $array->{'#value'}[$integer];
 };
 
 /**

@@ -7,6 +7,7 @@ class type {
   public static $array;
   public static $boolean;
   public static $command;
+  public static $dir;
   public static $file;
   public static $float;
   public static $group;
@@ -17,7 +18,7 @@ class type {
   public static $string;
   public static $system;
 
-  public static $types = ['array', 'boolean', 'command', 'file', 'float',
+  public static $types = ['array', 'boolean', 'command', 'dir', 'file', 'float',
                           'group', 'integer', 'null', 'object', 'regex',
                           'string', 'system'];
 }
@@ -40,6 +41,13 @@ foreach(type::$types as $type) {
    */
   type::$$type->{'#operator .'} = function ($left, $right, $context) {
     return get($left, $right);
+  };
+  
+  /**
+   * Standard ! operator
+   */
+  type::$$type->{'#trigger !'} = function ($context) {
+    return !$context;
   };
   
   /**

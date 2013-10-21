@@ -27,6 +27,50 @@ type::$system->import = function ($context) {
 };
 
 /**
+ * System Redirect
+ */
+type::$system->redirect = function ($context) {
+  return cmd('@redirect', $context, array('string' => function ($command, $url) use ($context) {
+    if (headers_sent()) {
+      echo '<meta http-equiv="refresh" content="0; url=' . $url . '">';
+    } else {
+      header("Location: $url", true, 302);
+    }
+    echo 'Redirecting to <a href="' . $url . '">' . $url . '</a>';
+    exit;
+  }));
+};
+
+/**
+ * System File
+ */
+type::$system->file = function ($context) {
+  return cmd('@file', $context, array('string' => function ($command, $string) use ($context) {
+    $file = obj('file');
+    $file->path = $string;
+    return $file;
+  }));
+};
+
+/**
+ * System Dir
+ */
+type::$system->dir = function ($context) {
+  return cmd('@dir', $context, array('string' => function ($command, $string) use ($context) {
+    $dir = obj('dir');
+    $dir->path = $string;
+    return $dir;
+  }));
+};
+
+/**
+ * System Exit
+ */
+type::$system->exit = function ($context) {
+  exit;
+};
+
+/**
  * System Trace
  */
 type::$system->trace = function ($context) {
@@ -59,6 +103,7 @@ type::$system->request = function ($context) {
 
     $request->args = (object) $_GET;
     $request->form = (object) $_POST;
+    $request->files = (object) $_FILES;
     $request->cookie = (object) $_COOKIE;
 
     $request->host = $_SERVER['HTTP_HOST'];

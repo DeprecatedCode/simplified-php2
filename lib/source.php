@@ -4,6 +4,16 @@
  * Debug
  */
 function d($obj) {
+  static $d = null;
+  static $dd = null;
+  if (is_null($d)) {
+    $dd = $d = isset($_GET['__debug']) ? (int) $_GET['__debug'] : 0;
+  }
+  if ($dd > 0) {
+    $dd--;
+    return;
+  }
+  remove_parents($obj);
   echo '<pre>';
   ob_start();
   var_dump($obj);
@@ -22,7 +32,65 @@ function d($obj) {
     )
   );
   echo htmlspecialchars($debug);
+  echo '<p><a href="?__debug=' . ($d + 1) . '">Next Ocurrence &raquo;</a></p>';
+  
+  trace();
+
   throw new Exception ('Debug');
+}
+
+/**
+ * Recursively remove parents from object
+ */
+function remove_parents(&$obj) {
+  if (is_object($obj) || is_array($obj)) {
+    if (isset($obj->{'#parent'}) && is_object($obj->{'#parent'})) {
+      $obj->{'#parent'} = '<#' . typestr($obj->{'#parent'}) . '>';
+    }
+    foreach($obj as $key => $value) {
+      if (is_object($value)) {
+        remove_parents($value);
+      }
+    }
+  }
+}
+
+/**
+ * Trace
+ */
+function trace() {
+  $trace = debug_backtrace();
+  $headers = explode(' ', 'function line file args'); // class object type args
+  echo '<table border=1><tr><th style="padding: 4px">' . implode('</th><th>', $headers) . '</th></tr>';
+  
+  foreach($trace as $line) {
+    echo '<tr>';
+    foreach($headers as $header) {
+      echo '<td style="padding: 4px">';
+      $item = isset($line[$header]) ? $line[$header] : '';
+      if (is_array($item)) {
+        $data = $item;
+        foreach($data as $key => $value) {
+          if (is_string($value)) {
+            $data[$key] = json_encode($value);
+          }
+          if (is_object($value)) {
+            $data[$key] = '<#' . typestr($value) . '>';
+            if (typestr($value) === 'array') {
+              $data[$key] = json_encode($value->{'#value'});
+            }
+          }
+          if (is_array($value)) {
+            $data[$key] = "array: " . count($value) . ' items';
+          }
+          $item = $data;
+        }
+        $item = implode(', ', $item);
+      }
+      echo htmlspecialchars(str_replace(__DIR__, '', $item)) . '</td>';
+    }
+    echo '</tr>';
+  }
 }
 
 /**

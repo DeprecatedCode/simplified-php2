@@ -11,6 +11,13 @@ function obj($type = 'object', $parent = null) {
 }
 
 /**
+ * Check if object property exists
+ */
+type::$object->{'#operator ??'} = function ($object, $key) {
+  return property_exists($object, $key);
+};
+
+/**
  * Set object property
  */
 type::$object->{'#operator ::'} = function ($object, $key) {
@@ -46,6 +53,7 @@ type::$object->print = function ($object) {
  */
 type::$object->to_json = function ($object, $level=0) {
   $arr = (array) $object;
+  $arr['#type'] = isset($object->{'#type'}) ? $object->{'#type'} : 'object';
   return json($arr, $level);
 };
 
@@ -85,9 +93,16 @@ type::$object->{'#apply array'} = function ($object, $array) {
 };
 
 /**
+ * Trigger evaluation
+ */
+type::$object->{'#trigger $'} = function ($object) {
+  return run($object);
+};
+
+/**
  * Evaluate an object
  */
-type::$object->{'#run'} = type::$object->{'#trigger $'} = function ($object) {
+type::$object->{'#run'} = function ($object) {
   if(!isset($object->{'#source'})) {
     return $object;
   }
