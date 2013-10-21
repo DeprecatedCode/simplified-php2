@@ -147,6 +147,13 @@ function get(&$scope, $key, $instance = null) {
   }
   
   /**
+   * If object
+   */
+  if (is_object($instance) && !isset($instance->{'#done'})) {
+    $instance = $scope = run($instance);
+  }
+
+  /**
    * Handle Scalars
    */
   if (!is_object($scope)) {

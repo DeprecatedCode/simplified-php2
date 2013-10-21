@@ -44,7 +44,7 @@ make_slug: {it.lower.replace ~"[^a-z1-9]" "-" \
 {
   ? @request.method = "POST": {
     "Saving...".print
-    filename: make_slug{it: @request.form.text.lines 0}$
+    filename: make_slug{it: @request.form.text.lines 0}
     @dir dir .ensure
     ? filename.length: @file(dir filename ext).write(@request.form.text)
     @redirect '?'
