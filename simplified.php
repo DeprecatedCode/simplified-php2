@@ -9,6 +9,7 @@ if (defined('SIMPLIFIED')) {
     run($code);
   }
   catch(Exception $e) {
+    $buffer = ob_get_clean();
     $fmt = function ($x) {
       return str_replace('d @', 'Debugger @',
         str_replace('.php', '',
@@ -16,7 +17,7 @@ if (defined('SIMPLIFIED')) {
         )
       );
     };
-    echo '<pre>';
+    echo '<pre><h2>SimplifiedPHP Exception</h2>';
     if ($e->getMessage() !== 'Debug') {
       echo $fmt($e->getMessage() . "\n\n ... @ " .
         $e->getFile() . ':' . $e->getLine());

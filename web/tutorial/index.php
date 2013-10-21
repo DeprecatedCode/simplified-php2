@@ -14,8 +14,10 @@ nav: "tutorial", @import "../template.php"
 
 {
   ? @request.args ?? code: {
-    '<h3>SimplifiedPHP Code:</h3><pre class="code"><code class="php">' \
-      (@request.file.read.html.split ('#'.repeat 10) [1] .trim) '</code></pre>'.print
+    code: @request.file.read.html.split ('#'.repeat 10) [1] .trim
+    '<h3>SimplifiedPHP Code:</h3><pre class="code"><code class="php">'.print
+    code.print
+    '</code></pre>'.print
     @exit
   }$
 }$
