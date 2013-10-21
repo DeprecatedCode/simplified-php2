@@ -5,7 +5,7 @@
  */
 function parse($code, $P = null) {
 
-  $file = dirname(__DIR__) . '/cache/' . substr(md5($code), 0, 8) . '.php';
+  $file = dirname(__DIR__) . '/.cache/' . substr(md5($code), 0, 8) . '.php';
 
   /**
    * Write cache file
@@ -60,7 +60,10 @@ function parse($code, $P = null) {
     for($pos = 0; $pos < $length; $pos++) {
 
         if($code[$pos] == "\r") {
-            ;
+          if ($pos == $length - 1 || $code[$pos + 1] != "\n") {
+            $column = 0;
+            $line++;
+          }
         } else if($code[$pos] == "\n") {
             $column = 0;
             $line++;
@@ -221,7 +224,7 @@ function expr(&$current, $expr, $line, $column) {
         '[+-]?(\d+(\.\d+)?([eE][+-]?\d+)?)' => 'v',
         '[a-zA-Z0-9_]+'                     => 'i',
         '[^\sa-zA-Z0-9_]{1,2}'              => 'o',
-        '\n+'                               => 'b',
+        '[\n\r]+'                           => 'b',
         '\s+'                               => 's'
     );
     while(strlen($expr) > 0) {
