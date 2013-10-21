@@ -60,11 +60,8 @@ Object properties can be set after an object is created with the `obj::var value
     
     joe::greeting {"Hi, my name is " name " and I'm a " occupation "."}
     
-    "Hi, my name is Joe Swanson and I'm a Police Officer." = joe.greeting()
+    "Hi, my name is Joe Swanson and I'm a Police Officer." = (joe.greeting())
 
-    add: {a + b}
-    
-    9 = add{a: 4, b: 5}()
     
 If you have an object and want to avoid deferring calculation until it's used, follow the object with the literal `$`. This evaluates the object instead of assigning the object to the variable.
 
