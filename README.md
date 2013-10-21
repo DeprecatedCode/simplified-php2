@@ -18,7 +18,7 @@ An Object is delimited with curly braces, and optional commas for multiple items
 
     a = b
 
-# Objects as functions
+# Objects as Functions
 
 Objects can contain statements to be executed at a later time. Expressions may be provided with default arguments, if any arguments are required, to avoid errors when a variable is undefined.
 
