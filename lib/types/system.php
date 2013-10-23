@@ -53,6 +53,18 @@ type::$system->file = function ($context) {
 };
 
 /**
+ * System Plugin
+ */
+type::$system->plugin = function ($context) {
+  $plugins = new stdClass;
+  $plugins->{'#get'} = function ($plugins, $name) {
+    require_once(__DIR__ . "/../../plugins/sphp-$name/$name.php");
+    return sys::$plugin->$name;
+  };
+  return $plugins;
+};
+
+/**
  * System Dir
  */
 type::$system->dir = function ($context) {
@@ -178,8 +190,14 @@ class BreakCommand extends InternalException {}
  */
 class sys {
   public static $finally = array();
+  public static $plugin = null;
   public static $timer = null;
 }
+
+/**
+ * Plugins
+ */
+sys::$plugin = new stdClass;
 
 /**
  * Start timer

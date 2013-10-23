@@ -41,6 +41,20 @@ type::$float->{'#operator ^'} = function ($left, $right) {
 };
 
 /**
+ * Range generation
+ */
+type::$integer->{'#operator ..'} =
+type::$float->{'#operator ..'} = function ($left, $right) {
+  $parent = null;
+  $arr = a($parent);
+  do {
+    $arr->{'#value'}[] = $left;
+  }
+  while (++$left <= $right);
+  return $arr; 
+};
+
+/**
  * Number String concatenation
  */
 type::$integer->{'#apply string'} =

@@ -69,6 +69,13 @@ foreach(type::$types as $type) {
     }
     return $right;
   };
+  
+  /**
+   * Standard to_json property
+   */
+  type::$$type->{'to_json'} = function ($context) {
+    return json_encode($context);
+  };
     
   /**
    * Include lib/types/$type.php
@@ -91,7 +98,34 @@ function proto(&$scope) {
  * Get Object TypeStr
  */
 function typestr(&$scope) {
-  if (is_object($scope)) {
+  
+  /**
+   * Automatically coerce PHP arrays into the desired type when used
+   */
+  if (is_array($scope) || $scope instanceof Traversable) {
+    
+    $transformed = false;
+    if (is_array($scope)) {
+      for (reset($scope); is_int(key($scope)); next($scope));
+    
+      /**
+       * Associative array
+       */
+      if (!is_null(key($scope))) {
+        $scope = (object) $scope;
+        $transformed = true;
+      }
+    }
+    
+    if (!$transformed) {
+      $parent = null;
+      $arr = a($parent);
+      $arr->{'#value'} = $scope;
+      $scope = $arr;
+    }
+  }
+  
+  if (is_object($scope) && !($scope instanceof Closure)) {
     $type = isset($scope->{'#type'}) ? $scope->{'#type'} : null;
     if (!$type) {
       $type = 'object';
@@ -185,6 +219,15 @@ function get(&$scope, $key, $instance = null) {
      */
     else if (!is_null($proto) && isset($proto->{'#get'})) {
       $fn = $proto->{'#get'};
+      $value = $fn($instance, $key);
+      break;
+    }
+
+    /**
+     * Handle magic #get override on object
+     */
+    else if (isset($scope->{'#get'})) {
+      $fn = $scope->{'#get'};
       $value = $fn($instance, $key);
       break;
     }

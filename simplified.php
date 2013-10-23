@@ -9,7 +9,6 @@ if (defined('SIMPLIFIED')) {
     run($code);
   }
   catch(Exception $e) {
-    $buffer = ob_get_clean();
     $fmt = function ($x) {
       return str_replace('d @', 'Debugger @',
         str_replace('.php', '',
@@ -24,6 +23,13 @@ if (defined('SIMPLIFIED')) {
     }
     foreach($e->getTrace() as $trace) {
       echo $fmt("\n $trace[function] @ $trace[file]:$trace[line]");
+    }
+    while ($orig = $e->getPrevious()) {
+      echo "\n\n previously:\n";
+      $e = $orig;
+      foreach($e->getTrace() as $trace) {
+        echo $fmt("\n $trace[function] @ $trace[file]:$trace[line]");
+      }
     }
     echo '</pre>';
   }

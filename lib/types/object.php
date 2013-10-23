@@ -69,7 +69,9 @@ type::$object->{'#apply string'} = function ($object, $string) {
  */
 type::$object->{'#apply object'} = function ($left, $right) {
   $object = n($left);
-  $object->{'#source'} = $left->{'#source'};
+  if (isset($left->{'#source'})) {
+    $object->{'#source'} = $left->{'#source'};
+  }
   $fn = type::$object->{'#each'};
   $fn($right, function ($key, $value) use ($object) {
     $object->$key = $value;
@@ -84,7 +86,7 @@ type::$object->{'#apply array'} = function ($object, $array) {
   certify($array);
   $fn = type::$array->{'#each'};
   $result = $object;
-  $fn($array, function ($item, $key) use ($array, $object, &$result) {
+  $fn($array, function ($key, $item) use ($array, $object, &$result) {
     $object->it = $item;
     $object->key = $key;
     $result = run($object);

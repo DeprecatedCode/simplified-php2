@@ -46,7 +46,9 @@ type::$string->{'#apply float'} = function ($left, $right) {
 
 type::$string->{'#apply regex'} = function ($string, $regex, $context=null) {
   $matches = array();
-  preg_match_all($regex->{'#value'}, $string, $matches);
+  $regex = $regex->{'#value'};
+  $regex = "/$regex/";
+  preg_match_all($regex, $string, $matches);
   $arr = a($context);
   $arr->{'#value'} = count($matches) ? $matches[0] : array();
   return $arr;
@@ -121,7 +123,9 @@ type::$string->replace = function ($string, $context=null) {
       $cmd = cmd('string.replace', null, array(
         'string|integer|float' => function ($command, $replace) use ($string, $context, $search) {
           if (isset($command->{'#regex'})) {
-            return preg_replace($search->{'#value'}, $replace, $string);
+            $regex = $search->{'#value'};
+            $regex = "/$regex/";
+            return preg_replace($regex, $replace, $string);
           }
           return str_replace($search, $replace, $string);
         }

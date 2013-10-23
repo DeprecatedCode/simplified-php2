@@ -10,7 +10,7 @@ function parse($code, $P = null) {
   /**
    * Write cache file
    */
-  if (!file_exists($file)) {
+  if (!file_exists($file) || isset($_GET['!cache'])) {
     ob_start();
     echo '<?php $S = n($P);';
     $buffer = array('b($S, 0); return $S;');
@@ -222,7 +222,7 @@ function process($current, $code, $line, $column) {
 function expr(&$current, $expr, $line, $column) {
     static $regex = array(
         '[+-]?(\d+(\.\d+)?([eE][+-]?\d+)?)' => 'v',
-        '[a-zA-Z0-9_]+'                     => 'i',
+        '[$a-zA-Z0-9_]+'                    => 'i',
         '[^\sa-zA-Z0-9_]{1,2}'              => 'o',
         '[\n\r]+'                           => 'b',
         '\s+'                               => 's'

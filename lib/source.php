@@ -33,8 +33,6 @@ function d($obj) {
   );
   echo htmlspecialchars($debug);
   echo '<p><a href="?__debug=' . ($d + 1) . '">Next Ocurrence &raquo;</a></p>';
-  
-  trace();
 
   throw new Exception ('Debug');
 }
@@ -43,7 +41,7 @@ function d($obj) {
  * Recursively remove parents from object
  */
 function remove_parents(&$obj) {
-  if (is_object($obj) || is_array($obj)) {
+  if ((is_object($obj) && !$obj instanceof Closure) || is_array($obj)) {
     if (isset($obj->{'#parent'}) && is_object($obj->{'#parent'})) {
       $obj->{'#parent'} = '<#' . typestr($obj->{'#parent'}) . '>';
     }
@@ -58,8 +56,10 @@ function remove_parents(&$obj) {
 /**
  * Trace
  */
-function trace() {
-  $trace = debug_backtrace();
+function trace($trace=null) {
+  if (is_null($trace)) {
+    $trace = debug_backtrace();
+  }
   $headers = explode(' ', 'function line file args'); // class object type args
   echo '<table border=1><tr><th style="padding: 4px">' . implode('</th><th>', $headers) . '</th></tr>';
   

@@ -5,6 +5,6 @@ function regex($value, $context) {
     throw new Exception("regex value must be a string");
   }
   $regex = obj('regex', $context);
-  $regex->{'#value'} = "/$value/";
+  $regex->{'#value'} = $value;
   return $regex;
 }

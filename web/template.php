@@ -20,9 +20,23 @@ highlight: '#6ad'
       color: #333;
     }
     
+    h2 {
+      font-size: 16px;
+    }
+    
     h3 {
       margin: 1em 0 0.25em;
       font-size: 11px;
+    }
+    
+    td, th {
+      padding: 0.3em 0.5em;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.1);
+    }
+    
+    td {
+      background: rgba(0, 0, 0, 0.05);
     }
     
     pre.code, .output {
@@ -45,6 +59,14 @@ highlight: '#6ad'
     
     .output pre {
       margin: 0;
+    }
+    
+    .output > *:first-child {
+      margin-top: 0;
+    }
+    
+    .output > *:last-child {
+      margin-bottom: 0;
     }
     
     body pre code {

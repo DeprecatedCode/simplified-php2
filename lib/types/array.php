@@ -50,7 +50,7 @@ type::$array->join = function ($array) {
  */
 type::$array->{'#applied'} = function ($scope, $array) {
   $fn = type::$array->{'#each'};
-  return $fn($array, function ($item, $key) use ($scope) {
+  return $fn($array, function ($key, $item) use ($scope) {
     return apply($scope, $item);
   });
 };
@@ -60,7 +60,7 @@ type::$array->{'#applied'} = function ($scope, $array) {
  */
 type::$array->{'#apply *'} = function ($array, $scope) {
   $fn = type::$array->{'#each'};
-  return $fn($array, function ($item, $key) use ($scope) {
+  return $fn($array, function ($key, $item) use ($scope) {
     return apply($scope, $item);
   });
 };
@@ -81,7 +81,7 @@ type::$array->{'#each'} = function ($array, $fn) {
   $key = 0;
   foreach($array->{'#value'} as $item) {
     try {
-      $a->{'#value'}[] = $fn($item, $key++);
+      $a->{'#value'}[] = $fn($key++, $item);
     }
     catch (BreakCommand $break) {
       break;
@@ -98,7 +98,7 @@ type::$array->{'#each'} = function ($array, $fn) {
  */
 type::$array->{'#apply object'} = function ($array, $object) {
   $fn = type::$array->{'#each'};
-  $a = $fn($array, function ($item, $key) use ($array, $object) {
+  $a = $fn($array, function ($key, $item) use ($array, $object) {
     $object->it = $item;
     $object->key = $key;
     return run($object);
