@@ -28,6 +28,14 @@ type::$array->{'#operator ??'} = function ($array, $key) {
   return array_key_exists($key, $array->{'#value'});
 };
 
+/**
+ * Check if array is equal
+ */
+type::$array->{'#operator ='} = function ($array, $other) {
+  certify($array);
+  certify($other);
+  return $array->{'#value'} == $other->{'#value'};
+};
 
 /**
  * Array length
@@ -40,8 +48,17 @@ type::$array->length = function ($array) {
  * Array join
  */
 type::$array->join = function ($array) {
-  return cmd('join', $array, array('string' => function ($command, $string) use ($array) {
+  return cmd('array.join', $array, array('string' => function ($command, $string) use ($array) {
     return implode($string, $array->{'#value'});
+  }));
+};
+
+/**
+ * Array push
+ */
+type::$array->push = function ($array) {
+  return cmd('array.push', $array, array('*' => function ($command, $scope) use ($array) {
+    return $array->{'#value'}[] = $scope;
   }));
 };
 

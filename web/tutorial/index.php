@@ -92,9 +92,9 @@ new_post: """
 *: {
     new_post.print
     @dir dir .files {
-      lines: @file it .lines
+      lines: it .lines
       ? lines ?? 0: {
-        slug: @file it .name .replace '.txt' ''
+        slug: it .name .replace '.txt' ''
         '<p><a href="?slug=' (slug.esc) '">' (lines[0].html) '</a></p>'.print
       }$
     }

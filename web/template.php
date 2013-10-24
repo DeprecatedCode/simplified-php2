@@ -3,13 +3,13 @@
 
 # Colors
 
-bright: '#ffffff'
-normal: '#f9fbfd'
-tint:   '#ddd'
-highlight: '#6ad'
-dark: '#444'
-purple: '#a0a'
-green: '#0a0'
+bright:     '#fff'
+normal:     '#f9fbfd'
+tint:       '#ddd'
+highlight:  '#6ad'
+dark:       '#444'
+purple:     '#a0a'
+green:      '#0a0'
 
 '<!doctype html>
 <html>
@@ -21,6 +21,10 @@ green: '#0a0'
       font-size: 15px;
       padding: 0 0.75em;
       color: #333;
+    }
+    
+    a {
+      color: """highlight""";
     }
 
     h2 {
@@ -149,7 +153,7 @@ green: '#0a0'
     
     .switch a.selected {
       background: 'dark';
-      color: white;
+      color: 'bright';
     }
     
     .switch a.switch-code.selected {

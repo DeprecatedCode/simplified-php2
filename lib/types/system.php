@@ -105,6 +105,29 @@ type::$system->self = function ($context) {
 };
 
 /**
+ * System Test
+ */
+type::$system->test = function ($context) {
+  return cmd('@test', $context, array(
+    'object' => function ($cmd, $object) {
+      $e = null;
+      try {
+        $status = run($object) === true ? 'pass' : 'fail';
+      }
+      catch(Exception $e) {
+        $status = 'error';
+      }
+      $data = array();
+      if (!is_null($e)) {
+        $data['message'] = exc($e);
+      }
+      $data['status'] = $status;
+      sys::$tests['tests'][] = $data;
+    }
+  ));
+};
+
+/**
  * System Request
  */
 type::$system->request = function ($context) {
@@ -201,6 +224,7 @@ class StopCommand extends InternalException {}
  * System Class
  */
 class sys {
+  public static $tests = array('tests' => array());
   public static $finally = array();
   public static $plugin = null;
   public static $timer = null;
@@ -220,6 +244,18 @@ sys::$timer = microtime(true);
  * Process Finally
  */
 register_shutdown_function(function () {
+  if (count(sys::$tests['tests'])) {
+    sys::$tests['total'] = count(sys::$tests['tests']);
+    foreach(sys::$tests['tests'] as $test) {
+      $status = $test['status'];
+      if (!isset(sys::$tests[$status])) {
+        sys::$tests[$status] = 0;
+      }
+      sys::$tests[$status]++;
+    }
+    echo json_encode(sys::$tests);
+    exit;
+  }
   foreach(sys::$finally as $object) {
     run($object);
   }

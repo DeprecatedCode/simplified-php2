@@ -24,6 +24,36 @@ class type {
 }
 
 /**
+ * Pretty print exception
+ */
+function exc($e) {
+  $buf = '';
+  $fmt = function ($x) {
+    return str_replace('d @', 'Debugger @',
+      str_replace('.php', '',
+        str_replace(__DIR__ . '/', '', $x)
+      )
+    );
+  };
+  if ($e->getMessage() !== 'Debug') {
+    $buf .= $fmt(get_class($e) . ': ' . $e->getMessage() . "\n\n ... @ " .
+      $e->getFile() . ':' . $e->getLine());
+  }
+  foreach($e->getTrace() as $trace) {
+    $buf .= $fmt("\n $trace[function] @ $trace[file]:$trace[line]");
+  }
+  while ($orig = $e->getPrevious()) {
+    $buf .= "\n\n previously:\n";
+    $e = $orig;
+    foreach($e->getTrace() as $trace) {
+      $buf .= $fmt("\n $trace[function] @ $trace[file]:$trace[line]");
+    }
+  }
+  
+  return $buf;
+}
+
+/**
  * Internal Exception
  */
 class InternalException extends Exception {}
