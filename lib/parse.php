@@ -90,7 +90,26 @@ function parse($code, $P = null) {
          * Handle Escape Sequence
          */
         if ($escape) {
-          $queue .= $code[$pos];
+          $chr = $code[$pos];
+          switch($chr) {
+            case 'r':
+              $queue .= "\r";
+              break;
+            case 'n':
+              $queue .= "\n";
+              break;
+            case 't':
+              $queue .= "\t";
+              break;
+            case "\r":
+            case "\n":
+            case "'":
+            case '"':
+              $queue .= $chr;
+              break;
+            default:
+              $queue .= $esc . $chr;
+          }
           $escape = false;
           continue;
         }
@@ -221,11 +240,11 @@ function process($current, $code, $line, $column) {
 
 function expr(&$current, $expr, $line, $column) {
     static $regex = array(
-        '[+-]?(\d+(\.\d+)?([eE][+-]?\d+)?)' => 'v',
-        '[$a-zA-Z0-9_]+'                    => 'i',
-        '[^\sa-zA-Z0-9_]{1,2}'              => 'o',
-        '[\n\r]+'                           => 'b',
-        '\s+'                               => 's'
+        '[+-]?(\d+(\.\d+)?([eE][+-]?\d+)?)'               => 'v',
+        '\$?[a-zA-Z0-9_]+'                                => 'i',
+        '\:\:|\*\:|\:|\.\.|\.|\,|[^\sa-zA-Z0-9_.:,]{1,2}' => 'o',
+        '[\n\r]+'                                         => 'b',
+        '\s+'                                             => 's'
     );
     while(strlen($expr) > 0) {
         foreach($regex as $re => $type) {

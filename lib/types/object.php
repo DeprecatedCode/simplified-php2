@@ -116,114 +116,121 @@ type::$object->{'#run'} = function ($object) {
   $matched = false;
   
   foreach($object->{'#source'} as $source) {
+    try {
     
-    /**
-     * Standalone statements
-     */
-    if (is_array($source)) {
-      $result = run($source, $object);
-      $return = true;
-    }
-    
-    /**
-     * Key-value pairs
-     */
-    else if (is_object($source)) {
-      
       /**
-       * Simple keys (like #catch-all)
+       * Standalone statements
        */
-      if (is_string($source->key)) {
-        $key = $source->key;
-        
-        if ($key === '#catch-all' && !is_null($object->{'#prefix'})) {
-          if (!$matched) {
-            $result = run($source->value, $object);
-            $return = true;
-            $matched = true;
-          }
-          continue;
-        }
+      if (is_array($source)) {
+        $return = true;
+        $result = run($source, $object);
       }
       
       /**
-       * Complex keys
+       * Key-value pairs
        */
-      else {
+      else if (is_object($source)) {
         
         /**
-         * Check for prefix
+         * Simple keys (like #catch-all)
          */
-        $keySource = $source->key;
-        foreach($keySource as $key => $item) {
-          if ($item->{'#type'} === 'operator' && $item->value === '?') {
-            $object->{'#prefix'} = array_splice($keySource, 0, $key);
-            array_shift($keySource);
-            $matched = false;
-            break;
-          }
-        }
-        
-        /**
-         * If prefix, return first matching expression
-         */
-        if (!is_null($object->{'#prefix'})) {
-          if (!$matched) {
-            $condition = array_merge($object->{'#prefix'}, $keySource);
-            $test = run($condition, $object);
-            if ($test) {
-              $result = run($source->value, $object);
+        if (is_string($source->key)) {
+          $key = $source->key;
+          
+          if ($key === '#catch-all' && !is_null($object->{'#prefix'})) {
+            if (!$matched) {
               $return = true;
               $matched = true;
+              $result = run($source->value, $object);
             }
+            continue;
           }
-          
-          /**
-           * Check next condition
-           */
-          continue;
-        }
-        
-        /**
-         * Single-identifier keys
-         */
-        if (count($keySource) === 1 && $keySource[0]->{'#type'} === 'identifier') {
-          $key = $keySource[0]->value;
         }
         
         /**
          * Complex keys
          */
         else {
-          $key = run($keySource, $object);
+          
+          /**
+           * Check for prefix
+           */
+          $keySource = $source->key;
+          foreach($keySource as $key => $item) {
+            if ($item->{'#type'} === 'operator' && $item->value === '?') {
+              $object->{'#prefix'} = array_splice($keySource, 0, $key);
+              array_shift($keySource);
+              $matched = false;
+              break;
+            }
+          }
+          
+          /**
+           * If prefix, return first matching expression
+           */
+          if (!is_null($object->{'#prefix'})) {
+            if (!$matched) {
+              $condition = array_merge($object->{'#prefix'}, $keySource);
+              $test = run($condition, $object);
+              if ($test) {
+                $result = run($source->value, $object);
+                $return = true;
+                $matched = true;
+              }
+            }
+            
+            /**
+             * Check next condition
+             */
+            continue;
+          }
+          
+          /**
+           * Single-identifier keys
+           */
+          if (count($keySource) === 1 && $keySource[0]->{'#type'} === 'identifier') {
+            $key = $keySource[0]->value;
+          }
+          
+          /**
+           * Complex keys
+           */
+          else {
+            $key = run($keySource, $object);
+          }
         }
+        
+        if (!is_string($key) && !is_int($key) && !is_float($key)) {
+          throw new Exception("Object key must be a string or number");
+        }
+        
+        /**
+         * Values
+         */
+        $value = run($source->value, $object);
+        
+        /**
+         * Result
+         */
+        $object->{$key} = $value;
+        
+        /**
+         * Do not return $result
+         */
+        $return = false;
       }
       
-      if (!is_string($key) && !is_int($key) && !is_float($key)) {
-        throw new Exception("Object key must be a string or number");
+      /**
+       * Error
+       */
+      else {
+        throw new Exception("Invalid object source");
       }
       
-      /**
-       * Values
-       */
-      $value = run($source->value, $object);
-      
-      /**
-       * Result
-       */
-      $object->{$key} = $value;
-      
-      /**
-       * Do not return $result
-       */
-      $return = false;
     }
     
-    /**
-     * Error
-     */
-    else {
-      throw new Exception("Invalid object source");
+    catch (StopCommand $e) {
+      break;
     }
   }
   

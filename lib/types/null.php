@@ -19,7 +19,30 @@ type::$null->{'#operator &'} = function ($null, $right, $context) {
     throw new Exception("No valid context");
   }
   $context->$right = get($context, $right);
+  
+  return $context;
 };
+
+/**
+ * ?? checks variable existence in current context
+ */
+type::$null->{'#operator ??'} = function ($null, $right, $context) {
+  if (!is_object($context)) {
+    throw new Exception("No valid context");
+  }
+  try {
+    get($context, $right);
+    return true;
+  }
+  catch(Exception $e) {
+    return false;
+  }
+};
+
+/**
+ * Print is noop
+ */
+type::$null->print = null;
 
 /**
  * ~ converts a string into a regex object

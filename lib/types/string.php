@@ -44,6 +44,22 @@ type::$string->{'#apply float'} = function ($left, $right) {
   return $left . $right;
 };
 
+type::$string->slice = function ($string, $context=null) {
+  return cmd('string.slice', $context, array(
+    'array' => function ($cmd, $array) {
+      $fn = type::$array->{'#each'};
+      $arr = $fn($array, function ($key, $item) use ($cmd) {
+        return apply($cmd, $item);
+      });
+      $cmd = get($arr, 'join');
+      return apply($cmd, '');
+    },
+    'integer' => function ($cmd, $integer) use ($string) {
+      return $string[$integer];
+    }
+  ));
+};
+
 type::$string->{'#apply regex'} = function ($string, $regex, $context=null) {
   $matches = array();
   $regex = $regex->{'#value'};
@@ -54,7 +70,7 @@ type::$string->{'#apply regex'} = function ($string, $regex, $context=null) {
   return $arr;
 };
 
-type::$string->{'#operator ='} = function ($left, $right) {
+type::$string->{'#operator ='} = function ($left, $right, $context=null) {
   return $left === $right;
 };
 
@@ -76,6 +92,10 @@ type::$string->lower = function ($string) {
   return strtolower($string);
 };
 
+type::$string->title = function ($string) {
+  return ucwords($string);
+};
+
 type::$string->contains = function ($string, $context=null) {
   return cmd('string.contains', $context, array(
     'string' => function ($command, $search) use ($string) {
@@ -93,13 +113,29 @@ type::$string->repeat = function ($string, $context=null) {
 };
 
 type::$string->split = function ($string, $context=null) {
-  return cmd('string.split', $context, array(
-    'string' => function ($command, $by) use ($string, $context) {
-      $arr = a($context);
-      $arr->{'#value'} = explode($by, $string);
-      return $arr;
+  $cmd = cmd('string.split', $context, array(
+    
+    /**
+     * Handle "".split "by"
+     */
+    'regex|string|integer|float' => function ($command, $split) use ($string, $context) {
+      if (is_object($split) && $split->{'#type'} === 'regex') {
+        $regex = str_replace('/', '\\/', $split->{'#value'});
+        $regex = "/$regex/";
+        return preg_split($regex, $string);
+      }
+      return explode($split, $string);
     }
   ));
+  
+  /**
+   * Handle "".split ~"[a-z]"
+   */
+  $cmd->{'#operator ~'} = function ($command, $right) use($context) {
+    $regex = regex($right, $context);
+    return apply($command, $regex);
+  };
+  return $cmd;
 };
 
 type::$string->replace = function ($string, $context=null) {
@@ -123,7 +159,7 @@ type::$string->replace = function ($string, $context=null) {
       $cmd = cmd('string.replace', null, array(
         'string|integer|float' => function ($command, $replace) use ($string, $context, $search) {
           if (isset($command->{'#regex'})) {
-            $regex = $search->{'#value'};
+            $regex = str_replace('/', '\\/', $search->{'#value'});
             $regex = "/$regex/";
             return preg_replace($regex, $replace, $string);
           }

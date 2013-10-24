@@ -5,17 +5,19 @@ title: "Objects", @import "test.php"
 
 # If an object ends with a statement, it will be returned upon invocation
 
-foo: {a: 4, b: 5, a + b}, ['foo: ', foo, '<br/><br/>foo(): ', foo()].print
+foo: {a: 4, b: 5, a + b}
+
+['<p>foo: ', foo, '</p>', '<p>foo$: ', foo$, '</p>'].print
 
 _flush_()
 
-# Apply an object to an object
+# Apply an object to an object - use $ to force evaluation
 
-fn: {a+b}
+fn: {a + b}
 
-fn{a:3, b:4}().print, ' and '.print
+fn{a: 3, b: 4}$ ' and '.print
 
-fn{a:10}{b:20}().print
+fn{a: 10}{b: 20}$.print
 
 _flush_()
 
@@ -25,4 +27,4 @@ x_pos: 433
 
 pos: {&x_pos, y_pos: x_pos + 100}
 
-pos.print
+['<p>', pos, '</p>'].print

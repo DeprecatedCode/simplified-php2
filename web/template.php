@@ -5,8 +5,11 @@
 
 bright: '#ffffff'
 normal: '#f9fbfd'
-dark:   '#ddd'
+tint:   '#ddd'
 highlight: '#6ad'
+dark: '#444'
+purple: '#a0a'
+green: '#0a0'
 
 '<!doctype html>
 <html>
@@ -19,48 +22,48 @@ highlight: '#6ad'
       padding: 0 0.75em;
       color: #333;
     }
-    
+
     h2 {
       font-size: 16px;
     }
-    
+
     h3 {
       margin: 1em 0 0.25em;
       font-size: 11px;
     }
-    
+
     td, th {
       padding: 0.3em 0.5em;
       text-align: center;
       background: rgba(0, 0, 0, 0.1);
     }
-    
+
     td {
       background: rgba(0, 0, 0, 0.05);
     }
-    
+
     pre.code, .output {
       margin-top: 0;
       font-size: 13px;
       background: 'normal';
-      border: 1px solid 'dark';
+      border: 1px solid 'tint';
       padding: 12px;
       overflow-x: auto;
       margin-left: 5px;
     }
-    
+
     pre.code {
-      box-shadow: -5px 0 0 #a0a;
+      box-shadow: -5px 0 0 'purple';
     }
-    
+
     .output {
-      box-shadow: -5px 0 0 0 #0a0;
+      box-shadow: -5px 0 0 'green';
     }
-    
+
     .output pre {
       margin: 0;
     }
-    
+
     .output > *:first-child {
       margin-top: 0;
     }
@@ -76,15 +79,18 @@ highlight: '#6ad'
       font-family: "Oxygen Mono", monospace;
     }
     
-    .btn {
+    .btn, .switch a {
       padding: 0.25em 0.75em;
       margin: 1em -1px 0 0;
       background: 'normal';
-      border: 1px solid 'dark';
-      border-bottom: none;
       text-decoration: none;
       color: inherit;
+    }
+    
+    .btn {
       box-shadow: 0 2px 0 0 'highlight';
+      border: 1px solid 'tint';
+      border-bottom: none;
     }
     
     .btn.large {
@@ -100,7 +106,7 @@ highlight: '#6ad'
     }
     
     .btn:active {
-      background: 'dark';
+      background: 'tint';
     }
     
     .btn.active {
@@ -118,6 +124,48 @@ highlight: '#6ad'
       background-position: 1em;
       color: #a44;
       padding: 2.5em 2em 2.4em 8em;
+    }
+    
+    .switch {
+      font-size: 70%;
+      font-weight: bold;
+      margin: 0.5em 0 1em;
+      border: 2px solid 'dark';
+      display: inline-block;
+      padding: 3px 1px 3px 0;
+    }
+    
+    .switch a {
+      border-left: 1px solid 'tint';
+    }
+    
+    .switch a:first-child {
+      border-left: none;
+    }
+    
+    .switch a:last-child {
+      margin-right: -8px;
+    }
+    
+    .switch a.selected {
+      background: 'dark';
+      color: white;
+    }
+    
+    .switch a.switch-code.selected {
+      background: 'purple';
+    }
+    
+    .switch a.switch-interlaced.selected {
+      background-image:         linear-gradient(90deg, 'green' 49%, 'purple' 50%);
+      background-image:      -o-linear-gradient(90deg, 'green' 49%, 'purple' 50%);
+      background-image:    -moz-linear-gradient(90deg, 'green' 49%, 'purple' 50%);
+      background-image: -webkit-linear-gradient(90deg, 'green' 49%, 'purple' 50%);
+      background-image:     -ms-linear-gradient(90deg, 'green' 49%, 'purple' 50%);
+    }
+    
+    .switch a.switch-result.selected {
+      background: 'green';
     }
   </style>
   <link href="http://fonts.googleapis.com/css?family=Oxygen+Mono|Open+Sans:400,700" rel="stylesheet" type="text/css" />

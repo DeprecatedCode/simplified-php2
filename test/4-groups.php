@@ -3,22 +3,18 @@
 
 title: "Groups", @import "test.php"
 
-# Line Break
-
-br: '<br /><br />'
-
 # There is a difference between the following a and b:
 
 a: "A: " + 3 + 5
 
 b: "B: " + (3 + 5)
 
-a br b .print
+'<p>' a '</p><p>' b '</p>'.print
 
 _flush_()
 
 # There is a difference between the following c and d:
 
-c: "C: " + "A sentence." br .print
+c: "<p>C: " + "A sentence.</p>" .print
 
-d: "Another sentence." + ("D: ".print) .print
+d: "Another sentence.</p>" + ("<p>D: ".print) .print

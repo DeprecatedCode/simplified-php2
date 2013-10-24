@@ -3,9 +3,9 @@
 
 title: "Numbers", @import "test.php"
 
-br: '<br/><br/>'
+# No special order of operations
 
-'All of the following variables should be 100:' br.print
+'<p>All of the following variables should be 100:</p>'.print
 
 a: 20 * 5
 
@@ -25,6 +25,8 @@ _flush_()
 
 # Incrementing a number: 3 alternatives
 
+'<p>'.print
+
 show: {' &raquo; ' x .print}
 
 x: 5,             x.print
@@ -34,3 +36,5 @@ x: x + 5,         show()
 ++x 5,            show()
 
 @self::x (x + 5), show()
+
+'</p>'.print

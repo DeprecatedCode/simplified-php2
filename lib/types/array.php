@@ -61,7 +61,7 @@ type::$array->{'#applied'} = function ($scope, $array) {
 type::$array->{'#apply *'} = function ($array, $scope) {
   $fn = type::$array->{'#each'};
   return $fn($array, function ($key, $item) use ($scope) {
-    return apply($scope, $item);
+    return apply($item, $scope);
   });
 };
 
@@ -69,6 +69,7 @@ type::$array->{'#apply *'} = function ($array, $scope) {
  * Apply an integer to get that offset
  */
 type::$array->{'#apply integer'} = function ($array, $integer) {
+  certify($array);
   return $array->{'#value'}[$integer];
 };
 

@@ -7,7 +7,7 @@ title: "Conditional", @import "test.php"
 
 a: 7
 
-"Variable a is " {a ? < 4: "less than", = 4: "equal to", > 4: "greater than"} " 4!" .print
+"<p>Variable a is " {a ? < 4: "less than", = 4: "equal to", > 4: "greater than"} " 4!</p>" .print
 
 _flush_()
 
@@ -15,15 +15,17 @@ _flush_()
 
 name: @null
 
-"Dear " {? name: name, *: "visitor"} ", welcome to SimplifiedPHP. " .print
+"<p>Dear " {? name: name, *: "visitor"} ", welcome to SimplifiedPHP. " .print
 
 name: "Dr. Horrible"
 
-"I'll just call you " {? name: name, *: "visitor"} " &mdash; if that's alright with you." .print
+"I'll just call you " {? name: name, *: "visitor"} " &mdash; if that's alright with you.</p>" .print
 
 _flush_()
 
 # Using conditions with iteration
+
+'<p>'.print
 
 desires: ["snail", "cookie", "rusty nail", "burger", "milkshake", "vulture"]
 
@@ -38,3 +40,5 @@ desires {
 
   ? it.contains "shake": @break
 }
+
+'</p>'.print

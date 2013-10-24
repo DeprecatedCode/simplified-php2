@@ -150,7 +150,7 @@ type::$system->timer = function () {
  */
 type::$system->finally = function($context) {
   return cmd('@finally', $context, array('object' => function ($command, $object) {
-    sys::$finally[] = $object;
+    array_unshift(sys::$finally, $object);
   }));
 };
 
@@ -184,6 +184,18 @@ type::$system->break = function($context) {
  * Break Exception
  */
 class BreakCommand extends InternalException {}
+
+/**
+ * Stop
+ */
+type::$system->stop = function($context) {
+  throw new StopCommand("@stop");
+};
+
+/**
+ * Stop Exception
+ */
+class StopCommand extends InternalException {}
 
 /**
  * System Class

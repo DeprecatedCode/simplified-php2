@@ -7,7 +7,7 @@ title: "Variables", @import "test.php"
 
 var1: "Hello World 1"
 
-var1.print
+'<p>' var1 '</p>'.print
 
 _flush_()
 
@@ -15,7 +15,7 @@ _flush_()
 
 var2: {"first": "Hello ", "second": "World 2"}
 
-var2.first.print, var2("second").print
+'<p>' (var2.first).print, var2("second") '</p>'.print
 
 _flush_()
 
@@ -23,7 +23,7 @@ _flush_()
 
 var3: {one: 1, two: 2, three: one + two, message: "Hello World " + three}
 
-var3.message.print
+'<p>' (var3.message) '</p>'.print
 
 _flush_()
 
@@ -34,4 +34,4 @@ var4: {numbers: {}}
 var4.numbers::four 4
 var4::message ("Hello World " + (var4.numbers.four))
 
-var4.message.print
+'<p>' (var4.message) '</p>'.print

@@ -3,17 +3,13 @@
 
 title: "Deferred", @import "test.php"
 
-# Line Break
-
-br: '<br /><br />'
-
 # Objects and arrays are not evaluated until requested
 
-fourth: ["This is printed 4th".print]
+fourth: ["<p>This is printed 4th</p>".print]
 
-second: {third: "This is printed 3rd" br, "This is printed 2nd" br .print}
+second: {third: "<p>This is printed 3rd</p>", "<p>This is printed 2nd</p>" .print, foo: "bar"}
 
-first: "This is printed 1st" br .print
+first: "<p>This is printed 1st</p>".print
 
 # Run
 
