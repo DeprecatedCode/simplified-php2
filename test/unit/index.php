@@ -41,6 +41,7 @@ gray:       '#aaa'
 <!doctype html>
 <html>
 <head>
+  <title>SimplifiedPHP Unit Test Suite</title>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
   <script>
     var unit = {};
@@ -49,15 +50,21 @@ gray:       '#aaa'
     
       unit.el = $('#unit');
       unit.baseUrl = window.location.pathname.replace(/unit.*$/, 'unit');
-    
-      $.getJSON('?discover', function (groups) {
-        unit.groups = groups;
-        render();
-      });
+      $('#run').click(start);
+      
+      start();
     });
     
     unit.clear = function () {
       unit.el.empty();
+    };
+    
+    var start = function () {
+      unit.clear();
+      $.getJSON('?discover', function (groups) {
+        unit.groups = groups;
+        render();
+      });
     };
     
     var render = function () {
@@ -126,8 +133,18 @@ gray:       '#aaa'
       padding-right: 552px;
     }
     
-    a {
+    a, .link {
       color: """highlight""";
+      text-decoration: none;
+      cursor: pointer;
+    }
+    
+    a:hover, .link:hover {
+      text-decoration: underline;
+    }
+    
+    a:active, .link:active {
+      opacity: 0.8;
     }
 
     h2 {
@@ -161,6 +178,7 @@ gray:       '#aaa'
       user-select: none;
       -webkit-user-select: none;
       -moz-user-select: none;
+      transition: background 2s;
     }
     
     .test.selected {
@@ -197,7 +215,8 @@ gray:       '#aaa'
   </style>
 </head>
 <body>
-  <h1><a href="../../">SimplifiedPHP</a> &bull; Unit Test Suite</h1>
+  <h1><a href="../../">SimplifiedPHP</a> &bull; Unit Test Suite &bull;
+    <span id="run" class="link">Run</span></h1>
   <div id="unit"></div>
   <div id="inspect">
     <h1>Test Inspector</h1>
