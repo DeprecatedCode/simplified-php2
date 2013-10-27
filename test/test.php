@@ -1,21 +1,33 @@
 # SimplifiedPHP Test Page Runner
 # Author: Nate Ferrero
 
-title: title " Test"
-nav: "test"
+root: @parent
+subtitle: title
+title: {? root ?? plugin: "Plugin Example", *: title " Test"}$
+nav: {? root ?? plugin: "plugins", *: "test"}$
 
 @import "../web/template.php"
 
-sections: @import "test-sections.php"
+# If we are in the test section, show tests
 
-loc: {? ?? loc: loc, *: ''}$
-
-format: {? @request.args ?? format: '?format=' (@request.args.format), *: ''}
-
-sections {'<a class="btn '{it.path '.php' = ? (@request.basename): 'active'}'"
-              href="' loc (it.path) '.php' format ' ">' (it.title) '</a>'.print}
-
-'<br/><br/>'.print
+{nav = ? "test": {
+    sections: @import "test-sections.php"
+    
+    loc: {? ?? loc: loc, *: ''}$
+    
+    format: {? @request.args ?? format: '?format=' (@request.args.format), *: ''}
+    
+    '<br/><br/>'.print
+    
+    sections {'<a class="btn '{it.path '.php' = ? (@request.basename): 'active'}'"
+                  href="' loc (it.path) '.php' format ' ">' (it.title) '</a>'.print}
+    
+    '<br/><br/>'.print
+  }$
+  
+  "plugins": '<h2><a href="../../web/plugins.php">&laquo;
+    Back to Installed Plugins</a></h2><h1>' subtitle '</h1>'.print
+}$
 
 types: ['code', 'interlaced', 'result']
 type: {@request.args ?? format ?: @request.args.format, *: types 1}$

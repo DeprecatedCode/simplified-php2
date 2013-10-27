@@ -5,6 +5,8 @@ nav: "tutorial", @import "../template.php"
 
 # Tabs
 
+'<br/><br/>'.print
+
 '<a class="btn '{? @request.args ?? code ! : 'active'}'" href="?">Result</a>'.print
 '<a class="btn '{? @request.args ?? code   : 'active'}'" href="?code">Source Code</a>'.print
 

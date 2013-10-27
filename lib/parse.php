@@ -52,7 +52,7 @@ function parse($code, $P = null) {
 
     $length = strlen($code);
     $queue = '';
-    $escape = false;
+    $nlescape = $escape = false;
 
     /**
      * Main Parse Loop
@@ -63,12 +63,19 @@ function parse($code, $P = null) {
           if ($pos == $length - 1 || $code[$pos + 1] != "\n") {
             $column = 0;
             $line++;
+            if ($nlescape) {
+              continue;
+            }
           }
         } else if($code[$pos] == "\n") {
             $column = 0;
             $line++;
+            if ($nlescape) {
+              continue;
+            }
         } else {
             $column++;
+            $nlescape = false; // Back to non-newline characters
         }
         
         /**
@@ -103,6 +110,8 @@ function parse($code, $P = null) {
               break;
             case "\r":
             case "\n":
+              $nlescape = true;
+              break;
             case "'":
             case '"':
               $queue .= $chr;
@@ -244,7 +253,7 @@ function expr(&$current, $expr, $line, $column) {
         '\$?[a-zA-Z0-9_]+'                                => 'i',
         '\:\:|\*\:|\:|\.\.|\.|\,|[^\sa-zA-Z0-9_.:,]{1,2}' => 'o',
         '[\n\r]+'                                         => 'b',
-        '\s+'                                             => 's'
+        '[ \t]+'                                          => 's'
     );
     while(strlen($expr) > 0) {
         foreach($regex as $re => $type) {

@@ -3,11 +3,11 @@
 /**
  * Certify an object, make sure it has executed
  */
-function certify($scope) {
+function certify(&$scope) {
   if (is_object($scope) && isset($scope->{'#type'}) &&
       $scope->{'#type'} !== 'proto' &&
       (!isset($scope->{'#done'}) || !$scope->{'#done'})) {
-    run($scope);
+    $scope = run($scope);
   }
 }
 

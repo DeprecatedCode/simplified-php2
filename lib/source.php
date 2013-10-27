@@ -103,7 +103,7 @@ function n(&$parent, $line=null, $column=null) {
     $scope->{'#line'} = $line;
     $scope->{'#column'} = $column;
   }
-  $scope->{'#parent'} = &$parent;
+  $scope->{'#parent'} = $parent;
   return $scope;
 }
 

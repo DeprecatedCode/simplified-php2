@@ -1,7 +1,25 @@
 <?php
 
+/**
+ * Create a dir object
+ */
+function odir($path) {
+  $dir = obj('dir');
+  $dir->path = realpath($path);
+  $dir->name = basename($path);
+  return $dir;
+}
+
 type::$dir->{'#run'} = function ($dir) {
   return $dir;
+};
+
+type::$dir->print = function ($dir) {
+  echo '(@dir "' . $dir->path . '")';
+};
+
+type::$dir->exists = function ($dir) {
+  return is_dir($dir->path);
 };
 
 type::$dir->ensure = function ($dir) {
@@ -10,15 +28,30 @@ type::$dir->ensure = function ($dir) {
   }
 };
 
+type::$dir->file = function ($dir) {
+  return cmd('dir.file', $dir, array(
+    'string' => function ($cmd, $string) use ($dir) {
+
+      $sep = strpos('/\\', substr($dir->path, -1)) !== false ?
+        '' : DIRECTORY_SEPARATOR;
+
+      return ofile($dir->path . $sep . $string);
+    }
+  ));
+};
+
 type::$dir->files = function ($dir) {
   $files = array();
   foreach(scandir($dir->path) as $path) {
-    $path = str_replace('//', '/', $dir->path . '/' . $path);
+
+    // Add a separator if path does not end with one
+    $sep = strpos('/\\', substr($dir->path, -1)) !== false ?
+      '' : DIRECTORY_SEPARATOR;
+
+    $path = $dir->path . $sep . $path;
+
     if (is_file($path)) {
-      $file = obj('file');
-      $file->path = $path;
-      $file->name = basename($path);
-      $files[] = $file;
+      $files[] = ofile($path);
     }
   }
   $arr = a($context);
@@ -32,12 +65,15 @@ type::$dir->dirs = function ($dir) {
     if ($path == '.' || $path == '..') {
       continue;
     }
-    $path = str_replace('//', '/', $dir->path . '/' . $path);
+
+    // Add a separator if path does not end with one
+    $sep = strpos('/\\', substr($dir->path, -1)) !== false ?
+      '' : DIRECTORY_SEPARATOR;
+
+    $path = $dir->path . $sep . $path;
+
     if (is_dir($path)) {
-      $dir = obj('dir');
-      $dir->path = $path;
-      $dir->name = basename($path);
-      $dirs[] = $dir;
+      $dirs[] = odir($path);
     }
   }
   $arr = a($context);

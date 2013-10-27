@@ -7,7 +7,7 @@ type::$group->{'#run'} = function ($group) {
   if (!isset($group->{'#register'})) {
     return null;
   }
-  return run($group->{'#register'}, $group->{'#parent'});
+  return run($group->{'#register'}, $group);
 };
 
 /**

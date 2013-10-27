@@ -30,9 +30,7 @@ function exc($e) {
   $buf = '';
   $fmt = function ($x) {
     return str_replace('d @', 'Debugger @',
-      str_replace('.php', '',
-        str_replace(__DIR__ . '/', '', $x)
-      )
+      str_replace(__DIR__ . '/', '', $x)
     );
   };
   if ($e->getMessage() !== 'Debug') {
@@ -46,7 +44,8 @@ function exc($e) {
     $buf .= "\n\n previously:\n";
     $e = $orig;
     foreach($e->getTrace() as $trace) {
-      $buf .= $fmt("\n $trace[function] @ $trace[file]:$trace[line]");
+      $f = isset($trace['file']) ? "$trace[file]:$trace[line]" : '?';
+      $buf .= $fmt("\n $trace[function] @ $f");
     }
   }
   

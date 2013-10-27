@@ -20,9 +20,20 @@ type::$system->import = function ($context) {
       }
     }
     catch(Exception $e) {}
-    $code = parse(file_get_contents($string), $context);
-    $code->{'#directory'} = dirname(realpath($string)) . '/';
-    return run($code);
+    try {
+      $code = parse(file_get_contents($string), $context);
+      $code->{'#directory'} = dirname(realpath($string)) . '/';
+      return run($code);
+    }
+    catch(Exception $e) {
+      if ($e instanceof InternalException) {
+        throw $e;
+      }
+      $f = realpath($string);
+      $m = $e->getMessage();
+      $from = $e->getFile() . ':' . $e->getLine();
+      throw new Exception("$m in $f (from $from)", 0, $e);
+    }
   }));
 };
 
@@ -46,9 +57,16 @@ type::$system->redirect = function ($context) {
  */
 type::$system->file = function ($context) {
   return cmd('@file', $context, array('string' => function ($command, $string) use ($context) {
-    $file = obj('file');
-    $file->path = $string;
-    return $file;
+    return ofile($string);
+  }));
+};
+
+/**
+ * System Dir
+ */
+type::$system->dir = function ($context) {
+  return cmd('@dir', $context, array('string' => function ($command, $string) use ($context) {
+    return odir($string);
   }));
 };
 
@@ -62,17 +80,6 @@ type::$system->plugin = function ($context) {
     return sys::$plugin->$name;
   };
   return $plugins;
-};
-
-/**
- * System Dir
- */
-type::$system->dir = function ($context) {
-  return cmd('@dir', $context, array('string' => function ($command, $string) use ($context) {
-    $dir = obj('dir');
-    $dir->path = $string;
-    return $dir;
-  }));
 };
 
 /**

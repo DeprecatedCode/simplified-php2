@@ -1,5 +1,9 @@
 <?php
 
+type::$null->{'#operator ='} = function ($left, $right) {
+  return $left === $right;
+};
+
 /**
  * @ allows access to system objects
  */

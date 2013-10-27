@@ -15,7 +15,7 @@
       
       # Loop through all files in dir and add to paths
       dir.files {
-        paths.tests.push(it.path.replace ~'^\.' '')
+        paths.tests.push('/' (dir.name) '/' (it.name))
       }
     }
     

@@ -117,6 +117,7 @@ type::$array->{'#each'} = function ($array, $fn) {
 type::$array->{'#apply object'} = function ($array, $object) {
   $fn = type::$array->{'#each'};
   $a = $fn($array, function ($key, $item) use ($array, $object) {
+    certify($item);
     $object->it = $item;
     $object->key = $key;
     return run($object);

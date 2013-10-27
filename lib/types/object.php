@@ -61,7 +61,13 @@ type::$object->to_json = function ($object, $level=0) {
  * Apply string to object
  */
 type::$object->{'#apply string'} = function ($object, $string) {
-  return get($object, $string);
+  certify($object);
+  if (is_object($object)) {
+    return get($object, $string);
+  }
+  else {
+    return apply($object, $string);
+  }
 };
 
 /**
@@ -208,6 +214,13 @@ type::$object->{'#run'} = function ($object) {
          * Values
          */
         $value = run($source->value, $object);
+        
+        /**
+         * Clone value if it is an object
+         */
+        if (is_object($value)) {
+          $value = clone $value;
+        }
         
         /**
          * Result

@@ -9,7 +9,7 @@ if (defined('SIMPLIFIED')) {
     run($code);
   }
   catch(Exception $e) {
-    echo '<pre><h2>SimplifiedPHP Exception</h2>';
+    echo '<pre><h2>SimplifiedPHP Exception in ' . $_SERVER['SCRIPT_NAME'] . ' </h2>';
     echo exc($e);
     echo '</pre>';
   }

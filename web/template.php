@@ -15,6 +15,7 @@ green:      '#0a0'
 <html>
 <head>
   <title>SimplifiedPHP Test: ' title '</title>
+  <link href="/simplified-php/web/typicons.font/font/typicons.min.css" rel="stylesheet" type="text/css" />
   <style>
     body {
       font-family: "Open Sans", Tahoma, Arial, sans-serif;
@@ -23,8 +24,18 @@ green:      '#0a0'
       color: #333;
     }
     
-    a {
-      color: """highlight""";
+    a, .link {
+      color: 'highlight';
+      text-decoration: none;
+      cursor: pointer;
+    }
+    
+    a:hover, .link:hover {
+      text-decoration: underline;
+    }
+    
+    a:active, .link:active {
+      opacity: 0.8;
     }
 
     h2 {
@@ -77,9 +88,13 @@ green:      '#0a0'
     }
     
     body pre code {
-      font-size: 13px;
       background: transparent;
       padding: 0;
+      font-size: 13px;
+    }
+    
+    code {
+      font-weight: normal;
       font-family: "Oxygen Mono", monospace;
     }
     
@@ -90,7 +105,7 @@ green:      '#0a0'
       text-decoration: none;
       color: inherit;
     }
-    
+
     .btn {
       box-shadow: 0 2px 0 0 'highlight';
       border: 1px solid 'tint';
@@ -107,6 +122,7 @@ green:      '#0a0'
     .btn:hover {
       background: 'bright';
       position: relative;
+      text-decoration: none;
     }
     
     .btn:active {
