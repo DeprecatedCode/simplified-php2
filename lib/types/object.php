@@ -218,7 +218,7 @@ type::$object->{'#run'} = function ($object) {
         /**
          * Clone value if it is an object
          */
-        if (is_object($value)) {
+        if (is_object($value) && $value instanceof stdClass) {
           $value = clone $value;
         }
         
