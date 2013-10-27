@@ -5,7 +5,7 @@ three: 3
 
 group: (two + three)
 
-group_parent: "Foo" (@parent.two)
+group_self: "Foo" (@self.two)
 
 @test{ group = 5 }
-@test{ group_parent = "Foo2" }
+@test{ group_self = "Foo2" }

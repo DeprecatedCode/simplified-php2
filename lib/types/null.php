@@ -22,7 +22,8 @@ type::$null->{'#operator &'} = function ($null, $right, $context) {
   if (!is_object($context)) {
     throw new Exception("No valid context");
   }
-  $context->$right = get($context, $right);
+  $parent = isset($context->{'#parent'}) ? $context->{'#parent'} : $context;
+  $context->$right = get($parent, $right);
   
   return $context;
 };

@@ -7,7 +7,14 @@ function certify(&$scope) {
   if (is_object($scope) && isset($scope->{'#type'}) &&
       $scope->{'#type'} !== 'proto' &&
       (!isset($scope->{'#done'}) || !$scope->{'#done'})) {
-    $scope = run($scope);
+    $result = run($scope);
+    if ($result !== $scope) {
+      $scope->{'#certify'} = $result;
+      $scope = $result;
+    }
+  }
+  else if (is_object($scope) && isset($scope->{'#certify'})) {
+    $scope = $scope->{'#certify'};
   }
 }
 
@@ -115,11 +122,19 @@ function apply($left, $right) {
   /**
    * Special case for groups
    */
-  if (is_object($left) && isset($left->{'#type'}) && $left->{'#type'} === 'group') {
+  $i = 0;
+  while (is_object($left) && isset($left->{'#type'}) && $left->{'#type'} === 'group') {
     $left = run($left);
+    if ($i++ > 20) {
+      throw new Exception("Too many nested groups");
+    }
   }
-  if (is_object($right) && isset($right->{'#type'}) && $right->{'#type'} === 'group') {
+  $i = 0;
+  while (is_object($right) && isset($right->{'#type'}) && $right->{'#type'} === 'group') {
     $right = run($right);
+    if ($i++ > 20) {
+      throw new Exception("Too many nested groups");
+    }
   }
 
   $try = true;
