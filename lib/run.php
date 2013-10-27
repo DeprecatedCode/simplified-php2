@@ -115,6 +115,9 @@ function apply($left, $right) {
   /**
    * Special case for groups
    */
+  if (is_object($left) && isset($left->{'#type'}) && $left->{'#type'} === 'group') {
+    $left = run($left);
+  }
   if (is_object($right) && isset($right->{'#type'}) && $right->{'#type'} === 'group') {
     $right = run($right);
   }

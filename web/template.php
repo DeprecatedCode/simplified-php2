@@ -115,7 +115,7 @@ green:      '#0a0'
     .btn.large {
       font-size: 120%;
       display: inline-block;
-      margin: 0 -1px 1.5em 0;
+      margin: 0 -1px 1em 0;
       padding: 0.5em 1.5em;
     }
     
@@ -152,19 +152,22 @@ green:      '#0a0'
       margin: 0.5em 0 1em;
       border: 2px solid 'dark';
       display: inline-block;
-      padding: 3px 1px 3px 0;
+      padding: 3px 0 3px 0;
+      overflow: hidden;
     }
     
     .switch a {
       border-left: 1px solid 'tint';
+      margin-left: -2px;
     }
     
     .switch a:first-child {
       border-left: none;
+      margin-left: 0;
     }
     
     .switch a:last-child {
-      margin-right: -8px;
+      margin-right: -6px;
     }
     
     .switch a.selected {

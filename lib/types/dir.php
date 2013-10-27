@@ -5,7 +5,7 @@
  */
 function odir($path) {
   $dir = obj('dir');
-  $dir->path = realpath($path);
+  $dir->path = $path;
   $dir->name = basename($path);
   return $dir;
 }

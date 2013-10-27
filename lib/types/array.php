@@ -8,9 +8,11 @@ type::$array->{'#run'} = function ($array) {
     return $array;
   }
   $array->{'#value'} = array();
+  $array->{'#running'} = true;
   foreach($array->{'#source'} as $source) {
-    $array->{'#value'}[] = run($source, isset($array->{'#parent'}) ? $array->{'#parent'} : null);
+    $array->{'#value'}[] = run($source, $array, true);
   }
+  $array->{'#running'} = false;
   return $array;
 };
 
@@ -114,13 +116,31 @@ type::$array->{'#each'} = function ($array, $fn) {
 /**
  * Apply object to array
  */
-type::$array->{'#apply object'} = function ($array, $object) {
+type::$array->{'#apply object'} = function ($left, $right) {
+  $array = a($left);
+  if (isset($left->{'#source'})) {
+    $array->{'#source'} = $left->{'#source'};
+  }
+  $fn = type::$object->{'#each'};
+  $fn($right, function ($key, $value) use ($array) {
+    $array->$key = $value;
+  });
+  return $array;
+};
+
+/**
+ * Allow iteration of array with array @ object
+ */
+type::$array->{'#operator @'} = function ($array, $right) {
+  if (!is_object($right)) {
+    throw new Exception("Invalid iteration expression after @");
+  }
   $fn = type::$array->{'#each'};
-  $a = $fn($array, function ($key, $item) use ($array, $object) {
+  $a = $fn($array, function ($key, $item) use ($array, $right) {
     certify($item);
-    $object->it = $item;
-    $object->key = $key;
-    return run($object);
+    $right->it = $item;
+    $right->key = $key;
+    return run($right);
   });
   return $a;
 };
@@ -129,6 +149,13 @@ type::$array->{'#apply object'} = function ($array, $object) {
  * Get array property
  */
 type::$array->{'#get'} = function ($array, $key) {
+  if (isset($array->{'#running'}) && $array->{'#running'} === true) {
+    if (property_exists($array, $key)) {
+      return $array->$key;
+    }
+    $parent = isset($array->{'#parent'}) ? $array->{'#parent'} : null;
+    return get($parent, $key);
+  }
   $a = a($array);
   foreach($array->{'#value'} as $item) {
     $a->{'#value'}[] = get($item, $key);

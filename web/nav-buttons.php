@@ -7,5 +7,5 @@
   {nav: "support",  path: "https://github.com/NateFerrero/simplified-php/issues?state=open"
     title: "Bugs &amp; Support"}
 
-]{'<a class="btn large '{nav = ? (it.nav): 'active'}'"
+] @ {'<a class="btn large '{nav = ? (it.nav): 'active'}'"
       href="'(it.path)'">'(it.title)'</a>'.print}

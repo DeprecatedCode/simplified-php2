@@ -57,7 +57,7 @@ z:  """\\  \' \"  ' "  '' ""  ''' \"""  /"""
 
 '<pre>' ([w, x, y, z].join '<br/>') '</pre>'.print
 
-'<p>Length of each string: '.print, [w, x, y, z]{it.length}.join ', ' '.</p>'.print
+'<p>Length of each string: '.print, [w, x, y, z] @ {it.length}.join ', ' '.</p>'.print
 
 _flush_()
 

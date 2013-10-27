@@ -21,15 +21,23 @@ arr: [3, 2, 1]
 
 _flush_()
 
+# If you are careful not to invoke the array, it can contain undefined variables
+# at definition time
+
+atomic_mass: [mercury, gold, mercury + gold]
+['<p>', atomic_mass {mercury: 200.59, gold: 196.97}.to_json, '</p>'].print
+
+_flush_()
+
 # You can operate on the entire array at once
 
 ["<p>A ", "simple ", "array</p>"].print
 
 _flush_()
 
-# Or one at a time
+# Or one at a time by iterating with @
 
-['<p>', ["Another", "simple", "array"]{it.upper " ... "}, '</p>'].print
+['<p>', ["Another", "simple", "array"] @ {it.upper " ... "}, '</p>'].print
 
 _flush_()
 
@@ -58,14 +66,14 @@ _flush_()
 
 # You can do math
 
-["<p>", five_numbers{2 * it + 10}.join ', ', "</p>"].print
+["<p>", five_numbers @ {2 * it + 10}.join ', ', "</p>"].print
 
 _flush_()
 
 # And running totals: array object --> array
 
 sum: 0
-["<p>Running totals: ", five_numbers{sum: sum + it, sum}.to_json, "</p>"].print
+["<p>Running totals: ", five_numbers @ {sum: sum + it, sum}.to_json, "</p>"].print
 
 _flush_()
 

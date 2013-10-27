@@ -29,7 +29,7 @@ _flush_()
 
 desires: ["snail", "cookie", "rusty nail", "burger", "milkshake", "vulture"]
 
-desires {
+desires @ {
   ? it.contains "nail": @continue
 
   "I " {? key > 1: "also"} " want a " it {

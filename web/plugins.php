@@ -54,7 +54,7 @@ nav: "plugins"
 
 icon: {'<span class="typcn typcn-' i '"></span>'}
 
-@dir "../plugins" .dirs {
+@dir "../plugins" .dirs @ {
 
   dir: it
 
@@ -80,7 +80,7 @@ icon: {'<span class="typcn typcn-' i '"></span>'}
       href="' (about.url) '">' (about.url) '</a>'.print
     }$
       
-    {? about ?? authors: (icon{i: "pencil"}) (about.authors{
+    {? about ?? authors: (icon{i: "pencil"}) (about.authors @ {
         it ?? ? url: '<a target="_blank" href="' (it.url) '">' (it.name) '</a>'
                name: it.name 
       }.join ", ").print

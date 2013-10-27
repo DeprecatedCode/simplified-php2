@@ -17,6 +17,15 @@ if (defined('SIMPLIFIED')) {
 }
 
 /**
+ * Done function for command line scripts
+ */
+else {
+  function done () {
+    require(__FILE__);
+  }
+}
+
+/**
  * Error Handler
  */
 set_error_handler(function($num, $str, $file, $line) {

@@ -28,3 +28,11 @@ x_pos: 433
 pos: {&x_pos, y_pos: x_pos + 100}
 
 ['<p>', pos, '</p>'].print
+
+_flush_()
+
+# The @ sign allows for iteration over an object's properties
+
+selection: {eat: "cheese", drink: "wine", run: "every day"}
+
+['<p>', selection @ {key.title " " it ". "}, '</p>'].print

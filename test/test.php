@@ -19,7 +19,7 @@ nav: {? root ?? plugin: "plugins", *: "test"}$
     
     '<br/><br/>'.print
     
-    sections {'<a class="btn '{it.path '.php' = ? (@request.basename): 'active'}'"
+    sections @ {'<a class="btn '{it.path '.php' = ? (@request.basename): 'active'}'"
                   href="' loc (it.path) '.php' format ' ">' (it.title) '</a>'.print}
     
     '<br/><br/>'.print
@@ -32,8 +32,8 @@ nav: {? root ?? plugin: "plugins", *: "test"}$
 types: ['code', 'interlaced', 'result']
 type: {@request.args ?? format ?: @request.args.format, *: types 1}$
 
-switch: types {
-  '<a class="switch-' it {it ? = type: ' selected'} '" href="?format=' it '">' (it.title) '</a>'
+switch: types @ {
+  ' <a class="switch-' it {it ? = type: ' selected'} '" href="?format=' it '">' (it.title) '</a> '
 }
 
 ['<div class="switch">', switch, '</div>'].print

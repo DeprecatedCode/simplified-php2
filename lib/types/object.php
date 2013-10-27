@@ -101,6 +101,23 @@ type::$object->{'#apply array'} = function ($object, $array) {
 };
 
 /**
+ * Allow iteration of object with object @ object
+ */
+type::$object->{'#operator @'} = function ($left, $right) {
+  if (!is_object($right)) {
+    throw new Exception("Invalid iteration expression after @");
+  }
+  $fn = type::$object->{'#each'};
+  $a = $fn($left, function ($key, $item) use ($left, $right) {
+    certify($item);
+    $right->it = $item;
+    $right->key = $key;
+    return run($right);
+  });
+  return $a;
+};
+
+/**
  * Trigger evaluation
  */
 type::$object->{'#trigger $'} = function ($object) {

@@ -7,14 +7,14 @@
 
     groups: []
 
-    @dir '.' .dirs {dir:it
+    @dir '.' .dirs @ {dir:it
     
       # Create an entry in paths
       paths: {name: dir.name, tests: []}
       groups.push paths
       
       # Loop through all files in dir and add to paths
-      dir.files {
+      dir.files @ {
         paths.tests.push('/' (dir.name) '/' (it.name))
       }
     }

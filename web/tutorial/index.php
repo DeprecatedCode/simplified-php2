@@ -3,20 +3,20 @@
 title: "Tutorial &mdash; Creating a Blog Engine"
 nav: "tutorial", @import "../template.php"
 
-# Tabs
+# Switch
 
 '<br/><br/>'.print
 
-'<a class="btn '{? @request.args ?? code ! : 'active'}'" href="?">Result</a>'.print
-'<a class="btn '{? @request.args ?? code   : 'active'}'" href="?code">Source Code</a>'.print
-
-'<br/><br/>'.print
+'<div class="switch">
+  <a class="switch-code '{? @request.args ?? code   : 'selected'}'" href="?code">Source Code</a>
+  <a class="switch-result '{? @request.args ?? code ! : 'selected'}'" href="?">Result</a>
+</div>'.print
 
 # Show source if ?code is truthy
 
 {
   ? @request.args ?? code: {
-    code: @request.file.read.html.split ('#'.repeat 10) [1] .trim
+    code: @request.file.read.html.split ('#'.repeat 10) 1 .trim
     '<h3>SimplifiedPHP Code:</h3><pre class="code"><code class="php">'.print
     code.print
     '</code></pre>'.print
@@ -83,7 +83,7 @@ new_post: """
   '<a href="?">&laquo; All Posts</a> &bull;
    <a href="?delete=' slug '">Delete Post</a>'.print
 
-  @file(dir slug ext).lines {
+  @file(dir slug ext).lines @ {
     ? key = 0: '<h2>' (it.html) '</h2>'.print
             *: it.html '<br/>'.print
   }
@@ -93,7 +93,7 @@ new_post: """
 
 *: {
     new_post.print
-    @dir dir .files {
+    @dir dir .files @ {
       lines: it .lines
       ? lines ?? 0: {
         slug: it .name .replace '.txt' ''

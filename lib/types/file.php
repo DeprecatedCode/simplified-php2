@@ -5,7 +5,7 @@
  */
 function ofile($path) {
   $file = obj('file');
-  $file->path = realpath($path);
+  $file->path = $path;
   $file->name = basename($path);
   return $file;
 }
