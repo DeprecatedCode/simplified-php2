@@ -79,15 +79,15 @@ An object can be applied to an array that uses the variable `it` for the current
 
 ### Example:
 
-    count: " ".join([1..10]{it + 3})
+    count: [1..10] @ {it + 3} .join " "
 
     count == "4 5 6 7 8 9 10 11 12 13"
     
-    names: [{name: "Bob"}, {name: "Jim"}]{it.name}{it.replace{"o": "i", "i": "a"}}
+    names: [{name: "Bob"}, {name: "Jim"}] @ {it.name} @ {it.replace{"o": "i", "i": "a"}}
     
     names = {0: "Bib", 1: "Jam"}
     
-    fruits: ["Apple", "Pear", "Orange", "Carrot", "Potato", "Nectarine"][0..2, 5]{it.substr[0..2]}
+    fruits: ["Apple", "Pear", "Orange", "Carrot", "Potato", "Nectarine"][0..2, 5] @ {it.substr[0..2]}
     
     fruits = {0: "App", 1: "Pea", 2: "Ora", 3: "Nec"} 
     
@@ -97,7 +97,7 @@ To perform matching, specify the variable you want to match on and follow with a
 
 ### Example:
 
-    temp: [20, 32, 45, 60, 72]{
+    temp: [20, 32, 45, 60, 72] @ {
         it ?
            <= 32: "Freezing"
             < 60: "Cold"
