@@ -38,7 +38,8 @@ function exc($e) {
       $e->getFile() . ':' . $e->getLine());
   }
   foreach($e->getTrace() as $trace) {
-    $buf .= $fmt("\n $trace[function] @ $trace[file]:$trace[line]");
+    $f = isset($trace['file']) ? "$trace[file]:$trace[line]" : '?';
+    $buf .= $fmt("\n $trace[function] @ $f");
   }
   while ($orig = $e->getPrevious()) {
     $buf .= "\n\n previously:\n";
