@@ -11,11 +11,13 @@ dark:       '#444'
 purple:     '#a0a'
 green:      '#0a0'
 
+base: {@request.path.contains ? 'simplified-php': '/simplified-php/', *: '/'}
+
 '<!doctype html>
 <html>
 <head>
   <title>SimplifiedPHP Test: ' title '</title>
-  <link href="/simplified-php/web/typicons.font/font/typicons.min.css" rel="stylesheet" type="text/css" />
+  <link href="' base 'web/typicons.font/font/typicons.min.css" rel="stylesheet" type="text/css" />
   <style>
     body {
       font-family: "Open Sans", Tahoma, Arial, sans-serif;
@@ -140,7 +142,7 @@ green:      '#0a0'
     
     .warning {
       border: 1px solid #c66;
-      background: #fdd url(/simplified-php/web/warning.png) no-repeat;
+      background: #fdd url(' base 'web/warning.png) no-repeat;
       background-position: 1em;
       color: #a44;
       padding: 2.5em 2em 2.4em 8em;
