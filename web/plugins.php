@@ -22,15 +22,6 @@ nav: "plugins"
   .plugin h1 .typcn {
     margin-right: 2px; 
   }
-  .plugin p .typcn {
-    vertical-align: 1px;
-    font-size: 115%;
-    margin-right: 0.2em;
-    margin-left: 0.75em;
-  }
-  .plugin p .typcn:first-child {
-    margin-left: 0;
-  }
   .plugin h1 code {
     font-size: 15px;
     background: #444;

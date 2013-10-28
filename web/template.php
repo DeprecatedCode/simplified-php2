@@ -49,6 +49,17 @@ base: {@request.path.contains ? 'simplified-php': '/simplified-php/', *: '/'}
       font-size: 11px;
     }
 
+    p .typcn, h2 .typcn {
+      vertical-align: 1px;
+      font-size: 110%;
+      margin-right: 0.2em;
+      margin-left: 0.75em;
+    }
+
+    p .typcn:first-child, h2 .typcn:first-child {
+      margin-left: 0;
+    }
+
     td, th {
       padding: 0.3em 0.5em;
       text-align: center;
@@ -141,11 +152,12 @@ base: {@request.path.contains ? 'simplified-php': '/simplified-php/', *: '/'}
     }
     
     .warning {
-      border: 1px solid #c66;
-      background: #fdd url(' base 'web/warning.png) no-repeat;
+      border: 2px solid #b00;
+      background: #f8f0f0 url(' base 'web/warning.png) no-repeat;
       background-position: 1em;
-      color: #a44;
-      padding: 2.5em 2em 2.4em 8em;
+      background-size: 48px;
+      color: #b00;
+      padding: 1em 2em 1em 5em;
     }
     
     .switch {

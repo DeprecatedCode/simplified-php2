@@ -1,7 +1,7 @@
 SimplifiedPHP
 ==============
 
-Simplified PHP is a new approach to creating a programming language that works with the widespread distribution, ease of installation, and reliability of PHP, while avoiding the overly complicated syntax and nuances. A minimalistic approach has been taken, and features will only be added if they are deemed essential for the purpose of this project.
+Simplified PHP is a new approach to creating a programming language that works with the widespread distribution, ease of installation, and reliability of PHP, while avoiding its overly complicated syntax and nuances. A minimalistic approach has been taken, and features will only be added if they are deemed essential for the purpose of this project.
 
 As with PHP, there are two main data structures in SimplifiedPHP: the Object and the Array, each with their own limitations and feature sets.
 
