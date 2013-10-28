@@ -22,7 +22,8 @@ base: {@request.path.contains ? 'simplified-php': '/simplified-php/', *: '/'}
     body {
       font-family: "Open Sans", Tahoma, Arial, sans-serif;
       font-size: 15px;
-      padding: 0 0.75em;
+      margin: 0;
+      padding: 0 1.5em;
       color: #333;
     }
     
@@ -118,6 +119,17 @@ base: {@request.path.contains ? 'simplified-php': '/simplified-php/', *: '/'}
       text-decoration: none;
       color: inherit;
     }
+    
+    .bar {
+      padding: 1.5em 1.5em 0;
+      margin: 0 -1.5em 2em;
+      background: 'normal';
+      border-bottom: 2px solid 'highlight';
+    }
+    
+    .bar *:first-child {
+      margin-top: 0;
+    }
 
     .btn {
       box-shadow: 0 2px 0 0 'highlight';
@@ -128,7 +140,7 @@ base: {@request.path.contains ? 'simplified-php': '/simplified-php/', *: '/'}
     .btn.large {
       font-size: 120%;
       display: inline-block;
-      margin: 0 -1px 1em 0;
+      margin: 0 -1px 0 0;
       padding: 0.5em 1.5em;
     }
     
@@ -216,10 +228,13 @@ base: {@request.path.contains ? 'simplified-php': '/simplified-php/', *: '/'}
       src="https://github.global.ssl.fastly.net/images/modules/logos_page/GitHub-Mark.png"
       alt="Fork me on GitHub">
   </a>
-  <h1>SimplifiedPHP: ' title '</h1>
+  <div class="bar">
+    <h1>SimplifiedPHP: ' title '</h1>
 '.print
 
 @import "nav-buttons.php"
+
+" </div>".print
 
 @finally {'
 </body>
