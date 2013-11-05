@@ -5,8 +5,6 @@ nav: "tutorial", @import "../template.php"
 
 # Switch
 
-'<br/><br/>'.print
-
 '<div class="switch">
   <a class="switch-code '{? @request.args ?? code   : 'selected'}'" href="?code">Source Code</a>
   <a class="switch-result '{? @request.args ?? code ! : 'selected'}'" href="?">Result</a>

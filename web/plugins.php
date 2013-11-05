@@ -33,8 +33,6 @@ nav: "plugins"
 </style>
 """.print
 
-'<br/><br/>'.print
-
 '<a class="btn '{? @request.args ?? directory ! : 'active'}'"
   href="?">Installed Plugins</a>'.print
 

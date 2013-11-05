@@ -52,7 +52,8 @@ type::$array->length = function ($array) {
  */
 type::$array->join = function ($array) {
   return cmd('array.join', $array, array('string' => function ($command, $string) use ($array) {
-    return implode($string, $array->{'#value'});
+    $result = array_map('stringify', $array->{'#value'});
+    return implode(stringify($string), $result);
   }));
 };
 

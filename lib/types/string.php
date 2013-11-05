@@ -1,5 +1,20 @@
 <?php
 
+/**
+ * Stringify an unknown value
+ */
+function stringify ($item) {
+  switch (typestr($item)) {
+      case 'array':
+        $join = get($item, 'join');
+        return apply($join, '');
+      case 'object':
+        return get($object, 'to_json');
+      default:
+        return "$item";
+  }
+}
+
 type::$string->print = function ($string) {
   echo $string;
 };
@@ -31,10 +46,11 @@ type::$string->htmlnl = function ($string) {
 };
 
 type::$string->{'#operator +'} =
+type::$string->{'#apply array'} =
+type::$string->{'#apply float'} =
 type::$string->{'#apply string'} =
-type::$string->{'#apply integer'} =
-type::$string->{'#apply float'} = function ($left, $right) {
-  return $left . $right;
+type::$string->{'#apply integer'} = function ($left, $right) {
+  return $left . stringify($right);
 };
 
 type::$string->{'#apply object'} = function ($left, $right) {
@@ -45,7 +61,7 @@ type::$string->{'#apply object'} = function ($left, $right) {
   $fn = function ($matches) use ($right) {
     $expr = $matches[1];
     if (isset($right->$expr)) {
-      return $right->$expr;
+      return stringify($right->$expr);
     }
     return $matches[0];
   };

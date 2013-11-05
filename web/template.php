@@ -16,7 +16,7 @@ base: {@request.path.contains ? 'simplified-php': '/simplified-php/', *: '/'}
 '<!doctype html>
 <html>
 <head>
-  <title>SimplifiedPHP Test: ' title '</title>
+  <title>SimplifiedPHP: ' title '</title>
   <link href="' base 'web/typicons.font/font/typicons.min.css" rel="stylesheet" type="text/css" />
   <style>
     body {
@@ -40,6 +40,11 @@ base: {@request.path.contains ? 'simplified-php': '/simplified-php/', *: '/'}
     a:active, .link:active {
       opacity: 0.8;
     }
+    
+    blockquote {
+      margin: 1em 0;
+      padding: 0 0 0 1em;
+    }
 
     h2 {
       font-size: 16px;
@@ -60,15 +65,29 @@ base: {@request.path.contains ? 'simplified-php': '/simplified-php/', *: '/'}
     p .typcn:first-child, h2 .typcn:first-child {
       margin-left: 0;
     }
+    
+    table.centered th, table.centered td {
+      text-align: center;
+      vertical-align: middle;
+      padding: 0.3em 0.5em;
+    }
 
     td, th {
-      padding: 0.3em 0.5em;
-      text-align: center;
       background: rgba(0, 0, 0, 0.1);
+      padding: 1em;
+    }
+    
+    td *:first-child {
+      margin-top: 0;
+    }
+    
+    td *:last-child {
+      margin-bottom: 0;
     }
 
     td {
-      background: rgba(0, 0, 0, 0.05);
+      background: rgba(0, 0, 0, 0.03);
+      vertical-align: top;
     }
 
     pre.code, .output {
@@ -229,12 +248,12 @@ base: {@request.path.contains ? 'simplified-php': '/simplified-php/', *: '/'}
       alt="Fork me on GitHub">
   </a>
   <div class="bar">
-    <h1>SimplifiedPHP: ' title '</h1>
+    <h1>SimplifiedPHP</h1>
 '.print
 
 @import "nav-buttons.php"
 
-" </div>".print
+" </div><h1>" title "</h1>".print
 
 @finally {'
 </body>

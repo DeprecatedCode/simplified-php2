@@ -21,7 +21,16 @@ type::$group->{'#register'} = function ($group, $item) {
    */
   if ($item->{'#type'} === 'break' ||
       ($item->{'#type'} === 'operator' && $item->value === ',')) {
-    throw new Exception("Multiple statements are not permitted within a parenthetical group");
+    
+    /**
+     * Allow breaks if the register is empty
+     */
+    if (reg_count($group) === 0) {
+      return;
+    }
+    
+    $group->{'#break'} = true;
+    return;
   }
   
   /**
@@ -31,6 +40,13 @@ type::$group->{'#register'} = function ($group, $item) {
     throw new Exception('Operator : not allowed in parenthetical group');
   }
   
+  /**
+   * If we already hit a break after a statement, don't allow new statement
+   */
+  if (isset($group->{'#break'}) && $group->{'#break'}) {
+    throw new Exception("Multiple statements are not permitted within a parenthetical group");
+  }
+
   /**
    * Keep going
    */

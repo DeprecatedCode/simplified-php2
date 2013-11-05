@@ -1,7 +1,7 @@
 # SimplifiedPHP Home Page
 # @author Nate Ferrero
 
-title: "Home"
+title: "Welcome"
 nav: "home"
 
 @import "web/template.php"

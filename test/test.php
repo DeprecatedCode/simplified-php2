@@ -2,31 +2,25 @@
 # Author: Nate Ferrero
 
 root: @parent
-subtitle: title
-title: {? root ?? plugin: "Plugin Example", *: title " Test"}$
-nav: {? root ?? plugin: "plugins", *: "test"}$
+title: {? root ?? plugin: title, *: title " Test"}$
+nav: {? root ?? plugin: "plugins", *: "docs"}$
 
 @import "../web/template.php"
 
 # If we are in the test section, show tests
 
-{nav = ? "test": {
+{nav = ? "docs": {
     sections: @import "test-sections.php"
     
     loc: {? ?? loc: loc, *: ''}$
     
     format: {? @request.args ?? format: '?format=' (@request.args.format), *: ''}
     
-    '<br/><br/>'.print
-    
     sections @ {'<a class="btn '{it.path '.php' = ? (@request.basename): 'active'}'"
                   href="' loc (it.path) '.php' format ' ">' (it.title) '</a>'.print}
     
     '<br/><br/>'.print
   }$
-  
-  "plugins": '<h2><a href="../../web/plugins.php">&laquo;
-    Back to Installed Plugins</a></h2><h1>' subtitle '</h1>'.print
 }$
 
 types: ['code', 'interlaced', 'result']
