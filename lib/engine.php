@@ -337,7 +337,9 @@ function json($scope, $level=0) {
       $object = true;
       foreach($scope as $key => $item) {
         if ($key[0] !== '#') {
-          $output[$key] = is_object($item) || is_array($item) ? json($item, $level + 1) : $item;
+          certify($item);
+          $value = is_object($item) || is_array($item) ? json($item, $level + 1) : $item;
+          $output[$key] = $value;
         }
       }
     }

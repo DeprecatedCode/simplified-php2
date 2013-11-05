@@ -52,6 +52,7 @@ type::$object->print = function ($object) {
  * Object to JSON
  */
 type::$object->to_json = function ($object, $level=0) {
+  certify($object);
   $arr = (array) $object;
   $arr['#type'] = isset($object->{'#type'}) ? $object->{'#type'} : 'object';
   return json($arr, $level);

@@ -20,6 +20,7 @@ type::$array->{'#run'} = function ($array) {
  * Array to JSON
  */
 type::$array->to_json = function ($array, $level=0) {
+  certify($array);
   return json($array->{'#value'}, $level);
 };
 

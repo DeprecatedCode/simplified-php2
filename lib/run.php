@@ -4,6 +4,9 @@
  * Certify an object, make sure it has executed
  */
 function certify(&$scope) {
+  if ($scope instanceof Closure) {
+    return;
+  }
   if (is_object($scope) && isset($scope->{'#type'}) &&
       $scope->{'#type'} !== 'proto' &&
       (!isset($scope->{'#done'}) || !$scope->{'#done'})) {
