@@ -48,6 +48,13 @@ type::$array->length = function ($array) {
 };
 
 /**
+ * Array sum
+ */
+type::$array->sum = function ($array) {
+  return array_sum($array->{'#value'});
+};
+
+/**
  * Array join
  */
 type::$array->join = function ($array) {

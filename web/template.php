@@ -13,6 +13,8 @@ green:      '#0a0'
 
 base: {@request.path.contains ? 'simplified-php': '/simplified-php/', *: '/'}
 
+icon: {'<span class="typcn typcn-' i '"></span>'}
+
 '<!doctype html>
 <html>
 <head>
@@ -66,6 +68,11 @@ base: {@request.path.contains ? 'simplified-php': '/simplified-php/', *: '/'}
       margin-left: 0;
     }
     
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+    }
+    
     table.centered th, table.centered td {
       text-align: center;
       vertical-align: middle;
@@ -73,8 +80,9 @@ base: {@request.path.contains ? 'simplified-php': '/simplified-php/', *: '/'}
     }
 
     td, th {
-      background: rgba(0, 0, 0, 0.1);
+      background: rgba(0, 0, 0, 0.07);
       padding: 1em;
+      border: 1px solid #bbb;
     }
     
     td *:first-child {
@@ -86,7 +94,7 @@ base: {@request.path.contains ? 'simplified-php': '/simplified-php/', *: '/'}
     }
 
     td {
-      background: rgba(0, 0, 0, 0.03);
+      background: rgba(0, 0, 0, 0.02);
       vertical-align: top;
     }
 
@@ -235,6 +243,15 @@ base: {@request.path.contains ? 'simplified-php': '/simplified-php/', *: '/'}
     .switch a.switch-result.selected {
       background: 'green';
     }
+    
+    .big-icon {
+      position: absolute;
+      top: 22px;
+      font-size: 60px;
+      right: 38px;
+      font-weight: normal;
+      color: #333;
+    }
   </style>
   <link href="http://fonts.googleapis.com/css?family=Oxygen+Mono|Open+Sans:400,700" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/github.min.css" />
@@ -242,10 +259,11 @@ base: {@request.path.contains ? 'simplified-php': '/simplified-php/', *: '/'}
   <script>window.hljs.initHighlightingOnLoad();</script>
 </head>
 <body>
-  <a href="https://github.com/NateFerrero/simplified-php">
-    <img style="position: absolute; top: 1.333em; right: 1.333em; border: 0; height: 48px; width: 48px;"
-      src="https://github.global.ssl.fastly.net/images/modules/logos_page/GitHub-Mark.png"
-      alt="Fork me on GitHub">
+  <a class="big-icon" href="https://github.com/NateFerrero/simplified-php">
+    '(icon {i: 'social-github-circular'})'
+  </a>
+  <a class="big-icon" style="right: 104px; font-size: 45px; top: 32px" href="' base 'web/documentation/installation.php">
+    '(icon {i: 'download-outline'})'
   </a>
   <div class="bar">
     <h1>SimplifiedPHP</h1>

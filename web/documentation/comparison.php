@@ -14,7 +14,14 @@ languages: {
 
 table: [
 
-  {title: "Loops", examples: [
+  {title: "Arrays and Loops", examples: [
+    
+    {php  : '$array = range(1, 5);'
+     py   : 'array = range(1, 6)'
+     js   : 'array = [];\nfor (var x = 1; x < 6; x++) {\n  array.push(x);\n}'
+     sphp : 'array: 1..5',
+     res  : 1..5.to_json
+    }
     
     {php  : '$array = array(1, 2, 3, 4, 5);'
      py   : 'array = [1, 2, 3, 4, 5]'
@@ -35,6 +42,13 @@ table: [
      js   : 'total = 0;\narray.forEach(function (item) {\n  total += item;\n});\nconsole.log(total);'
      sphp : 'total: 0\narray @ {++total it}\ntotal.print',
      res  : {total: 0, [1, 2, 3, 4, 5] @ {++total it}, total}$
+    }
+  
+    {php  : 'echo array_sum($array);'
+     py   : 'print sum(array)'
+     js   : 'console.log(array.reduce(function(a, b) {\n  return a + b;\n}));'
+     sphp : 'array.sum.print',
+     res  : [1, 2, 3, 4, 5].sum
     }
   ]}
 
