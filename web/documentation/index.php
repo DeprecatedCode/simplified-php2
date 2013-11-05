@@ -6,6 +6,12 @@ title: "Documentation", doc: "home", @import "template.php"
 
 <p>Please see the <a href="installation.php">Installation Guide</a> to learn how to set up SimplifiedPHP.</p>
 
+<h2>Command Line Usage</h2>
+
+<p><code>sphp -c "1 + 2.print"</code> &mdash; Executes SimplifiedPHP code.</p>
+<p><code>sphp foo.php</code> &mdash; Assumes foo.php is SimplifiedPHP code, and executes it.</p>
+<p><code>sphp --init</code> &mdash; Setup a new project .htaccess with SimplifiedPHP for Apache.</p>
+
 <h2>Language Example Tests</h2>
 
 <p>For examples of SimplifiedPHP code in action, see the following tests:</p>

@@ -120,7 +120,7 @@ base: {@request.path.contains ? 'simplified-php': '/simplified-php/', *: '/'}
       margin-bottom: 0;
     }
     
-    body pre code {
+    body code {
       background: transparent;
       padding: 0;
       font-size: 13px;
