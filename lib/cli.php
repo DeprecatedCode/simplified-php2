@@ -127,6 +127,9 @@ while (true) {
   if (!is_null($result) && $result !== $context) {
     $context->_ = $result;
   }
+  if (typestr($result) === 'array') {
+    $result = get($result, 'to_json');
+  }
   get($result, 'print');
   $captured = ob_get_clean();
   if (strlen($captured) > 0) {

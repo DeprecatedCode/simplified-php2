@@ -1,6 +1,15 @@
 <?php
 
 /**
+ * Make an array
+ */
+function arr($val, $parent=null) {
+  $arr = a($parent);
+  $arr->{'#value'} = $val;
+  return $arr;
+}
+
+/**
  * Evaluate an array
  */
 type::$array->{'#run'} = function ($array) {

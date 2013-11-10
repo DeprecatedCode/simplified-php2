@@ -148,7 +148,15 @@ type::$string->split = function ($string, $context=null) {
         $regex = "/$regex/";
         return preg_split($regex, $string);
       }
-      return explode($split, $string);
+
+      if ($split === null || strlen($split) === 0 || is_integer($split)) {
+        if (!is_integer($split) || $split === 0) {
+          $split = 1;
+        }
+        return arr(str_split($string, $split));
+      }
+
+      return arr(explode($split, $string));
     }
   ));
   
