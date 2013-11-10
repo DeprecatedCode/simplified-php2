@@ -200,7 +200,7 @@ function apply($left, $right) {
 /**
  * Run code
  */
-function run($scope, $context=null) {
+function run($scope, $context=null, $on=null) {
 
   /**
    * This is a stack to process
@@ -269,6 +269,10 @@ function run($scope, $context=null) {
     $scope->{'#runcount'} = (isset($scope->{'#runcount'}) ?
       $scope->{'#runcount'} : 0) + 1;
     $scope->{'#done'} = true;
+    if (!is_null($on)) {
+      $fn = type::$object->{'#run'};
+      return $fn($scope, $on);
+    }
     return get($scope, '#run');
   }
   

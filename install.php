@@ -4,6 +4,11 @@
  * SimplifiedPHP
  * @author Nate Ferrero
  */
+$cache = __DIR__ . '/.cache';
+if (!file_exists($cache)) {
+  mkdir($cache);
+}
+chmod($cache, 0777);
 
 echo "[ ] Installing sphp command...\n";
 

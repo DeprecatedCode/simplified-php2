@@ -5,7 +5,6 @@
  * @author Nate Ferrero
  */
 
-$simplified = __FILE__;
 $opts = getopt('c:hv', array('init', 'help', 'version'));
 
 /**
@@ -33,8 +32,8 @@ if (isset($opts['init'])) {
   $re_prepend = '/php_value auto_prepend_file .*/i';
   $re_append = '/php_value auto_append_file .*/i';
   
-  $hta_prepend = "php_value auto_prepend_file $simplified";
-  $hta_append = "php_value auto_append_file $simplified";
+  $hta_prepend = "php_value auto_prepend_file " . SPHP;
+  $hta_append = "php_value auto_append_file " . SPHP;
   
   /**
    * Update if pre/append values exist
@@ -60,36 +59,78 @@ if (isset($opts['init'])) {
   exit;
 }
 
+/**
+ * Version
+ */
 if (isset($opts['v']) || isset($opts['version'])) {
   echo "SimplifiedPHP version " . VERSION . "\n";
   exit;
 }
 
+/**
+ * Help
+ */
+if (isset($opts['h']) || isset($opts['help'])) {
+  $dir = dirname(__DIR__);
+  echo "SimplifedPHP by Nate Ferrero
+  
+  SPHP Install Location:
+  $dir
+  
+  Usage:
+  sphp                            # Interactive mode
+  sphp file.php                   # Execute SimplifiedPHP file
+  sphp --code \"1+2.print\"   [-c]  # Execute SimplifiedPHP code
+  sphp --init                     # Add SimplifiedPHP to .htaccess for Apache
+  sphp --help               [-h]  # Show this help
+  sphp --version            [-v]  # Show version information
+  ";
+  exit;
+}
+
+/**
+ * Code
+ */
 if (isset($opts['c'])) {
-  require($simplified);
-  echo $opts['c'];
-  done();
+  sphp_eval($opts['c']);
+  exit;
 }
 
-if (!isset($opts['h']) && !isset($opts['help']) && isset($argv[1])) {
-  require($simplified);
-  echo file_get_contents($argv[1]);
-  done();
+/**
+ * Code
+ */
+if (isset($opts['code'])) {
+  sphp_eval($opts['code']);
+  exit;
 }
 
-$dir = dirname(__DIR__);
+/**
+ * File
+ */
+if (isset($argv[1])) {
+  sphp_eval(file_get_contents($argv[1]));
+  exit;
+}
 
-echo "SimplifedPHP by Nate Ferrero
-
-SPHP Install Location:
-$dir
-
-Usage:
-sphp file.php                   # Execute SimplifiedPHP file
-sphp --code \"1+2.print\"   [-c]  # Execute SimplifiedPHP code
-sphp --init                     # Add SimplifiedPHP to .htaccess for Apache
-sphp --help               [-h]  # Show this help
-sphp --version            [-v]  # Show version information
-";
-
-exit;
+/**
+ * Interactive mode
+ */
+$context = obj();
+while (true) {
+  echo "> ";
+  $line = fgets(STDIN);
+  if ($line === false) {
+    echo "\nexiting...\n";
+    exit;
+  }
+  ob_start();
+  $result = sphp_eval($line, $context);
+  if (!is_null($result) && $result !== $context) {
+    $context->_ = $result;
+  }
+  get($result, 'print');
+  $captured = ob_get_clean();
+  if (strlen($captured) > 0) {
+    echo "$captured\n";
+  }
+}

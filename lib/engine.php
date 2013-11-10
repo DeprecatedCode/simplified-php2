@@ -24,6 +24,25 @@ class type {
 }
 
 /**
+ * SPHP Eval
+ */
+function sphp_eval($str, $on=null) {
+  try {
+    $code = parse($str);
+    return run($code, null, $on);
+  }
+  catch(Exception $e) {
+    if (defined('CLI')) {
+      echo exc($e);
+      return;
+    }
+    echo '<pre><h2>SimplifiedPHP Exception in ' . $_SERVER['SCRIPT_NAME'] . ' </h2>';
+    echo exc($e);
+    echo '</pre>';
+  }
+}
+
+/**
  * Pretty print exception
  */
 function exc($e) {

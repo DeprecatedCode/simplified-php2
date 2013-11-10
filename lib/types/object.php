@@ -128,9 +128,16 @@ type::$object->{'#trigger $'} = function ($object) {
 /**
  * Evaluate an object
  */
-type::$object->{'#run'} = function ($object) {
+type::$object->{'#run'} = function ($object, $remote=null) {
   if(!isset($object->{'#source'})) {
     return $object;
+  }
+  
+  if ($remote === null) {
+    $remote = $object;
+    $shouldReturn = true;
+  } else {
+    $shouldReturn = false;
   }
   
   $return = false;
@@ -147,7 +154,7 @@ type::$object->{'#run'} = function ($object) {
        */
       if (is_array($source)) {
         $return = true;
-        $result = run($source, $object);
+        $result = run($source, $remote);
       }
       
       /**
@@ -165,7 +172,7 @@ type::$object->{'#run'} = function ($object) {
             if (!$matched) {
               $return = true;
               $matched = true;
-              $result = run($source->value, $object);
+              $result = run($source->value, $remote);
             }
             continue;
           }
@@ -195,9 +202,9 @@ type::$object->{'#run'} = function ($object) {
           if (!is_null($object->{'#prefix'})) {
             if (!$matched) {
               $condition = array_merge($object->{'#prefix'}, $keySource);
-              $test = run($condition, $object);
+              $test = run($condition, $remote);
               if ($test) {
-                $result = run($source->value, $object);
+                $result = run($source->value, $remote);
                 $return = true;
                 $matched = true;
               }
@@ -220,7 +227,7 @@ type::$object->{'#run'} = function ($object) {
            * Complex keys
            */
           else {
-            $key = run($keySource, $object);
+            $key = run($keySource, $remote);
           }
         }
         
@@ -231,7 +238,7 @@ type::$object->{'#run'} = function ($object) {
         /**
          * Values
          */
-        $value = run($source->value, $object);
+        $value = run($source->value, $remote);
         
         /**
          * Clone value if it is an object
@@ -243,7 +250,7 @@ type::$object->{'#run'} = function ($object) {
         /**
          * Result
          */
-        $object->{$key} = $value;
+        $remote->{$key} = $value;
         
         /**
          * Do not return $result
@@ -280,10 +287,17 @@ type::$object->{'#run'} = function ($object) {
   }
   
   /**
+   * If running with context, don't return
+   */
+  if (!$shouldReturn) {
+    return;
+  }
+  
+  /**
    * Don't return the original object when running
    */
-  $x = n($object->{'#parent'});
-  foreach($object as $key => $value) {
+  $x = n($remote->{'#parent'});
+  foreach($remote as $key => $value) {
     if ($key[0] !== '#') {
       $x->$key = $value;
     }
