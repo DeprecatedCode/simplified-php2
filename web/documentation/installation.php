@@ -24,7 +24,7 @@ title: "Installation Guide", doc: "installation", @import "template.php"
 
 <blockquote>
   <p>Example for Linux / Mac OS X Terminal:</p>
-  <pre><code class="bash">cd /var/lib &amp;&amp; git clone git@github.com:NateFerrero/simplified-php.git</code></pre>
+  <pre><code class="bash">cd /var/lib &amp;&amp; git clone https://github.com/NateFerrero/simplified-php.git</code></pre>
   <p>Don't want to use Git? You may also download
     <a href="https://github.com/NateFerrero/simplified-php/archive/master.zip">simplified-php-master.zip</a>,
     extract the folder, rename it to simplified-php, and place it at the desired location.</p>
