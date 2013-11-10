@@ -74,17 +74,16 @@ if (isset($opts['h']) || isset($opts['help'])) {
   $dir = dirname(__DIR__);
   echo "SimplifedPHP by Nate Ferrero
   
-  SPHP Install Location:
+SPHP Install Location:
   $dir
   
-  Usage:
+Usage:
   sphp                            # Interactive mode
   sphp file.php                   # Execute SimplifiedPHP file
   sphp --code \"1+2.print\"   [-c]  # Execute SimplifiedPHP code
   sphp --init                     # Add SimplifiedPHP to .htaccess for Apache
   sphp --help               [-h]  # Show this help
-  sphp --version            [-v]  # Show version information
-  ";
+  sphp --version            [-v]  # Show version information\n";
   exit;
 }
 
