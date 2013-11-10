@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * SimplifiedPHP
+ * @author Nate Ferrero
+ */
+
 echo "[ ] Installing sphp command...\n";
 
 $code = <<<'EOF'
