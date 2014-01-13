@@ -147,6 +147,8 @@ type::$system->request = function ($context) {
     $request->form = (object) $_POST;
     $request->files = (object) $_FILES;
     $request->cookie = (object) $_COOKIE;
+    
+    $request->json = json_decode(file_get_contents('php://input'));
 
     $request->host = $_SERVER['HTTP_HOST'];
     $request->path = $_SERVER['REQUEST_URI'];

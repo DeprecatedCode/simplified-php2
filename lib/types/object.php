@@ -21,9 +21,16 @@ type::$object->{'#operator ??'} = function ($object, $key) {
  * Set object property
  */
 type::$object->{'#operator ::'} = function ($object, $key) {
-  return cmd('::', $object, array('*' => function ($command, $value) use ($object, $key) {
+  $cmd = cmd('::', $object, array('*' => function ($command, $value) use ($object, $key) {
     $object->$key = $value;
+    return $object;
   }));
+  $cmd->{'#operator ~'} = function ($cmd, $value, $context=null) {
+    $re = regex($value, $context);
+    $fn = $cmd->{'#apply *'};
+    return $fn($cmd, $re);
+  };
+  return $cmd;
 };
 
 /**

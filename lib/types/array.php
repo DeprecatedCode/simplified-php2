@@ -5,6 +5,7 @@
  */
 function arr($val, $parent=null) {
   $arr = a($parent);
+  $arr->{'#done'} = true;
   $arr->{'#value'} = $val;
   return $arr;
 }
@@ -30,7 +31,15 @@ type::$array->{'#run'} = function ($array) {
  */
 type::$array->to_json = function ($array, $level=0) {
   certify($array);
-  return json($array->{'#value'}, $level);
+  $val = $array->{'#value'};
+  if (is_object($val)) {
+    $arr = array();
+    foreach($val as $item) {
+      $arr[] = $item;
+    }
+    return json($arr, $level, true);
+  }
+  return json($val, $level);
 };
 
 /**
@@ -167,10 +176,10 @@ type::$array->{'#operator @'} = function ($array, $right) {
  * Get array property
  */
 type::$array->{'#get'} = function ($array, $key) {
+  if (property_exists($array, $key)) {
+    return $array->$key;
+  }
   if (isset($array->{'#running'}) && $array->{'#running'} === true) {
-    if (property_exists($array, $key)) {
-      return $array->$key;
-    }
     $parent = isset($array->{'#parent'}) ? $array->{'#parent'} : null;
     return get($parent, $key);
   }

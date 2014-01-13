@@ -89,3 +89,21 @@ type::$integer->{'#operator >'} =
 type::$float->{'#operator >'} = function ($left, $right) {
   return $left > $right;
 };
+
+/**
+ * Numeric Properties
+ */
+type::$integer->{'ceil'} =
+type::$float->{'ceil'} = function ($scope) {
+  return ceil($scope);
+};
+
+type::$integer->{'floor'} =
+type::$float->{'floor'} = function ($scope) {
+  return floor($scope);
+};
+
+type::$integer->{'round'} =
+type::$float->{'round'} = function ($scope) {
+  return round($scope);
+};
