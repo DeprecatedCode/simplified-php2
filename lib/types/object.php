@@ -18,6 +18,15 @@ type::$object->{'#operator ??'} = function ($object, $key) {
 };
 
 /**
+ * Check if object is equal
+ */
+type::$object->{'#operator ='} = function ($object, $other) {
+  certify($object);
+  certify($other);
+  return get($object, 'to_json') == get($other, 'to_json');
+};
+
+/**
  * Set object property
  */
 type::$object->{'#operator ::'} = function ($object, $key) {

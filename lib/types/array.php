@@ -55,6 +55,11 @@ type::$array->{'#operator ??'} = function ($array, $key) {
 type::$array->{'#operator ='} = function ($array, $other) {
   certify($array);
   certify($other);
+  if (!is_object($other) ||
+      !isset($other->{'#type'}) ||
+      $other->{'#type'} !== 'array') {
+    return false;
+  }
   return $array->{'#value'} == $other->{'#value'};
 };
 
