@@ -1,5 +1,6 @@
 .cache/*
 !.cache/.keep
 plugins/*
+!plugins/.keep
 web/tutorial/data
 web/scratch
