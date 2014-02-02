@@ -49,3 +49,23 @@ type::$file->lines = function ($file, $context=null) {
   $arr->{'#value'} = file($file->path);
   return $arr;
 };
+
+type::$file->download = function ($file, $context=null) {
+  $fname = basename($file->path);
+  if (!is_file($file->path)) {
+    throw new Exception("File does not exist: $file->path");
+  }
+  if (!is_readable($file->path)) {
+    throw new Exception("Insufficient filesystem permissions to download file: $file->path");
+  }
+  header('Content-Description: File Transfer');
+  header('Content-Type: application/octet-stream');
+  header("Content-Disposition: attachment; filename=$fname");
+  header('Expires: 0');
+  header('Cache-Control: must-revalidate');
+  header('Pragma: public');
+  header('Content-Length: ' . filesize($file->path));
+  ob_clean();
+  flush();
+  readfile($file->path);
+};
