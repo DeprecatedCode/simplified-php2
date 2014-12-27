@@ -19,7 +19,7 @@ icon: {'<span class="typcn typcn-' i '"></span>'}
 <html>
 <head>
   <title>SimplifiedPHP: ' title '</title>
-  <link href="' base 'web/typicons.font/font/typicons.min.css" rel="stylesheet" type="text/css" />
+  <link href="' base 'typicons.font/font/typicons.min.css" rel="stylesheet" type="text/css" />
   <style>
     body {
       font-family: "Open Sans", Tahoma, Arial, sans-serif;
@@ -28,21 +28,21 @@ icon: {'<span class="typcn typcn-' i '"></span>'}
       padding: 0 1.5em;
       color: #333;
     }
-    
+
     a, .link {
       color: 'highlight';
       text-decoration: none;
       cursor: pointer;
     }
-    
+
     a:hover, .link:hover {
       text-decoration: underline;
     }
-    
+
     a:active, .link:active {
       opacity: 0.8;
     }
-    
+
     blockquote {
       margin: 1em 0;
       padding: 0 0 0 1em;
@@ -67,12 +67,12 @@ icon: {'<span class="typcn typcn-' i '"></span>'}
     p .typcn:first-child, h2 .typcn:first-child {
       margin-left: 0;
     }
-    
+
     table {
       margin: 1em 0;
       border-collapse: collapse;
     }
-    
+
     table.centered th, table.centered td {
       text-align: center;
       vertical-align: middle;
@@ -84,11 +84,11 @@ icon: {'<span class="typcn typcn-' i '"></span>'}
       padding: 1em;
       border: 1px solid #bbb;
     }
-    
+
     td *:first-child {
       margin-top: 0;
     }
-    
+
     td *:last-child {
       margin-bottom: 0;
     }
@@ -123,22 +123,22 @@ icon: {'<span class="typcn typcn-' i '"></span>'}
     .output > *:first-child {
       margin-top: 0;
     }
-    
+
     .output > *:last-child {
       margin-bottom: 0;
     }
-    
+
     body code {
       background: transparent;
       padding: 0;
       font-size: 13px;
     }
-    
+
     code {
       font-weight: normal;
       font-family: "Oxygen Mono", monospace;
     }
-    
+
     .btn, .switch a {
       padding: 0.25em 0.75em;
       margin: 1em -1px 0 0;
@@ -146,14 +146,14 @@ icon: {'<span class="typcn typcn-' i '"></span>'}
       text-decoration: none;
       color: inherit;
     }
-    
+
     .bar {
       padding: 1.5em 1.5em 0;
       margin: 0 -1.5em 2em;
       background: 'normal';
       border-bottom: 2px solid 'highlight';
     }
-    
+
     .bar *:first-child {
       margin-top: 0;
     }
@@ -163,24 +163,24 @@ icon: {'<span class="typcn typcn-' i '"></span>'}
       border: 1px solid 'tint';
       border-bottom: none;
     }
-    
+
     .btn.large {
       font-size: 120%;
       display: inline-block;
       margin: 0 -1px 0 0;
       padding: 0.5em 1.5em;
     }
-    
+
     .btn:hover {
       background: 'bright';
       position: relative;
       text-decoration: none;
     }
-    
+
     .btn:active {
       background: 'tint';
     }
-    
+
     .btn.active {
       box-shadow: 0 4px 0 -2px 'bright', inset 0 1px 0 1px 'highlight', 0 0 0 2px 'highlight';
       background: #fff;
@@ -189,7 +189,7 @@ icon: {'<span class="typcn typcn-' i '"></span>'}
       position: relative;
       z-index: 1;
     }
-    
+
     .warning {
       border: 2px solid #b00;
       background: #f8f0f0 url(' base 'web/warning.png) no-repeat;
@@ -198,7 +198,7 @@ icon: {'<span class="typcn typcn-' i '"></span>'}
       color: #b00;
       padding: 1em 2em 1em 5em;
     }
-    
+
     .switch {
       font-size: 70%;
       font-weight: bold;
@@ -208,30 +208,30 @@ icon: {'<span class="typcn typcn-' i '"></span>'}
       padding: 3px 0 3px 0;
       overflow: hidden;
     }
-    
+
     .switch a {
       border-left: 1px solid 'tint';
       margin-left: -2px;
     }
-    
+
     .switch a:first-child {
       border-left: none;
       margin-left: 0;
     }
-    
+
     .switch a:last-child {
       margin-right: -6px;
     }
-    
+
     .switch a.selected {
       background: 'dark';
       color: 'bright';
     }
-    
+
     .switch a.switch-code.selected {
       background: 'purple';
     }
-    
+
     .switch a.switch-interlaced.selected {
       background-image:         linear-gradient(90deg, 'green' 49%, 'purple' 50%);
       background-image:      -o-linear-gradient(90deg, 'green' 49%, 'purple' 50%);
@@ -239,11 +239,11 @@ icon: {'<span class="typcn typcn-' i '"></span>'}
       background-image: -webkit-linear-gradient(90deg, 'green' 49%, 'purple' 50%);
       background-image:     -ms-linear-gradient(90deg, 'green' 49%, 'purple' 50%);
     }
-    
+
     .switch a.switch-result.selected {
       background: 'green';
     }
-    
+
     .big-icon {
       position: absolute;
       top: 22px;

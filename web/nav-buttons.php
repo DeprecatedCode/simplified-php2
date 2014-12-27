@@ -1,9 +1,9 @@
 [
 
   {nav: "home",     path: base,                       title: "Home"}
-  {nav: "docs",     path: base "web/documentation/",  title: "Documentation"}
-  {nav: "tutorial", path: base "web/tutorial/",       title: "Tutorial"}
-  {nav: "plugins",  path: base "web/plugins.php",     title: "Plugins"}
+  {nav: "docs",     path: base "documentation/",  title: "Documentation"}
+  {nav: "tutorial", path: base "tutorial/",       title: "Tutorial"}
+  {nav: "plugins",  path: base "plugins.php",     title: "Plugins"}
   {nav: "support",  path: "https://github.com/NateFerrero/simplified-php/issues?state=open"
     title: "Bugs &amp; Support"}
 

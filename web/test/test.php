@@ -5,20 +5,20 @@ root: @parent
 title: {? root ?? plugin: title, *: title " Test"}$
 nav: {? root ?? plugin: "plugins", *: "docs"}$
 
-@import "../web/template.php"
+@import "../template.php"
 
 # If we are in the test section, show tests
 
 {nav = ? "docs": {
     sections: @import "test-sections.php"
-    
+
     loc: {? ?? loc: loc, *: ''}$
-    
+
     format: {? @request.args ?? format: '?format=' (@request.args.format), *: ''}
-    
+
     sections @ {'<a class="btn '{it.path '.php' = ? (@request.basename): 'active'}'"
                   href="' loc (it.path) '.php' format ' ">' (it.title) '</a>'.print}
-    
+
     '<br/><br/>'.print
   }$
 }$
