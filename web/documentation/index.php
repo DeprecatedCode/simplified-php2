@@ -17,8 +17,8 @@ title: "Documentation", doc: "home", @import "template.php"
 <p>For examples of SimplifiedPHP code in action, see the following tests:</p>
 <ul>
 """ (
-  @import '../../test/test-sections.php' @ {
-    '<li><a href="../../test/' (it.path) '.php">' (it.title) ' Test</a></li>'
+  @import '../test/test-sections.php' @ {
+    '<li><a href="../test/' (it.path) '.php">' (it.title) ' Test</a></li>'
   }.join ''
 ) """
 </ul>
