@@ -192,7 +192,7 @@ icon: {'<span class="typcn typcn-' i '"></span>'}
 
     .warning {
       border: 2px solid #b00;
-      background: #f8f0f0 url(' base 'web/warning.png) no-repeat;
+      background: #f8f0f0 url(' base 'warning.png) no-repeat;
       background-position: 1em;
       background-size: 48px;
       color: #b00;
