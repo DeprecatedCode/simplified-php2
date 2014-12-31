@@ -262,7 +262,7 @@ icon: {'<span class="typcn typcn-' i '"></span>'}
   <a class="big-icon" href="https://github.com/NateFerrero/simplified-php">
     '(icon {i: 'social-github-circular'})'
   </a>
-  <a class="big-icon" style="right: 104px; font-size: 45px; top: 32px" href="' base 'web/documentation/installation.php">
+  <a class="big-icon" style="right: 104px; font-size: 45px; top: 32px" href="' base 'documentation/installation.php">
     '(icon {i: 'download-outline'})'
   </a>
   <div class="bar">

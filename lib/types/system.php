@@ -129,6 +129,7 @@ type::$system->test = function ($context) {
         $data['message'] = exc($e);
       }
       $data['status'] = $status;
+      $data['code'] = get($object, 'to_source');
       sys::$tests['tests'][] = $data;
     }
   ));

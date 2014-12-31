@@ -9,6 +9,14 @@ type::$float->print = function ($float) {
 };
 
 /**
+ * Get Number Source String
+ */
+type::$integer->to_source =
+type::$float->to_source = function ($float) {
+  return "$float";
+};
+
+/**
  * Mathematical Operators
  */
 

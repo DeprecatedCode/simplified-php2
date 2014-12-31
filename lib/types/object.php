@@ -75,6 +75,23 @@ type::$object->to_json = function ($object, $level=0) {
 };
 
 /**
+ * Object to Source String
+ */
+type::$object->to_source = function ($object) {
+  $code = array();
+  foreach ($object->{'#source'} as $item) {
+    foreach($item as $seg) {
+      $val = $seg->value;
+      if (!is_string($val)) {
+        $val = get($val, 'to_source');
+      }
+      $code[] = $val;
+    }
+  }
+  return join($code, ' ');
+};
+
+/**
  * Apply string to object
  */
 type::$object->{'#apply string'} = function ($object, $string) {

@@ -52,3 +52,20 @@ type::$group->{'#register'} = function ($group, $item) {
    */
   register($group, $item);
 };
+
+/**
+ * Group to Source String
+ */
+type::$group->to_source = function ($group) {
+  $code = array();
+  foreach ($group->{'#source'} as $item) {
+    foreach($item as $seg) {
+      $val = $seg->value;
+      if (!is_string($val)) {
+        $val = get($val, 'to_source');
+      }
+      $code[] = $val;
+    }
+  }
+  return '(' . join($code, ' ') . ')';
+};

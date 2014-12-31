@@ -43,6 +43,23 @@ type::$array->to_json = function ($array, $level=0) {
 };
 
 /**
+ * Array to Source String
+ */
+type::$array->to_source = function ($array) {
+  $code = array();
+  foreach ($array->{'#source'} as $item) {
+    foreach($item as $seg) {
+      $val = $seg->value;
+      if (!is_string($val)) {
+        $val = get($val, 'to_source');
+      }
+      $code[] = $val;
+    }
+  }
+  return '[' . join($code, ' ') . ']';
+};
+
+/**
  * Check if array key exists
  */
 type::$array->{'#operator ??'} = function ($array, $key) {
